@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recording xmlns='urn:ietf:params:xml:ns:recording:1'> 
+        <datamode>complete</datamode>
+        <calltype>normal</calltype>
+        <session session_id="hVpd7YQgRW2nD22h7q60JQ=="> 
+                <sipSessionID>ab30317f1a784dc48ff824d0d3715d86; remote=47755a9de7794ba387653f2099600ef2</sipSessionID>
+                <urcalldata xmlns='http://unifiedrign.com/rec/recxml'>
+                        <callgroupid>67755a9de7794ba387653f2099600ea3</callgroupid> 
+                </urcalldata>
+        </session>
+        <participant participant_id="srfBElmCRp2QB23b7Mpk0w==">
+                <nameID aor="sip:jais@a1.vectone.com">
+                        <name xml:lang="it">Jais</name>
+                </nameID>
+                <urcalldata xmlns='http://unifiedrign.com/rec/recxml'> 
+                        <callingparty/>
+                        <odr command="start"/> 
+                        <callsessionId>ef30317f1a784dc48ff824d0d3715d8f</callsessionId> 
+                </urcalldata>
+        </participant>
+        <participant participant_id="zSfPoSvdSDCmU3A3TRDxAw==">
+                <nameID aor="sip:Frederick@a3.vectone.com">
+                        <name xml:lang="it">Frederick</name>
+                </nameID>
+                <urcalldata xmlns='http://unifiedrign.com/rec/recxml'> <calledparty/>
+                        <odr command="start"/> 
+                        <callsessionId>adf30317f1a784dc48ff824d0d3715def</callsessionId> 
+                </urcalldata>
+        </participant>
+        <stream stream_id="8zc6e0lYTlWIINA6GR+3ag==" session_id="hVpd7YQgRW2nD22h7q60JQ=="> <label>1</label>
+        </stream>
+        <stream stream_id="EiXGlc+4TruqqoDaNE76ag==" session_id="hVpd7YQgRW2nD22h7q60JQ=="> <label>2</label>
+        </stream>
+        <sessionrecordingassoc session_id="hVpd7YQgRW2nD22h7q60JQ=="> <associate-time>2020-04-30T23:41:07Z</associate-time> </sessionrecordingassoc>
+        <participantsessionassoc participant_id="srfBElmCRp2QB23b7Mpk0w==" session_id="hVpd7YQgRW2nD22h7q60JQ=="> <associate-time>2020-04-30T23:41:07Z</associate-time> </participantsessionassoc>
+        <participantsessionassoc participant_id="zSfPoSvdSDCmU3A3TRDxAw==" session_id="hVpd7YQgRW2nD22h7q60JQ=="> <associate-time>2020-04-30T23:41:07Z</associate-time> </participantsessionassoc>
+        <participantstreamassoc participant_id="srfBElmCRp2QB23b7Mpk0w=="> <send>i1Pz3to5hGk8fuXl+PbwCw==</send> <recv>8zc6e0lYTlWIINA6GR+3ag==</recv> </participantstreamassoc> <participantstreamassoc participant_id="zSfPoSvdSDCmU3A3TRDxAw=="> <send>8zc6e0lYTlWIINA6GR+3ag==</send> <recv>i1Pz3to5hGk8fuXl+PbwCw==</recv> </participantstreamassoc>
+</recording>

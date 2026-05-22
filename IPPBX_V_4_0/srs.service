@@ -1,0 +1,42 @@
+#This Service file is used to run srs as a daemon process
+[Unit]
+Description=Session Recording Service
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/srs
+
+# Clean old logs before each start
+ExecStartPre=/usr/bin/truncate -s 0 /var/log/xgate/srs/srs.err
+ExecStartPre=/usr/bin/truncate -s 0 /var/log/xgate/srs/srs.out
+
+# Redirect logs
+StandardError=append:/var/log/xgate/srs/srs.err
+StandardOutput=append:/var/log/xgate/srs/srs.out
+
+# Restart policy
+Restart=always
+RestartSec=1
+
+#Required environment variables
+Environment= "SRS_CONF_PATH=/etc/xgate"
+Environment= "LD_LIBRARY_PATH=/usr/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib64:/usr/local/lib:/usr/lib64:/usr/local/include"
+User=root
+
+# === Resource limits (equivalent to srs old ulimit settings) ===
+LimitNOFILE=502400
+LimitNOFILESoft=502400
+LimitMSGQUEUE=819200
+LimitMSGQUEUESoft=819200
+LimitSTACK=8192K
+LimitSTACKSoft=8192K
+LimitNPROC=31167
+LimitNPROCSoft=31167
+LimitCORE=infinity
+LimitCORESoft=infinity
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/docs
+END
+build_system.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/docs/build_system.txt
+END
+devel_platform_notes.txt
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/docs/devel_platform_notes.txt
+END
+release_management.txt
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/docs/release_management.txt
+END

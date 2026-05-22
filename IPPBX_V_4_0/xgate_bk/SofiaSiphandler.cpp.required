@@ -1,0 +1,3989 @@
+
+#include "SofiaSiphandler.h"
+#include "log.h"
+#include "klog.h"
+#include "sip.h"
+#include "siputil.h"
+#include <iomanip>
+
+#define THISMODULE "SOFH"
+extern "C"{
+#include <sofia-sip/url.h>
+#include <sofia-sip/nua.h>
+#include <sofia-sip/sip.h>
+#include <sofia-sip/sdp.h>
+#include <sofia-sip/soa.h>
+#include <sofia-sip/tport.h>
+#include <sofia-sip/soa_tag.h>
+#include <sofia-sip/sip_tag.h>
+#include <sofia-sip/sip_header.h>
+#include <sofia-sip/sip_status.h>
+#include <sofia-sip/msg_addr.h>
+//#include <sofia-sip/sip_extra.h>
+//#include <sofia-sip/sdp.h>
+}
+#include "sofia.h"
+#include "xGateUtil.h"
+
+//#define XGSIP_HOST() "10.22.3.105"
+//#define XGSIP_HOST() xGateUtil::GetLocalIPAddress()
+#define XGSIP_HOST() xGateUtil::getLocalIpAddr()
+
+#define XGSIPPORT "5060"
+#define XGSIPSCHEME "sip:"
+#define SIP_URL "sip:*:5060" //TODO: Need to be configurable - Yadav
+#define SIPS_URL "sips:*:5061;transport=tls"
+#define CERT_PATH "\root"
+//#define XGATE_USER_AGENT "Vectone MGC 1.1"
+#define XGATE_USER_AGENT "Switchlab xGate"
+#define XGATE_SOFIA_HEADER_USER_INFO "X-XG-UI"
+#define XGATE_SOFIA_HEADER_PRIVATE_INFO "X-XG-PI"
+#define SETPARAM    SIPTAG_ALLOW_STR("INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO"),\
+  SIPTAG_USER_AGENT_STR(XGATE_USER_AGENT), \
+NUTAG_AUTOANSWER(0),\
+NUTAG_AUTOACK(1),\
+NUTAG_AUTOALERT(0),\
+NTATAG_EXTRA_100(0),\
+NUTAG_ALLOW("REGISTER"),\
+NUTAG_ALLOW("PRACK"),\
+NUTAG_ALLOW("INVITE"),\
+NUTAG_ALLOW("ACK"),\
+NUTAG_ALLOW("CANCEL"),\
+NUTAG_ALLOW("OPTIONS"),\
+NUTAG_ALLOW("BYE"),\
+NUTAG_ALLOW_EVENTS("talk"),\
+NUTAG_ALLOW_EVENTS("hold"),\
+NUTAG_ALLOW_EVENTS("conference"),\
+NUTAG_APPL_METHOD("REGISTER"),\
+TAG_END()
+#define URLSCHEMA "sip"
+
+#define	RTP_TELEPHONE_EVENT_STR	"telephone-event"
+#define	RTP_PAYLOADTYPE_101	101
+
+static RegistrationApi *g_multithreaded_ippbx_registrationApiObj;
+
+bool StringExists(const char *p)
+{
+  if(p!=NULL)
+    if(strlen(p))
+      return true;
+  return false;
+}
+
+SofiaSiphandler::SofiaSiphandler():xGateSipController(){
+
+}
+SofiaSiphandler::~SofiaSiphandler(){
+
+}
+//public Implemetation SofiaSipHandler
+/* Method Name: SipLibInit
+ * Method used to initilize sip handler & sip stack
+ */
+xGateReturn SofiaSiphandler::SipLibInit(){
+  try{
+    //Log Initiating sofia Libarary 
+    SofiaInit(); // Initltilizing sofia Libary
+    SofiaInitMemory(m_homeMemory); // Creating Memory for sofia Libary
+    if((m_root =  SofiaInitRoot(this)) == NULL){ 
+      // Log Error Capture
+      return xGateReturn::FAIL;
+    } // Creating Root Instance 
+  } catch(...){
+    CLog::Warning(THISMODULE, "SofiaSiphandler::SipLibInit(%s)", "Exception Occured");
+    return xGateReturn::FAIL;
+  }
+  CLog::Detail(THISMODULE, "SofiaSiphandler::SipLibInit(%s)", "Success-Init");
+  return xGateReturn::SUCCESS;
+}
+xGateReturn SofiaSiphandler::SipLibLoad(){
+  try{
+    g_multithreaded_ippbx_registrationApiObj = new RegistrationApi((RegistrationApi*)this, API_PROVIDER_ID_SOFIA,"multithreaded_ippbx"); // working
+    ////_callTransferApi = new CallTransferApi((CallTransferApi*)this, API_PROVIDER_ID_CALLTRANSFER,"SofiaRegistrar");
+
+    SofiaSetLog(9); // set log level for sofia library
+    if((m_nuaHandle = SofiaCreate(m_root,&SofiaSiphandler::SofiaCallBack,this)) == NULL){
+      CLog::Warning(THISMODULE, "SofiaSiphandler::SipLibLoad(%s)", "Sofia Handle Null Return");
+
+      return xGateReturn::FAIL;
+    }
+  }catch(...){
+    CLog::Warning(THISMODULE, "SofiaSiphandler::SipLibLoad(%s)", "Exception Occured");    
+    return xGateReturn::FAIL;
+  }
+  CLog::Detail(THISMODULE, "SofiaSiphandler::SipLibLoad(%s)", "Success-Loaded");
+  return xGateReturn::SUCCESS;
+
+}
+xGateReturn SofiaSiphandler::SipLibUnLoad(){
+  try{
+    if(m_nuaHandle){
+      SofiaDestoryhandle(m_nuaHandle);
+      SofiaDeInitRoot(m_root);
+      SofiaDeInitMemory(m_homeMemory);
+      SofiaDeInit();
+    }
+  }catch(...){
+    CLog::Warning(THISMODULE, "SofiaSiphandler::SipUnLibLoad(%s)", "Exception Occured");
+    return xGateReturn::FAIL;
+  }
+  CLog::Detail(THISMODULE, "SofiaSiphandler::SipUnLibLoad(%s)", "Success-UnLoad");
+  return xGateReturn::SUCCESS;
+
+}
+xGateReturn SofiaSiphandler::RunEventLoop(){
+  try{
+    /* std::string route;
+       if(sbcip.size() > 0){
+       route = "<sip:";
+       route += GetCurrentSbcInfo();
+       route += ":5060;lr>";     
+       }*/
+
+    GetProcessRegisterEvent();
+    GetProcessEvent();
+    SofiaRootStep(m_nuaHandle,m_root);
+
+  }catch(...){
+    CLog::Warning(THISMODULE, "SofiaSiphandler::RunEventLoop(%s)", "Exception Occured");
+    return xGateReturn::FAIL;
+  }
+  //CLog::Detail(THISMODULE, "SofiaSiphandler::RunEventLoop(%s)", "Event Proccesed");
+  return xGateReturn::SUCCESS;
+}
+#if 0
+xGateReturn SofiaSiphandler::ForkedDialOut(xGateSofiaobj *sobj)
+{
+  nua_handle_t *handle = NULL;
+  map<std::string, MappedUser*>::iterator itr = sobj->cp.m_mappedUserList.begin();
+  for (itr; itr != sobj->cp.m_mappedUserList.end(); ++itr) {
+    MappedUser *mappedUser = itr->second;
+    if((mappedUser != NULL)&&(!mappedUser->m_userNumber.empty())){
+      sobj->isParallelForked = true;
+      sobj->cp.cnCalled = mappedUser->m_userNumber;
+      //sobj->cp.csaCalled = mappedUser->m_userSignalAddr; //TODO: remove hardcoded part
+      //sobj->cp.csaCalled = "10.22.5.39";
+      sobj->cp.proxyUserName = mappedUser->m_proxyUserName;
+      if(mappedUser->m_userDeviceType == XGATE_UT_URAPP)
+      {
+        sobj->cp.csCalledCodec = 111;
+        sobj->cp.calledDeviceType = "URAPP";
+      }
+      else if(mappedUser->m_userDeviceType == XGATE_UT_URWEB)
+      {
+        sobj->cp.csCalledCodec = 111;
+        sobj->cp.calledDeviceType = "URWEB";
+      }
+      else
+      {
+        sobj->cp.csCalledCodec = 8;
+      }
+      xGateSofiaobj *forkPeerSofiaObj = NULL;
+      forkPeerSofiaObj = new xGateSofiaobj();
+      forkPeerSofiaObj->xGateSofiaobjInit();
+      forkPeerSofiaObj->xGateCopyPeerInfo(*sobj);
+      sobj->SofiaForkLeg.push_back(forkPeerSofiaObj);
+      sobj->SofiaLegB = forkPeerSofiaObj;
+
+      forkPeerSofiaObj->isParallelForked = true;
+      handle = CreateSofiaDialhandle(sobj, mappedUser->m_userDeviceType);
+      if(handle != NULL)
+      {
+        if(CreateLocalSdpParam(sobj) == true){
+          nua_set_hparams(handle, NUTAG_ALLOW("UPDATE"), TAG_END());
+          nua_invite(handle,NUTAG_AUTOACK(0),TAG_END());
+          sobj->noOfPeers++;
+          forkPeerSofiaObj->isParallelForked = true;
+          forkPeerSofiaObj->forkedLegId = sobj->noOfPeers;
+          CLog::Warning(THISMODULE, "SofiaSiphandler::DialOut(%s) Request", sobj->callid.c_str());
+        }
+        else{
+          RespondToPeer(EN_503_REL,sobj);
+        }
+      }
+      else{
+        CLog::Error(THISMODULE, "SofiaSiphandler::DialOut(%s) Failed",sobj->callid.c_str() );
+        RespondToPeer(EN_500_REL,sobj);
+      }
+    }
+  }
+  return SUCCESS;
+}
+#endif
+xGateReturn SofiaSiphandler::DialOut(xGateSofiaobj *sobj)
+{
+	  CLog::Detail(THISMODULE, "SofiaSiphandler::DialOut(%s)CallDefault Started",sobj->callid.c_str());
+   if(sobj->cp.isForkingenabled)
+      CallForking(sobj);
+   else
+     if(CallDefault(sobj) == FAIL)
+	{
+	  CLog::Error(THISMODULE, "SofiaSiphandler::DialOut(%s)CallDefault Failed",sobj->callid.c_str());
+	  RespondToPeer(EN_503_REL,sobj);
+	}	
+
+return SUCCESS;
+}
+xGateReturn SofiaSiphandler::PrepareHandleAndSdpMakeCall(xGateSofiaobj *sobj,CallParameter cp,xGateSofiaobj *dialsobj){
+CLog::Detail(THISMODULE, "SofiaSiphandler::PrepareHandleAndSdpMakeCall(%s)",sobj->callid.c_str());
+ nua_handle_t *handle = NULL;
+ handle = CreateSofiaDialhandle(cp,(sip_t*)sobj->siptag) ;
+  if(handle != NULL)
+  {
+    if(dialsobj){   
+       dialsobj->sofianh = (void*)handle;
+       dialsobj->callstream = EN_OUTBOUND;
+       dialsobj->SofiaLegB =  sobj; // TODO need some more logic for circuly list
+       SofiaBindhandle(handle,(nua_hmagic_t*)dialsobj);
+//      SofiaBindhandle(handle,(nua_hmagic_t*)sobj->SofiaLegB);
+    }
+
+   // if(sobj->cp.isForkingenabled == 1 ){// This for teting forking 
+    // dialsobj->port = sobj->port;
+    // dialsobj->ipaddr = sobj->ipaddr;
+    // std::string sdp =  EncodeDialStringSDP(sobj);
+    // nua_set_hparams(handle, SOATAG_USER_SDP_STR(sdp.c_str()),NUTAG_ALLOW("UPDATE"), TAG_END());
+    // nua_invite(handle,NUTAG_AUTOACK(1),TAG_END());
+    // CLog::Detail(THISMODULE, "SofiaSiphandler::PrepareHandleAndSdpMakeCall(%s) EncodeDialStringSDP Call Invite Requested ", sobj->callid.c_str());
+
+   // }else{
+     if( CreateLocalSdpParam(sobj,handle) == true){
+       nua_set_hparams(handle, NUTAG_ALLOW("UPDATE"), TAG_END());
+       nua_invite(handle,NUTAG_AUTOACK(1),TAG_END());
+       CLog::Detail(THISMODULE, "SofiaSiphandler::PrepareHandleAndSdpMakeCall(%s)Call Invite Requested ", sobj->callid.c_str());
+     }
+     else{
+	CLog::Error(THISMODULE, "SofiaSiphandler::PrepareHandleAndSdpMakeCall(%s) SDP Creation  Failed",sobj->callid.c_str());
+     return FAIL;
+    }
+   }
+ // }
+  else{
+    CLog::Error(THISMODULE, "SofiaSiphandler::PrepareHandleAndSdpMakeCall(%s) Handle Creation  Failed",sobj->callid.c_str() );
+   return FAIL;
+  }
+
+
+return SUCCESS;
+}
+xGateReturn SofiaSiphandler::CallForking(xGateSofiaobj *sobj){
+
+map<std::string, MappedUser*>::iterator itr = sobj->cp.m_mappedUserList.begin();
+int tempcodec = sobj->cp.csCalledCodec;
+for (itr; itr != sobj->cp.m_mappedUserList.end(); ++itr){
+MappedUser *mappedUser = itr->second;
+xGateSofiaobj *forkPeerSofiaObj = NULL;
+forkPeerSofiaObj = new xGateSofiaobj();
+forkPeerSofiaObj->xGateSofiaobjInit();
+forkPeerSofiaObj->xGateCopyPeerInfo(*sobj);
+forkPeerSofiaObj->cp = sobj->cp;
+forkPeerSofiaObj->cp.calledDeviceType =  mappedUser->m_calledDeviceType;
+forkPeerSofiaObj->cp.csCalledCodec = mappedUser->m_calledcodec;
+sobj->cp.csCalledCodec = mappedUser->m_calledcodec;
+sobj->cp.calledDeviceType = mappedUser->m_calledDeviceType;
+sobj->cp.proxyUserName = mappedUser->m_proxyUserName;
+forkPeerSofiaObj->cp.proxyUserName = mappedUser->m_proxyUserName;
+forkPeerSofiaObj->cp.cnCalled = mappedUser->m_userNumber;
+forkPeerSofiaObj->cp.csaCalled = mappedUser->m_userSignalAddr;
+forkPeerSofiaObj->cp.isForkingenabled = 1; // forking is enabled in this leg
+forkPeerSofiaObj->SofiaLegB = sobj;
+sobj->SofiaForkLeg.push_back(forkPeerSofiaObj);
+if(PrepareHandleAndSdpMakeCall(sobj,forkPeerSofiaObj->cp,forkPeerSofiaObj) == FAIL){
+CLog::Error(THISMODULE, "SofiaSiphandler::CallForking (%s) Failed",forkPeerSofiaObj->cp.proxyUserName );
+}
+
+sobj->cp.csCalledCodec = tempcodec;
+}
+return SUCCESS;
+
+}
+xGateReturn SofiaSiphandler::CallDefault(xGateSofiaobj *sobj){
+	if(PrepareHandleAndSdpMakeCall(sobj,sobj->cp,sobj->SofiaLegB ) == FAIL){
+	  CLog::Error(THISMODULE, "SofiaSiphandler::CallDefault (%s) Failed",sobj->callid.c_str() );
+	  return FAIL;
+         }
+return SUCCESS;
+}
+
+#if 0
+xGateReturn SofiaSiphandler::DialOut(xGateSofiaobj *sobj){
+  nua_handle_t *handle = NULL;
+  handle = CreateSofiaDialhandle(sobj) ;
+  if(handle != NULL)
+  {
+    if( CreateLocalSdpParam(sobj) == true){
+      nua_set_hparams(handle, NUTAG_ALLOW("UPDATE"), TAG_END());
+      nua_invite(handle,NUTAG_AUTOACK(1),TAG_END());
+      CLog::Warning(THISMODULE, "SofiaSiphandler::DialOut(%s) Request", sobj->callid.c_str());
+    }
+    else{
+      RespondToPeer(EN_503_REL,sobj);
+    }
+  }
+  else{
+    CLog::Error(THISMODULE, "SofiaSiphandler::DialOut(%s) Failed",sobj->callid.c_str() );
+    RespondToPeer(EN_500_REL,sobj);
+  }
+  return SUCCESS;
+
+}
+#endif
+// Private Implemntation SofiaSipHandler
+
+/*TODO: Need to modify the paramater to set Call Paramater from
+ * sip structure
+ */
+bool SofiaSiphandler::CreateCallobjparam(xGateCallObj *callobj,std::string callid,\
+    nua_handle_t *nh, sip_t const  *sip,tagi_t  tags[]){
+
+  //callobj =  new xGateCallObj;
+
+  callobj->xGateCallObjInit(); // callobj initilized
+
+
+  callobj->callid = callid;
+  callobj->callid += '\0'; // added for multithreaded-ippbx
+
+  // Create Call Pararm 
+  SetCallParameter(callobj->cp,sip,tags);
+
+
+  // Set Transport
+  if(strcasecmp(sip->sip_contact->m_url->url_scheme,"sip") == 0){
+    if(ValidateSipMsgPointer(sip->sip_contact->m_url->url_params))
+      nua_set_hparams(nh,
+          NUTAG_M_PARAMS(sip->sip_contact->m_url->url_params),
+          TAG_END());
+  }
+
+
+  CLog::Detail(THISMODULE,"SofiaSiphandler::CreateCallobjparam(%s)",callobj->callid.c_str()); 
+  return true;
+}
+bool SofiaSiphandler::CreateSofiaobjparam(xGateSofiaobj *sofiaobj,std::string callid,nua_handle_t *nh,\
+    nua_magic_t  *magic,sip_t *siptag){ 
+
+  CLog::Detail(THISMODULE,"multithreaded-ippbx : SofiaSiphandler::CreateSofiaobjparam********(%s)",callid.c_str());
+  sofiaobj =  new xGateSofiaobj; // create new Dialog
+  sofiaobj->xGateSofiaobjInit();
+  sofiaobj->callstream = EN_INBOUND;
+  sofiaobj->callid = callid;
+  sofiaobj->callid += '\0'; // added for multithreaded-ippbx
+
+  //sofiaobj->mgid = xGateUtil::selectMgId(); // commented for ippbx
+  sofiaobj->sofianh = (void*)nh; // Transaction handle
+  sofiaobj->siptag = (void*)siptag; // Sip tag struct information 
+  sofiaobj->sofiamh = (void*)magic; // Application context
+  sofiaobj->SofiaLegB = NULL;
+	#if 0
+	if (siptag && siptag->sip_allow && sofiaobj)
+	{
+		if (sip_is_allowed(siptag->sip_allow, sip_method_info, "INFO")) // working
+		{
+  			CLog::Detail(THISMODULE,"SofiaSiphandler::CreateSofiaobjparam********sip_method_info == TRUE");
+			////sofiaobj->cp.inband_dtmf_method = false;
+		}
+	}
+	#endif
+  if(ValidateSipMsgPointer(siptag->sip_contact->m_url->url_params))
+  {
+    sofiaobj->siptransport = siptag->sip_contact->m_url->url_params;
+    sofiaobj->cp.cnCalled = siptag->sip_contact->m_url->url_user; // added for multithreaded-ippbx
+  }
+  /*        CLog::Detail(THISMODULE, "multithreaded-ippbx : callid = %s" , sofiaobj->callid.c_str());
+            CLog::Detail(THISMODULE,  "multithreaded-ippbx : sipeventtype = %d" , sofiaobj->sipeventtype);
+
+            CLog::Detail(THISMODULE,  "multithreaded-ippbx : cnCalled = %s" , sofiaobj->cp.cnCalled);
+            CLog::Detail(THISMODULE,  "multithreaded-ippbx : cnCalled = %s" , sofiaobj->cp.cnCalled.c_str());
+  ////CLog::Detail(THISMODULE,  "multithreaded-ippbx : cnpCalled = %s" , sofiaobj->cp.cnpCalled.c_str());
+  ////CLog::Detail(THISMODULE,  "multithreaded-ippbx : cntCalled = %s" , sofiaobj->cp.cntCalled.c_str());
+  CLog::Detail(THISMODULE,  "multithreaded-ippbx : csCalled = %s" , sofiaobj->cp.csCalled.c_str());
+  CLog::Detail(THISMODULE,  "multithreaded-ippbx : csaCalled = %s" , sofiaobj->cp.csaCalled.c_str());
+
+  ////CLog::Detail(THISMODULE,  "multithreaded-ippbx : cpcCalling = %s" , sofiaobj->cp.cpcCalling.c_str());
+  CLog::Detail(THISMODULE,  "multithreaded-ippbx : cnCalling = %s" , sofiaobj->cp.cnCalling.c_str());
+  CLog::Detail(THISMODULE,  "multithreaded-ippbx : cnCallingOrig = %s" , sofiaobj->cp.cnCallingOrig.c_str());
+  ////CLog::Detail(THISMODULE,  "multithreaded-ippbx : cnpCalling = %s" , sofiaobj->cp.cnpCalling.c_str());
+  ////CLog::Detail(THISMODULE,  "multithreaded-ippbx : cntCalling = %s" , sofiaobj->cp.cntCalling.c_str());
+  CLog::Detail(THISMODULE,  "multithreaded-ippbx : csCalling = %s" , sofiaobj->cp.csCalling.c_str());
+  CLog::Detail(THISMODULE,  "multithreaded-ippbx : csaCalling = %s" , sofiaobj->cp.csaCalling.c_str());
+  CLog::Detail(THISMODULE,  "multithreaded-ippbx : csaCalling = %s" , sofiaobj->cp.csaCalling.c_str());*/
+
+  //Create the Leg B so it is alway available even in error case
+  sofiaobj->SofiaLegB =  new xGateSofiaobj();
+  sofiaobj->SofiaLegB->xGateSofiaobjInit();
+  sofiaobj->SofiaLegB->xGateCopyPeerInfo(*sofiaobj);
+  sofiaobj->P2PMedia =   0;
+  //CheckforP2PMedia(siptag->sip_from->a_url->url_host, siptag->sip_to->a_url->url_host);
+  sofiaobj->SofiaLegB->P2PMedia = sofiaobj->P2PMedia;
+//  sofiaobj->SofiaForkLeg.push_back(sofiaobj->SofiaLegB); 
+  InsertCallInfo(sofiaobj);
+  SofiaBindhandle(nh,(nua_hmagic_t*)sofiaobj); 
+
+	sofiaobj->switchboardparam.SwbCallEvent = EN_SWB_NULL;
+	sofiaobj->SofiaLegB->switchboardparam.SwbCallEvent = EN_SWB_NULL;
+}
+
+unsigned char hexToChar(const std::string &str) {
+  short c = 0;
+
+  if(!str.empty()) {
+    std::istringstream in(str);
+
+    in >> std::hex >> c;
+
+    if(in.fail()) {
+      //throw std::runtime_error("stream decode failure");
+    }
+  }
+  return static_cast<unsigned char>(c);
+}
+
+String SipHeaderDecode(const String &toDecode) {
+  std::ostringstream out;
+
+  for(String::size_type i=0; i < toDecode.length(); ++i) {
+    if(toDecode.at(i) == '%') {
+      String str(toDecode.substr(i+1, 2));
+      out << hexToChar(str);
+      i += 2;
+    } else {
+      out << toDecode.at(i);
+    }
+  }
+
+  return out.str();
+}
+
+String SipHeaderEncode(const String &value) {
+  std::ostringstream escaped;
+  escaped.fill('0');
+  escaped << std::hex;
+
+  for (String::const_iterator i = value.begin(), n = value.end(); i != n; ++i) {
+    String::value_type c = (*i);
+
+    // Keep alphanumeric and other accepted characters intact
+    if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+      escaped << c;
+      continue;
+    }
+
+    // Any other characters are percent-encoded
+    escaped << '%' << std::setw(2) << int((unsigned char) c);
+  }
+  return escaped.str();
+}
+
+
+bool SofiaSiphandler::SetCallParameter(CallParameter &cp, sip_t const *sip, tagi_t tags[])
+{
+  // TODO:  Restructure the below code for clarity & best practices
+  /* Here need to fill
+     1. csaCalled
+     2. cnCalled
+     3. cntCalled
+     4. cnpcalled
+
+     1. csaCalling
+     2. cnCalling
+     3. cntCalling
+     4. cnpcalling
+     */
+
+  char _temp[256];
+  //Updating called paramater
+  cp.csaCalled = "";
+  // cp.csaCalled += sip->sip_request->rq_url->url_host;
+  ////////cp.csaCalled += XGSIP_HOST();
+  cp.csaCalled += sip->sip_request->rq_url->url_host;
+  CLog::Detail(THISMODULE, "multithreaded-ippbx : cp.csaCalled = " , cp.csaCalled);
+  cp.csaCalled += ':';
+  //cp.csaCalled += sip->sip_request->rq_url->url_port;
+  cp.csaCalled += XGSIPPORT;
+
+  //TODO: Yoga, done for New-MGC PBX integration
+  if(sip->sip_from->a_url)
+  {
+    if(StringExists(sip->sip_from->a_url->url_host))
+    {
+      //cp.routeAddr = sip->sip_request->rq_url->url_host;
+      cp.routeAddr = sip->sip_from->a_url->url_host;
+      cp.routeAddr += '\0';
+      CLog::Detail(THISMODULE, "************IPPBX : SetCallParameter() : domainName: %s\n", cp.routeAddr.c_str());
+    }
+  }
+  if (strlen(cp.cnCalled.c_str()) == 0)
+  {
+    CLog::Warning(THISMODULE, "************IPPBX : 4) cparam.cnCalled.c_str() == null\n");
+    cp.cnCalled.erase();
+    cp.cnCalled = sip->sip_to->a_url->url_user;
+    cp.cnCalled += '\0';
+    //cp.cnCalled += "@";
+    //cp.cnCalled += sip->sip_to->a_url->url_host;
+  }
+
+
+  if(ValidateSipMsgPointer(sip->sip_request->rq_url->url_password)) {
+    snprintf (_temp, sizeof(_temp), "%s:%s", 
+        sip->sip_request->rq_url->url_user, 
+        sip->sip_request->rq_url->url_password);
+  } else{
+    snprintf (_temp, sizeof(_temp), "%s", sip->sip_request->rq_url->url_user);
+    cp.csCallAgenttype = 0;
+    // Harded coded value 008 for APP TO PSTN call scenerio TODO Remove after testinifg
+    if(sip->sip_user_agent){ 
+      if(sip->sip_user_agent->g_string){
+        cp.callingDeviceType = sip->sip_user_agent->g_string; // Added to support Peer to Peer check in PBX Yadav
+        if(strstr(sip->sip_user_agent->g_string,"DCAPP"))
+        {
+          snprintf (_temp, sizeof(_temp), "0007%s", sip->sip_request->rq_url->url_user);
+          cp.csCallingContact = sip->sip_contact->m_url->url_host;
+          cp.csCallAgenttype = 1; //App call;
+        }
+        else if (strstr(sip->sip_user_agent->g_string,"VAPP")){
+          snprintf (_temp, sizeof(_temp), "0002%s", sip->sip_request->rq_url->url_user);
+          cp.csCallingContact = sip->sip_contact->m_url->url_host;
+          cp.csCallAgenttype = 1; //App call;
+        }
+        else if(strstr(sip->sip_user_agent->g_string,"URAPP")){
+          snprintf (_temp, sizeof(_temp), "%s", sip->sip_request->rq_url->url_user);
+          cp.csCallingContact = sip->sip_contact->m_url->url_host;
+          cp.csCallAgenttype = 1; //App call;
+        }
+        else if(strstr(sip->sip_user_agent->g_string,"URWEB")){
+          cp.csCallAgenttype = 3;
+        }
+      }
+    }
+  }
+  if (sip->sip_to->a_url->url_user) // To enable PSTN To APP 
+    if(strstr(sip->sip_to->a_url->url_user,"DELAPP"))
+      cp.csCallAgenttype = 2;
+
+  if (ParseTelephoneNumber(_temp, cp.cnCalled, cp.cntCalled))
+    cp.cnpCalled = CNP_ISDN;
+
+
+  // check paid service for calling party
+  // TODO Need to check required or any  hard code value need
+  sip_p_asserted_identity_t * Paidurl=sip_p_asserted_identity(sip);
+
+  if(Paidurl && Paidurl->paid_url){
+    cp.csaCalling = "";
+    cp.csaCalling += Paidurl->paid_url->url_host;
+    if(Paidurl->paid_url->url_port){
+      cp.csaCalling += ":";
+      cp.csaCalling += Paidurl->paid_url->url_port;
+    } 
+
+    if(sip->sip_privacy){ // Only on privacy paid url are used
+      if(ValidateSipMsgPointer(Paidurl->paid_url->url_password))
+        snprintf (_temp, sizeof(_temp), "%s:%s", 
+            Paidurl->paid_url->url_user, 
+            Paidurl->paid_url->url_password);
+      else
+        snprintf (_temp, sizeof(_temp), "%s", Paidurl->paid_url->url_user);
+
+      if(ParseTelephoneNumber(_temp,cp.cnCalling,cp.cntCalling))
+        cp.cnpCalling = CNP_ISDN;
+      cp.ccp=!strcmp(sip->sip_privacy->priv_values[0],"none") ? CCP_Allowed : CCP_Restricted;    
+    }
+    else{ // on privary not avaiable even on paid, update sip_from url info
+      if(ValidateSipMsgPointer(sip->sip_from->a_url->url_password))
+        snprintf (_temp, sizeof(_temp), "%s:%s", sip->sip_from->a_url->url_user, sip->sip_from->a_url->url_password);
+      else
+        snprintf (_temp, sizeof(_temp), "%s", sip->sip_from->a_url->url_user);
+
+      if(ParseTelephoneNumber(_temp,cp.cnCalling,cp.cntCalling))
+        cp.cnpCalling = CNP_ISDN;
+      cp.ccp = CCP_Allowed;    
+    }
+  }
+  else{
+    cp.csaCalling = "";
+    cp.csaCalling += sip->sip_from->a_url->url_host; //TODO: We have enable this for live call
+    if(sip->sip_from->a_url->url_port) {
+      cp.csaCalling += ":";
+      cp.csaCalling += sip->sip_from->a_url->url_port;
+    }
+    //cp.csaCalling = "10.22.2.82"; //TODO: Testing only, disabled for live call
+    cp.cnpCalling = CNP_ISDN;
+    cp.cntCalling = CNT_Unknown;
+    cp.cnCalling = "";
+
+    if(strcmp(sip->sip_from->a_url->url_user,"unavailable") == 0){
+      cp.ccp = CCP_NotAvailable;
+    }else if (strcmp(sip->sip_from->a_url->url_user,"anonymous") == 0){
+      cp.ccp = CCP_Restricted;
+    }else{
+      char _temp[256];
+      if(ValidateSipMsgPointer(sip->sip_from->a_url->url_password))
+        snprintf (_temp, sizeof(_temp), "%s:%s", sip->sip_from->a_url->url_user, sip->sip_from->a_url->url_password);
+      else
+        snprintf (_temp, sizeof(_temp), "%s", sip->sip_from->a_url->url_user);
+      if(ParseTelephoneNumber(_temp,cp.cnCalling,cp.cntCalling))
+        cp.cnpCalling = CNP_ISDN;    
+
+    }
+
+  }
+
+  // TODO: Need optimisation for below code yadav
+  cp.cui="";
+  cp.cpinfo="";
+  sip_unknown_t* pUnknown=sip->sip_unknown;
+
+  while(pUnknown)
+  {
+    if(!strcmp(pUnknown->un_name, XGATE_SOFIA_HEADER_USER_INFO))
+      cp.cui=SipHeaderDecode(pUnknown->un_value);
+    if(!strcmp(pUnknown->un_name, XGATE_SOFIA_HEADER_PRIVATE_INFO))
+      cp.cpinfo=SipHeaderDecode(pUnknown->un_value);
+    pUnknown=pUnknown->un_next;
+  }
+
+  return true;;
+}
+
+
+/**/
+//Yadav, we are using this funciton for testing
+void SofiaSiphandler::CreateSDPParam(xGateSofiaobj *sobj){
+  bool is_hold=true;
+#define sdp ((sdp_session_s*)sobj->rsdp)
+  //#define nhandle ((nua_handle_t*)sobj->SofiaLegB->sofianh)
+  // if(sdp)
+  //   if(sdp)
+  //     if(sdp->sdp_media)
+  //       if(sdp->sdp_media->m_port)
+  //         if(sdp->sdp_media->m_mode>2)
+  //           is_hold=false;
+
+  //   nua_set_hparams(nhandle, 
+  //       SOATAG_AUDIO_AUX("telephone-event"),
+  //       SOATAG_USER_SDP(sdp), 
+  //       TAG_END());
+  //   if(!is_hold)
+  /*   nua_set_hparams(nhandle, 
+       SOATAG_AUDIO_AUX("telephone-event"),
+       SOATAG_HOLD(""),// force sofia to put "sendrecv"
+       SOATAG_USER_SDP_STR("m=audio 8000 RTP/AVP 8 0\n"
+       "c=IN IP4 10.22.3.92\n"),
+       SOATAG_ACTIVE_AUDIO(SOA_ACTIVE_SENDRECV),// force sofia to put "sendrecv"
+       SOATAG_ACTIVE_VIDEO(SOA_ACTIVE_SENDRECV),// force sofia to put "sendrecv"
+       TAG_END());*/
+
+}
+
+/*
+ * 
+ */
+void SofiaSiphandler::SetSdpMediaIP_Port(sdp_session_t &dup,xGateSofiaobj *sobj){
+  sdp_session_t *rsdp = &dup;
+  rsdp->sdp_media->m_port = sobj->port;
+  if(rsdp->sdp_connection && rsdp->sdp_connection->c_address)
+    rsdp->sdp_connection->c_address = sobj->ipaddr.c_str();
+  else if(rsdp->sdp_media)
+    rsdp->sdp_media->m_proto_name =  "RTP/AVP";
+  //	rsdp->sdp_media->m_rtpmaps = NULL;
+  if(rsdp->sdp_media->m_connections)
+    if(rsdp->sdp_media->m_connections->c_address)
+      rsdp->sdp_media->m_connections->c_address =  sobj->ipaddr.c_str();
+    else{
+      rsdp->sdp_media->m_connections->c_address = new char[sobj->ipaddr.length()];
+      rsdp->sdp_media->m_connections->c_address = sobj->ipaddr.c_str();
+    }
+  /*rsdp->sdp_media->m_format  = 0;
+    rsdp->sdp_media->m_format = new (sdp_list_t);
+    rsdp->sdp_media->m_format->l_size = sizeof (sdp_list_t);
+    rsdp->sdp_media->m_format->l_text = "111";
+    rsdp->sdp_media->m_format->l_next = NULL;
+    AppendSdpAttribute(*rsdp,"rtpmap","111 OPUS/48000/2",1);*/
+}
+/*
+*/
+void SofiaSiphandler::AppendSdpAttribute(sdp_session_t &dup,const char* name, const char* value,int type){
+  sdp_session_t *rsdp = &dup;
+  sdp_attribute_t *rtpatt = new sdp_attribute_t;
+  rtpatt->a_next = NULL;
+  rtpatt->a_name = name;
+  rtpatt->a_value = value;
+  rtpatt->a_size = sizeof (sdp_attribute_t);
+  if(type == 0)
+    sdp_attribute_append(&rsdp->sdp_media->m_session->sdp_attributes,rtpatt);
+  else
+    sdp_attribute_append(&rsdp->sdp_media->m_attributes,rtpatt);
+}
+void SofiaSiphandler::AppendSdpMediaFormat(sdp_list_t  &dup, const char*value,int type){
+
+  sdp_list_t *mline =  &dup;
+  cout << "Format Value " << value << endl;
+  if(mline)
+  {
+    mline->l_next =  new sdp_list_t;
+    mline =  mline->l_next;
+  }
+  else{
+    mline =  new sdp_list_t;
+  }
+  // rsdp->sdp_media->m_format =  new sdp_list;
+  mline->l_text = "111";
+  mline->l_next = NULL;
+  mline->l_size = sizeof (sdp_list_t);
+}
+void SofiaSiphandler::CreateSdpOpus(sdp_session_t &dup,xGateSofiaobj *sobj){
+  sdp_session_t *rsdp =  &dup;
+  sdp_attribute_t *group=NULL;
+
+  char *grouplbl = NULL;
+  char *wmslabel = NULL;
+  char *msidlbl = NULL;
+  char *fngprint = NULL;
+  char *ssrccname = NULL;
+  char *ssrcmsid = NULL;
+  char *ssrcmslabel = NULL;
+  char *ssrclabel = NULL;
+
+  grouplbl = new char[300]; memset(grouplbl,'\0',300);
+  wmslabel = new char[300]; memset(wmslabel,'\0',300);
+  msidlbl = new char[300]; memset(msidlbl,'\0',300);
+  fngprint = new char[300]; memset(fngprint,'\0',300);
+  ssrccname = new char[300]; memset(ssrccname,'\0',300);
+  ssrcmsid = new char[300]; memset(ssrcmsid,'\0',300);
+  ssrcmslabel = new char[300]; memset(ssrcmslabel,'\0',300);
+  ssrclabel = new char[300]; memset(ssrclabel,'\0',300);
+
+  rsdp->sdp_media->m_attributes = NULL;
+  if(rsdp->sdp_media->m_rtpmaps)
+    rsdp->sdp_media->m_rtpmaps = NULL;
+  rsdp->sdp_media->m_proto = sdp_proto_x;
+  rsdp->sdp_media->m_proto_name =  "UDP/TLS/RTP/SAVPF";
+  rsdp->sdp_media->m_session->sdp_subject  = "talk";
+  rsdp->sdp_media->m_attributes = NULL;
+  rsdp->sdp_media->m_attributes = new (sdp_attribute_t);
+  rsdp->sdp_media->m_attributes->a_name = "sendrecv";
+  rsdp->sdp_media->m_attributes->a_size = sizeof (sdp_attribute_t);
+  rsdp->sdp_media->m_attributes->a_value = NULL;
+  rsdp->sdp_media->m_attributes->a_next = NULL;
+  rsdp->sdp_media->m_format  = 0;
+  rsdp->sdp_media->m_format = new (sdp_list_t);
+  rsdp->sdp_media->m_format->l_size = sizeof (sdp_list_t);
+  rsdp->sdp_media->m_format->l_text = "111";
+  rsdp->sdp_media->m_format->l_next = NULL;
+  /*rsdp->sdp_media->m_format->l_next = new (sdp_list_t);
+    rsdp->sdp_media->m_format->l_next->l_size =  sizeof (sdp_list_t);
+    rsdp->sdp_media->m_format->l_next->l_text = "101";
+    rsdp->sdp_media->m_format->l_next->l_next = NULL;*/
+
+  char *value =  new char[50];memset(value,'\0',50);
+  sprintf(value,"1 1 udp %u %s %d typ relay ",(rand()&0xFFFFFFFF),sobj->ipaddr.c_str(),sobj->port);
+  AppendSdpAttribute(*rsdp,"candidate",value,1);
+//  if(sobj->cp.csCallAgenttype == 2 || strstr(sobj->cp.calledDeviceType.c_str(),"URWEB") || strstr(sobj->SofiaLegB->cp.calledDeviceType.c_str(),"URWEB")|| strstr(sobj->cp.calledDeviceType.c_str(),"URAPP")){
+
+if(sobj->callstream == EN_INBOUND){
+    sdp_attribute_remove(&rsdp->sdp_media->m_session->sdp_attributes, "group");
+    if (strstr(sobj->cp.calledDeviceType.c_str(),"URAPP")) {
+      AppendSdpAttribute(*rsdp,"group","BUNDLE audio", 0);
+    } else {
+      AppendSdpAttribute(*rsdp,"group","BUNDLE 0", 0);
+    }
+
+    sdp_attribute_remove(&rsdp->sdp_media->m_session->sdp_attributes, "msid-semantic");
+// sdp_attribute_remove(&rsdp->sdp_media->m_session->sdp_attributes, "");
+    sprintf(wmslabel, "WMS %s", sobj->SofiaSDPinfo.mslabel.c_str());
+    AppendSdpAttribute(*rsdp,"msid-semantic", wmslabel, 0);
+
+    AppendSdpAttribute(*rsdp,"ice-ufrag",sobj->SofiaSDPinfo.iceufrag.c_str(),1);
+    AppendSdpAttribute(*rsdp,"ice-pwd",sobj->SofiaSDPinfo.icepwd.c_str(),1);
+    AppendSdpAttribute(*rsdp,"ice-options","trickle",1);
+    sprintf(fngprint,"sha-256 %s",sobj->SofiaSDPinfo.fingerprint.c_str());
+    AppendSdpAttribute(*rsdp,"fingerprint", fngprint,1);
+
+    sdp_attribute_remove(&rsdp->sdp_media->m_session->sdp_attributes, "setup");
+    if(sobj->callstate < CS_Connected) // This done for Hold Resume for APP cases
+    AppendSdpAttribute(*rsdp,"setup","actpass",1);
+    else
+     AppendSdpAttribute(*rsdp,"setup","passive",1);
+
+    sdp_attribute_remove(&rsdp->sdp_media->m_session->sdp_attributes, "mid");
+    if (strstr(sobj->cp.calledDeviceType.c_str(),"URAPP")) {
+      AppendSdpAttribute(*rsdp,"mid","audio",1);
+    }else {
+      AppendSdpAttribute(*rsdp,"mid","0",1);
+    }
+
+    //AppendSdpAttribute(*rsdp,"extmap","1 urn:ietf:params:rtp-hdrext:hdrext:ssrc-audio-level",1);
+
+    AppendSdpAttribute(*rsdp,"rtcp-mux",NULL,1);
+    AppendSdpAttribute(*rsdp,"rtpmap","111 OPUS/48000/2",1);
+    AppendSdpAttribute(*rsdp,"fmtp", "111 minptime=10;useinbandfec=1", 1);
+    AppendSdpAttribute(*rsdp,"rtpmap","101 telephone-event/8000",1);
+
+    sprintf(ssrccname,"%s cname:%s",sobj->SofiaSDPinfo.ssrc.c_str(),sobj->SofiaSDPinfo.cname.c_str());
+    AppendSdpAttribute(*rsdp, "ssrc", ssrccname ,1);
+
+    sprintf(ssrcmsid,"%s msid:%s %s", sobj->SofiaSDPinfo.ssrc.c_str(), sobj->SofiaSDPinfo.mslabel.c_str(), sobj->SofiaSDPinfo.label.c_str());
+    AppendSdpAttribute(*rsdp, "ssrc", ssrcmsid, 1);
+
+    sprintf(ssrcmslabel,"%s mslabel:%s", sobj->SofiaSDPinfo.ssrc.c_str(), sobj->SofiaSDPinfo.mslabel.c_str());
+    AppendSdpAttribute(*rsdp, "ssrc", ssrcmslabel, 1);
+
+    sprintf(ssrclabel,"%s label:%s", sobj->SofiaSDPinfo.ssrc.c_str(), sobj->SofiaSDPinfo.label.c_str());
+    AppendSdpAttribute(*rsdp, "ssrc", ssrclabel, 1);
+  }
+  else{
+
+    sdp_attribute_remove(&rsdp->sdp_media->m_session->sdp_attributes, "msid-semantic");
+    sprintf(wmslabel, "WMS %s", sobj->SofiaLegB->SofiaSDPinfo.mslabel.c_str());   
+    AppendSdpAttribute(*rsdp,"msid-semantic", wmslabel, 0);
+
+    AppendSdpAttribute(*rsdp,"ice-ufrag",sobj->SofiaLegB->SofiaSDPinfo.iceufrag.c_str(),1);
+    AppendSdpAttribute(*rsdp,"ice-pwd",sobj->SofiaLegB->SofiaSDPinfo.icepwd.c_str(),1);
+    AppendSdpAttribute(*rsdp,"ice-options","trickle",1);
+    sprintf(fngprint,"sha-256 %s",sobj->SofiaLegB->SofiaSDPinfo.fingerprint.c_str());
+    AppendSdpAttribute(*rsdp,"fingerprint", fngprint,1);
+
+    sdp_attribute_remove(&rsdp->sdp_media->m_session->sdp_attributes, "setup");
+    AppendSdpAttribute(*rsdp,"setup","passive",1);
+    //AppendSdpAttribute(*rsdp,"setup","active",1);
+
+    //AppendSdpAttribute(*rsdp,"mid","audio",1);
+    //  AppendSdpAttribute(*rsdp,"mid","0",1);
+
+    AppendSdpAttribute(*rsdp,"rtcp-mux",NULL,1);
+    AppendSdpAttribute(*rsdp,"rtpmap","111 OPUS/48000/2",1);
+    AppendSdpAttribute(*rsdp,"fmtp", "111 minptime=10;useinbandfec=1", 1);
+    AppendSdpAttribute(*rsdp,"rtpmap","101 telephone-event/8000",1);
+
+    sprintf(ssrccname,"%s cname:%s",sobj->SofiaLegB->SofiaSDPinfo.ssrc.c_str(),sobj->SofiaLegB->SofiaSDPinfo.cname.c_str());
+    AppendSdpAttribute(*rsdp, "ssrc", ssrccname ,1);
+
+    sprintf(ssrcmsid,"%s msid:%s %s", sobj->SofiaLegB->SofiaSDPinfo.ssrc.c_str(), sobj->SofiaLegB->SofiaSDPinfo.mslabel.c_str(), sobj->SofiaLegB->SofiaSDPinfo.label.c_str());
+    //sprintf(ssrcmsid,"%s msid:%s %s", sobj->SofiaLegB->SofiaSDPinfo.ssrc.c_str(),"ARDAMS","ARDAMSa0");
+    AppendSdpAttribute(*rsdp, "ssrc", ssrcmsid, 1);
+
+    sprintf(ssrcmslabel,"%s mslabel:%s", sobj->SofiaLegB->SofiaSDPinfo.ssrc.c_str(), sobj->SofiaLegB->SofiaSDPinfo.mslabel.c_str());
+    //sprintf(ssrcmslabel,"%s mslabel:%s", sobj->SofiaLegB->SofiaSDPinfo.ssrc.c_str(), "ARDAMS");
+    AppendSdpAttribute(*rsdp, "ssrc", ssrcmslabel, 1);
+
+    sprintf(ssrclabel,"%s label:%s", sobj->SofiaLegB->SofiaSDPinfo.ssrc.c_str(), sobj->SofiaLegB->SofiaSDPinfo.label.c_str());
+    //sprintf(ssrclabel,"%s label:%s", sobj->SofiaLegB->SofiaSDPinfo.ssrc.c_str(), "ARDAMSa0");
+    AppendSdpAttribute(*rsdp, "ssrc", ssrclabel, 1);
+    //AppendSdpAttribute(*rsdp,"extmap","1 urn:ietf:params:rtp-hdrext:hdrext:ssrc-audio-level",1);
+    //   AppendSdpAttribute(*rsdp,"extmap","2 urn:ietf:params:rtp-hdrext:sdes:mid",1);
+  }
+  std::string vmsid = "0 0";
+  //vmsid += " ";
+  //vmsid += "-"; 
+  //AppendSdpAttribute(*rsdp,"msid",vmsid.c_str(),1);
+}
+void SofiaSiphandler::CreateSdpGCodec(sdp_session_t &dup,xGateSofiaobj *sobj)
+{
+  sdp_session_t *rsdp =  &dup;
+  rsdp->sdp_media->m_proto_name = "RTP/AVP";
+  if(rsdp->sdp_media->m_session && rsdp->sdp_media->m_session->sdp_attributes){
+    rsdp->sdp_media->m_session->sdp_attributes = NULL;
+  }
+  rsdp->sdp_media->m_attributes = NULL; // TODO just for checking yadav rework to have common sdp valuesi
+  /*  if(sobj->cp.csCalledCodec == 18)
+      AppendSdpAttribute(*rsdp,"ptime","10",1);
+      else
+      AppendSdpAttribute(*rsdp,"ptime","20",1);*/
+  rsdp->sdp_media->m_session->sdp_subject  = "SDP Session";	
+  cout << "Calling Code Type " << sobj->cp.csCalledCodec << endl;
+  for(int index= 0 ; index < MAXCODEC ; index++){
+
+    if(sobj->cp.csCalledCodec == xGateCodecList[index].payload){
+      if(rsdp->sdp_media->m_rtpmaps == NULL)
+        rsdp->sdp_media->m_rtpmaps = new sdp_rtpmap_t;
+      rsdp->sdp_media->m_rtpmaps->rm_pt = xGateCodecList[index].payload;
+      rsdp->sdp_media->m_rtpmaps->rm_encoding = xGateCodecList[index].codecname;
+      rsdp->sdp_media->m_rtpmaps->rm_rate = xGateCodecList[index].samplingrate;
+      rsdp->sdp_media->m_rtpmaps->rm_fmtp = xGateCodecList[index].fmtp;
+      rsdp->sdp_media->m_rtpmaps->rm_size = sizeof ( sdp_rtpmap_t);
+      rsdp->sdp_media->m_rtpmaps->rm_params = NULL;
+      rsdp->sdp_media->m_rtpmaps->rm_next = NULL;
+      break;
+    }
+  }
+}
+sdp_session_t* SofiaSiphandler::EncodeDialSDP(xGateSofiaobj *sobj, int payloadtype){
+  sdp_session_t *rsdp = sdp_session_dup(&m_homeMemory,(sdp_session_t*)sobj->rsdp);
+  if(rsdp) {
+    SetSdpMediaIP_Port(*rsdp,sobj); // Set  the Media Port and IP form MG
+    cout << "Dial PayLoad Type" << payloadtype << endl;;
+    switch(payloadtype){
+      case 8:
+      case 18:
+        CreateSdpGCodec(*rsdp,sobj);
+        break;
+      case 111:
+      case 51:
+        CreateSdpOpus(*rsdp,sobj);
+        break;
+      default:
+        break;
+    }
+
+    return rsdp;
+  }	
+  else return NULL;
+
+}
+std::string SofiaSiphandler::EncodeDialStringSDP(xGateSofiaobj *sobj){
+std::stringstream SDPStr;
+SDPStr<<"s=SDP session\r\n";
+SDPStr<<"c=IN IP4 "<<sobj->ipaddr<<"\r\n" ;
+
+if(sobj->cp.csCalledCodec == 8){
+SDPStr<<"m=audio "<<sobj->port<<" RTP/AVP ";
+SDPStr<< sobj->cp.csCalledCodec<<" " <<"\r\n";
+SDPStr<<"a=rtpmap:"<<8<<" "<<"PCMA/8000\r\n";
+SDPStr<<"a=ptime:20"<<"\r\n";
+}
+else if(sobj->cp.csCalledCodec == 111){
+if(strstr(sobj->cp.calledDeviceType.c_str(),"URAPP")){
+SDPStr<<"a=group:BUNDLE audio"<<"\r\n";
+SDPStr<<"a=mid:audio"<<"\r\n";
+}else {
+SDPStr<<"a=group:BUNDLE 0"<<"\r\n";
+SDPStr<<"a=mid:0"<<"\r\n";
+}
+SDPStr<<"a=msid-semantic:WMS " <<sobj->SofiaSDPinfo.mslabel<<"\r\n";
+SDPStr<<"m=audio "<<sobj->port<<" UDP/TLS/RTP/SAVPF ";
+SDPStr<< sobj->cp.csCalledCodec<<" " <<"\r\n";
+SDPStr<<"a=candidate:1 1 udp "<<(rand()&0xFFFFFFFF)<<" "<<sobj->ipaddr<<" " <<sobj->port<<" relay"<<"\r\n";
+SDPStr<<"a=ice-ufrag:"<<sobj->SofiaSDPinfo.iceufrag<<"\r\n";
+SDPStr<<"a=ice-pwd:"<<sobj->SofiaSDPinfo.icepwd<<"\r\n";
+SDPStr<<"a=ice-option:trickle"<<"\r\n";
+SDPStr<<"a=fingerprint:sha-256 " << sobj->SofiaSDPinfo.fingerprint <<"\r\n";
+SDPStr<<"a=setup:actpass"<<"\r\n";
+SDPStr<<"a=rtpmap:"<<sobj->cp.csCalledCodec<<" "<<"OPUS/48000/2\r\n";
+SDPStr<<"a=fmtp:"<<sobj->cp.csCalledCodec<<" minptime=10;useinbandfec=1"<<"\r\n";
+SDPStr<<"a=ssrc:"<<sobj->SofiaSDPinfo.ssrc<<"cname:"<<sobj->SofiaSDPinfo.cname<<"\r\n";
+SDPStr<<"a=ssrc:"<<sobj->SofiaSDPinfo.ssrc<<"msid:"<<sobj->SofiaSDPinfo.mslabel<<" "<<sobj->SofiaSDPinfo.label<<"\r\n";
+SDPStr<<"a=ssrc:"<<sobj->SofiaSDPinfo.ssrc<<"mslable:"<<sobj->SofiaSDPinfo.mslabel<<"\r\n";
+SDPStr<<"a=ssrc:"<<sobj->SofiaSDPinfo.ssrc<<"lable:"<<sobj->SofiaSDPinfo.label<<"\r\n";
+SDPStr<<"a=ptime:30"<<"\r\n";
+}
+return SDPStr.str();
+}
+sdp_session_t* SofiaSiphandler::EncodeResponseSDP(xGateSofiaobj *sobj){
+  sdp_session_t *rsdp = sdp_session_dup(&m_homeMemory,(sdp_session_t*)sobj->SofiaLegB->rsdp);
+  if(rsdp){
+    SetSdpMediaIP_Port(*rsdp,sobj); // Set  the Media Port and IP form MG
+
+    switch(rsdp->sdp_media->m_proto){
+      case sdp_proto_x:
+      case sdp_proto_srtp:
+        sobj->cp.csCalledCodec = 111;
+        CreateSdpOpus(*rsdp,sobj);
+        break;	
+      default :
+	sobj->cp.csCalledCodec = 8;// TODO this hard codd due repsonse error
+        CreateSdpGCodec(*rsdp,sobj);                
+        break;
+    }
+    return rsdp;
+  }else return NULL;
+}
+bool SofiaSiphandler::CreateLocalSdpParam(xGateSofiaobj *sobj, nua_handle_t* nhandle){
+  sdp_session_t *lsdp = NULL;
+//#define nhandle ((nua_handle_t*)sobj->SofiaLegB->sofianh)
+if(!nhandle)
+ nhandle = (nua_handle_t*)sobj->SofiaLegB->sofianh;
+ 
+  if(!sobj)
+  {
+    CLog::Error(THISMODULE,"SofiaSiphandler::CreateLocalSdpParam Invalid sobj");
+    return false;
+  }
+
+  sdp_session_t *rsdp; //= (sdp_session_t*)sobj->rsdp;
+  if(sobj->P2PMedia){
+    switch(sobj->callstream){
+      case EN_OUTBOUND:
+        rsdp = (sdp_session_t*)sobj->rsdp;
+
+        //SetSDPAnswer(*rsdp,"setup") ;
+        CLog::Info(THISMODULE,"SofiaSiphandler::CreateLocalSdpParam P2PMedia LEG B Enabled call id%s",sobj->callid.c_str());
+
+        break;
+      case EN_INBOUND:
+        rsdp = (sdp_session_t*)sobj->rsdp;
+        CLog::Info(THISMODULE,"SofiaSiphandler::CreateLocalSdpParam P2PMedia Enabled call id%s",sobj->callid.c_str());
+        break;
+    }
+  }else {
+
+    if(sobj->port <= 0)
+    {
+      CLog::Error(THISMODULE,"SofiaSiphandler::CreateLocalSdpParam Invalid Media Port ");
+      return false;
+    }
+    switch(sobj->callstream){
+      case EN_OUTBOUND: // Responce to Leg A Peer
+        {
+          CLog::Error(THISMODULE,"Response to  peer CallStream is EN_OUTBOUND %s",sobj->callid.c_str());
+          rsdp = EncodeResponseSDP(sobj);
+          CLog::Error(THISMODULE,"SofiaSiphandler::CreateLocalSdpParam DTLS candidate ufrag %s pwd %s fringerprint %s",
+              sobj->SofiaLegB->SofiaSDPinfo.iceufrag.c_str(),sobj->SofiaLegB->SofiaSDPinfo.icepwd.c_str(),sobj->SofiaLegB->SofiaSDPinfo.fingerprint.c_str());
+          CLog::Error(THISMODULE,"SofiaSiphandler::CreateLocalSdpParam SSRC %s CNAME %s MSLABEL %s LABEL %s", sobj->SofiaLegB->SofiaSDPinfo.ssrc.c_str(),
+              sobj->SofiaLegB->SofiaSDPinfo.cname.c_str(),sobj->SofiaLegB->SofiaSDPinfo.mslabel.c_str(), sobj->SofiaLegB->SofiaSDPinfo.label.c_str());
+        }
+        break;
+      case EN_INBOUND: // Dial to Leg B Peer
+        {
+          CLog::Error(THISMODULE," Dialing to  peer CallStream is EN_INBOUND %s",sobj->callid.c_str());
+          rsdp = EncodeDialSDP(sobj,sobj->cp.csCalledCodec);
+          CLog::Error(THISMODULE,"SofiaSiphandler::CreateLocalSdpParam DTLS candidate ufrag %s pwd %s fringerprint %s",
+              sobj->SofiaSDPinfo.iceufrag.c_str(),sobj->SofiaSDPinfo.icepwd.c_str(),sobj->SofiaSDPinfo.fingerprint.c_str());
+
+        }
+        break;
+      default:
+        CLog::Error(THISMODULE,"SofiaSiphandler::CreateLocalSdpParam Invalid Call Stream Type ");
+        return false;
+
+    }// Switch case callstream	
+  }
+
+
+
+  if(rsdp){
+/*           sdp_printer_t *printer = 0;
+             memset(buf,'/0',4024);
+             printer = sdp_print(&m_homeMemory, rsdp, buf, 4024, sdp_f_realloc);
+             if(printer){
+             cout << " \n dialout SDP " << sdp_message(printer) << endl;
+             CLog::Detail(THISMODULE,"SofiaSiphandler:CreateLocalSdpParam(%s)",sdp_message(printer));
+             sdp_printer_free(printer);
+             }*/
+    int Onhold = 0;
+    if(sobj->mediastate == EN_MED_SUSPENDED)
+      Onhold = 1;
+
+    nua_set_hparams(nhandle,
+        SOATAG_AUDIO_AUX("telephone-event"),
+        //      TAG_IF(!Onhold, SOATAG_HOLD("")),// force sofia to put "sendrecv"
+        //   SOATAG_USER_SDP_STR(sdp_message(printer)),
+        TAG_IF(!Onhold,  NUTAG_EARLY_MEDIA (1)),
+        TAG_IF(!Onhold,  NUTAG_EARLY_ANSWER(1)),
+        SOATAG_USER_SDP(rsdp),
+        //     TAG_IF(!Onhold, SOATAG_ACTIVE_AUDIO(SOA_ACTIVE_SENDRECV)),// force sofia to put "sendrecv"
+        //    TAG_IF(!Onhold,  SOATAG_ACTIVE_VIDEO(SOA_ACTIVE_SENDRECV)),// force sofia to put "sendrecv"
+        TAG_END());
+
+    /*    nua_set_hparams(nhandle,
+          SOATAG_AUDIO_AUX("telephone-event"),
+          SOATAG_HOLD(""),// force sofia to put "sendrecv"
+    //   SOATAG_USER_SDP_STR(sdp_message(printer)),
+    NUTAG_EARLY_MEDIA (1),
+    NUTAG_EARLY_ANSWER(1),
+    SOATAG_USER_SDP(rsdp),
+    SOATAG_ACTIVE_AUDIO(SOA_ACTIVE_SENDRECV),// force sofia to put "sendrecv"
+    SOATAG_ACTIVE_VIDEO(SOA_ACTIVE_SENDRECV),// force sofia to put "sendrecv"
+    TAG_END());*/
+
+  } else{
+    CLog::Detail(THISMODULE,"SofiaSiphandler:CreateLocalSdpParam - No SDP Message create");
+    return false;
+  }
+
+  return true;
+}
+
+
+/* Used to initialize run-time environment including sockets for Sofia Library 
+ * Input Param : Void
+ */
+
+void SofiaSiphandler::SofiaInit(){
+  su_init();
+}
+
+/* Used to De - initialize run-time environment including sockets for Sofia Library 
+ * Input Param : Void
+ */
+void SofiaSiphandler::SofiaDeInit(){
+  su_deinit();
+}
+
+/* Used to initialize applicaton memory for Sofia Library,
+ * This helps to start mulitple sofia library using differnt memeory 
+ * Input Param : su_home_t structure address
+ */
+void SofiaSiphandler::SofiaInitMemory(su_home_t &homeMemory ){
+  su_home_init(&homeMemory);
+}
+
+/* Used to deinitialize applicaton memory for Sofia Library,
+ *  Input Param : su_home_t structure address
+ */
+void SofiaSiphandler::SofiaDeInitMemory(su_home_t &homeMemory){
+  su_home_deinit(&homeMemory);
+}
+
+/* Used to create root instance
+*/
+su_root_t *SofiaSiphandler::SofiaInitRoot(su_root_magic_t* appInitance){
+  return su_root_create(appInitance);
+}
+
+/* Used to destroy root instance
+*/
+void SofiaSiphandler::SofiaDeInitRoot(su_root_t* nuaRoot){
+  su_root_destroy(nuaRoot);
+}
+/**/
+nua_t* SofiaSiphandler::SofiaCreate(su_root_t *root,nua_callback_f 	callback, nua_magic_t *magic){
+
+  /* @NEW_1_12_7. In order to use @b Alert-Info header, initialize the SIP
+   * parser before calling nta_agent_create() or nua_create() with, e.g.,
+   * sip_update_default_mclass(sip_extend_mclass(NULL)). Sofia -Sip Lib
+   */
+  sip_update_default_mclass(sip_extend_mclass(NULL));
+
+  m_nuaHandle=  nua_create(root,callback,magic,\
+      NUTAG_URL(SIP_URL),\
+      // NUTAG_SIPS_URL(SIPS_URL)
+      NUTAG_CERTIFICATE_DIR(CERT_PATH),\
+      TAG_END());
+
+  SofiaSetParam(m_nuaHandle);
+  return m_nuaHandle;
+
+}
+/*
+ * Create auth mod for authendicating client
+ * Still need to chagen the paramater for auth registration
+ * */
+
+auth_mod_t* SofiaSiphandler::SofiaInitAuth(su_root_t* root){
+  return auth_mod_create(root,AUTHTAG_METHOD("Digest"),AUTHTAG_ALGORITHM("MD5"),AUTHTAG_QOP("auth"),AUTHTAG_REALM("xgatesipreg.vectone.com"),TAG_END());
+}
+void SofiaSiphandler::SofiaDeInitAuth(auth_mod_t *authmod){
+  if(authmod)
+    auth_mod_destroy(authmod);
+}
+/**/
+void SofiaSiphandler::SofiaSetParam(nua_t* nuaHandle){
+  nua_set_params(nuaHandle,SETPARAM);
+}
+/**/
+void SofiaSiphandler::SofiaShutdown(nua_t *nuaHandle){
+  nua_shutdown(nuaHandle);
+}
+/**/
+void SofiaSiphandler::SofiaSetLog(int level){
+  //su_log_set_level(NULL,level); windows call
+}
+/**/
+void SofiaSiphandler::SofiaDestoryhandle(nua_t* nuaHandle){
+  nua_destroy(nuaHandle);
+
+}
+/**/
+void SofiaSiphandler::SofiaRespond(nua_handle_t *nh,int status, char const *phrase){
+  nua_respond(nh,status,phrase,TAG_END());
+} 
+/**/
+void SofiaSiphandler::SofiaRespond(nua_handle_t *nh,int status, char const *phrase,tagi_t tags[]){
+  //nua_respond(nh,status,phrase,tags);
+} 
+/**/
+void SofiaSiphandler::SofiaSendAck(nua_handle_t *nh){
+  nua_ack(nh, TAG_END());
+
+}
+/**/
+void SofiaSiphandler::SofiaSendInvite(nua_handle_t *nh){
+  nua_invite(nh,TAG_END());
+}
+/**/
+void SofiaSiphandler::SofiaBindhandle(nua_handle_t *nh,nua_hmagic_t* sofiaobjhandle){
+  nua_handle_bind(nh,sofiaobjhandle);
+}
+/**/
+void SofiaSiphandler::SofiaReBindhandle(nua_handle_t *Old_nh,nua_handle_t *New_nh,nua_hmagic_t* sofiaobjhandle){
+  Old_nh = NULL;
+  //SofiaBindhandle(NULL,NULL);
+  SofiaBindhandle(New_nh,sofiaobjhandle);
+  Old_nh = New_nh;
+
+}
+/**/
+url_t* SofiaSiphandler::SofiaCreateMake(su_home_t &su_home,const char* dialstr){
+
+  SofiaInitMemory(su_home);
+  return url_make(&su_home,dialstr);
+
+}
+
+//Yoga
+bool SofiaSiphandler::UpdateSofiaobjParam(xGateSofiaobj **sobj, xGateCallState *event){
+  CLog::Detail(THISMODULE,"SofiaSiphandler::UpdateSofiaobjParam(%s)",event->callid.c_str());
+  if((*sobj)->mediastate == EN_MED_REQ){
+    (*sobj)->mediastate = EN_MED_SET;
+    (*sobj)->ipaddr = event->ipaddr;
+    (*sobj)->port = event->port;
+    (*sobj)->codec = event->codec;
+    (*sobj)->SofiaSDPinfo.iceufrag = event->ice_ufrag;
+    (*sobj)->SofiaSDPinfo.icepwd = event->ice_pwd;
+    (*sobj)->SofiaSDPinfo.fingerprint = event->fingerprint;
+    (*sobj)->SofiaSDPinfo.ssrc = event->ssrc;
+    (*sobj)->SofiaSDPinfo.cname = event->cname;
+    (*sobj)->SofiaSDPinfo.mslabel = event->mslabel;
+    (*sobj)->SofiaSDPinfo.label = event->label;
+    (*sobj)->SofiaSDPinfo.mediamode = event->media_proto;
+    return true;
+  }
+  return false;
+}
+
+void SofiaSiphandler::OnProcessEvent(xGateSofiaobj *sobj, xGateCallState *event)
+{
+ CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent(%s)",event->callid.c_str());
+ switch(event->sipeventtype){
+  case EN_SETMEDIA_REL:{
+   switch(event->calldir){
+    case EN_INBOUND:{
+     CLog::Detail(THISMODULE, "SofiaSiphandler::OnProcessEvent DialOut called %s",sobj->callid.c_str());
+     UpdateSofiaobjParam(&sobj,event);
+     // Check for Early Message
+     if(sobj->cp.csfilename.empty())
+      ((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))-> DialOut(sobj);
+     else{
+      if((sobj->cp._isSwitchBoardCall) && (sobj->switchboardparam.SwbCallEvent != EN_SWB_GETDTMF))
+       		sobj->switchboardparam.SwbCallEvent =  EN_SWB_WELCOME;
+       RespondToPeer(EN_183_REL, sobj); // Early Media on Greeting or RBT
+      }
+    break;
+    }
+    case EN_OUTBOUND:{
+     //CLog::Detail(THISMODULE, "SofiaSiphandler::OnProcessEvent handling EN_OUTBOUND");
+     CLog::Detail(THISMODULE, "SofiaSiphandler::OnProcessEvent RespondToPeer called %s",sobj->callid.c_str());
+     UpdateSofiaobjParam(&sobj->SofiaLegB,event);
+     //if call stat still in progress/alerting, send media detail to client through sdp for RBT
+     if(sobj->SofiaLegB->callstate == CS_Proceeding) {
+      RespondToPeer(EN_183_REL, sobj);
+     }else if(sobj->SofiaLegB->callstate == CS_Alerting) {
+      RespondToPeer(EN_180_REL, sobj);
+     }else if(sobj->SofiaLegB->callstate == CS_Connected){
+      RespondToPeer(EN_200_REL,sobj);
+      sobj->SofiaLegB->callstate = CS_Connected;
+     }
+    }
+    break;
+    default:{
+     CLog::Detail(THISMODULE, "SofiaSiphandler::OnProcessEvent EN_SETMEDIA_REL case default %s", sobj->callid.c_str());
+     break;
+    }
+   }
+  break;
+  }
+  case EN_PB_COMPLETE_REL:{
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent EN_PB_COMPLETE_REL %s",sobj->callid.c_str());
+   if(sobj->cp._isSwitchBoardCall){
+    CLog::Detail(THISMODULE, "SofiaSiphandler::OnProcessEvent cp._isSwitchBoardCall == true");
+   if(sobj->switchboardparam.SwbCallEvent == EN_SWB_PLAY)
+    sobj->switchboardparam.SwbCallEvent = EN_SWB_PLAY_COMPLET;
+   if(sobj->switchboardparam.SwbCallEvent != EN_SWB_PLAY_PASSTHROUGH)
+    OnSwitchBoardCallProcess(sobj);
+   //RespondToPeer(EN_200_REL, sobj);
+  break;
+  }
+	if(!sobj->cp.callForwardingFile.empty())
+	{
+		sobj->cp.PbState = EN_XGATE_PB_PLAY;
+		sobj->cp.Legid = 1;// TODO  Yadav Chang the Leg ID to 2 since this leb B (this code is for temp need to revert after testeing)
+		RequestForMedia(sobj, EN_MEDIA_UPDATE);
+		sobj->cp.callForwardingFile = "";
+		break;
+	}
+
+   ((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))-> DialOut(sobj);
+   sobj->mediastate = EN_MED_CONNECTED;
+   if(!sobj->cp.rbtFile.empty()) {
+    sobj->cp.PbState = EN_XGATE_PB_REPEAT;
+    sobj->cp.csfilename =  sobj->cp.rbtFile;
+    sobj->cp.Legid = 1;// TODO  Yadav Chang the Leg ID to 2 since this leb B (this code is for temp need to revert after testeing)
+    RequestForMedia(sobj, EN_MEDIA_UPDATE);   
+   }
+  break;	
+  }
+  case EN_HOLDRESUME_RES:{
+   OnHold_Resume(sobj); // sobj is A Leg Peer
+  break;
+  }
+  case EN_P2PMEDIA_RES:{
+  break;
+  }
+  case EN_DIALOUT_REL:{
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent EN_DIALOUT_REL %s",sobj->callid.c_str());
+   // The cp (CallParameter) updation is requied all case except EN_SETMEDIA_REL
+   sobj->cp = event->cp;
+   if(sobj->callstate < event->callstate)
+    sobj->callstate = event->callstate;
+    sobj->P2PMedia =  CheckforP2PMedia(sobj);
+    if(sobj->P2PMedia == 0){
+     sobj->SofiaSDPinfo.outproto = "DTLS";
+   //sobj->SofiaSDPinfo.outproto = GetRtpPortType(sobj);
+     sobj->cp.csfilename = event->cp.csfilename;
+     sobj->cp.callOnHoldFilenameCallingParty = event->cp.callOnHoldFilenameCallingParty;
+     sobj->cp.callOnHoldFilenameCalledParty = event->cp.callOnHoldFilenameCalledParty;
+	sobj->cp.callForwardingFile = event->cp.callForwardingFile;
+     sobj->cp.PbState = 1;
+     sobj->cp.Legid = 1;
+     ((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))-> RequestForMedia(sobj);
+     //User greeting play
+     if(!sobj->cp.csfilename.empty()){
+      sobj->SofiaLegB->callstate = CS_Proceeding;
+      sobj->SofiaLegB->callstream = EN_OUTBOUND;
+      sobj->SofiaLegB->cp.csfilename =  sobj->cp.csfilename;
+      sobj->SofiaLegB->cp.PbState = 1;
+      sobj->SofiaLegB->cp.Legid = 1 ;// TODO  Yadav Chang ethe Leg ID to 2 since this leb B (this code is for temp need to revert after testeing)
+      sobj->cp.callOnHoldFilenameCallingParty = event->cp.callOnHoldFilenameCallingParty;
+      sobj->cp.callOnHoldFilenameCalledParty = event->cp.callOnHoldFilenameCalledParty;
+      sobj->cp.rbtFile = event->cp.rbtFile;
+	sobj->cp.callForwardingFile = event->cp.callForwardingFile;
+	if(!sobj->cp.callForwardingFile.empty())
+		sobj->SofiaLegB->cp.csfilename = sobj->cp.callForwardingFile;
+
+      ((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))-> RequestForMedia(sobj->SofiaLegB, EN_MEDIA_18X);   
+     }
+    }else
+     ((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))-> DialOut(sobj);
+  break;
+  }
+  case EN_SWB_EVENT_REL:{
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent EN_SWB_EVENT_REL  %s",sobj->cp.call_id.c_str());
+   sobj->switchboardparam.PlayFile =  event->cp.swbinfo.PlayFile;
+   sobj->switchboardparam.SwbCallEvent = event->cp.swbinfo.SwbCallEvent;
+   sobj->switchboardparam.MaxDigit = event->cp.swbinfo.maxDigits;
+   sobj->switchboardparam.DigitTimeOut = event->cp.swbinfo.DigitTimeOut;
+   sobj->cp.cnCalled = event->cp.cnCalled ;
+   sobj->cp.cnCalling = event->cp.cnCalling ;
+   /////if(((sobj->cp.rtp_media_enabled) || (sobj->SofiaLegB->cp.rtp_media_enabled)) && (event->cp.swbinfo.SwbCallEvent == EN_SWB_GETDTMF)){
+	if (event->cp.swbinfo.SwbCallEvent == EN_SWB_GETDTMF)
+	{
+    		CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent : SwbCallEvent == EN_SWB_GETDTMF");
+    		sobj->cp.PbState = EN_XGATE_PB_GETDIGIT;
+    		sobj->cp.Legid = 1;
+ 		// post message to Dispatcher. 
+    		((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))-> RequestForMedia(sobj,EN_MEDIA_GET_DTMF_DIGITS);
+   	}
+	////else
+    		OnSwitchBoardCallProcess(sobj);
+  break;
+  }
+  case EN_CALLSTATE_UPDATE_REL:{
+   if(sobj->callstate < event->callstate)
+    sobj->callstate = event->callstate;
+  // sobj->cp = event->cp;
+   memcpy(&sobj->cp, &(event->cp),sizeof(event->cp));
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent EN_CALLSTATE_UPDATE_REL  %s",sobj->cp.call_id.c_str());
+  break;
+  }
+  case EN_NULL:{
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent ==> %s","EN_NULL - No Action Required");
+  break;
+  }
+  case EN_TERMINATED_REL:{ 
+  // This case is for normal crearing from callmanager or term kill task cmd 
+  // Excecute only  the peer nodes are valid and call state is conncted and media state is connected
+  // TODO need to have a single code system /function to handle disconnection Yadav
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent ==> %s","EN_TERMINATED_REL - disconnect peers");
+    if(sobj && sobj->SofiaLegB){
+     if(sobj->callstate == CS_Connected && sobj->mediastate == EN_MED_CONNECTED){
+      SofiaSendBye(sobj->sofianh);
+     }
+     if(sobj->SofiaLegB->callstate == CS_Connected && sobj->SofiaLegB->mediastate == EN_MED_CONNECTED){
+      SofiaSendBye(sobj->SofiaLegB->sofianh);
+     }
+     DeleteCallInfo(sobj);
+     DeleteSofiaObject(sobj);
+    }
+  break;
+  }
+  case EN_MEDIA_UPDATE_REL:{
+  // On Media update to MG
+  //sobj->cp = event->cp;
+   sobj->cp.csfilename = event->cp.csfilename;
+   sobj->cp.PbState = event->cp.PbState;
+   sobj->cp.Legid = event->cp.Legid;
+   sobj->cp.callOnHoldFilenameCallingParty = event->cp.callOnHoldFilenameCallingParty;
+   sobj->cp.callOnHoldFilenameCalledParty = event->cp.callOnHoldFilenameCalledParty;
+   sobj->cp.callForwardingFile = event->cp.callForwardingFile;
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent ==> call_id = %s EN_MEDIA_UPDATE_REL %s",\
+   sobj->cp.call_id.c_str(),sobj->cp.csfilename.c_str());
+   ((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))-> RequestForMedia(sobj,EN_MEDIA_UPDATE);
+  break;
+  }
+	/*****
+      case EN_MEDIA_SWITCHBOARD_REQ:
+          CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent : EN_MEDIA_SWITCHBOARD_REQ");
+          sobj->cp._isSwitchBoardCall = true;
+          sobj->SofiaLegB->cp._isSwitchBoardCall = true;
+                             break;
+	*****/
+
+  case EN_MEDIA_GETDIGIT_REQ: // On Media get dtmf digits
+   sobj->cp.PbState = event->cp.PbState;
+   sobj->cp.Legid = event->cp.Legid;
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent ==> EN_MEDIA_GETDIGIT_REQ");
+   ((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))-> RequestForMedia(sobj,EN_MEDIA_GET_DTMF_DIGITS);
+  break;
+  case EN_MEDIA_RECVDIGIT_RES: // From Media dtmf digits are received.
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent ==> EN_MEDIA_RECVDIGIT_RES");
+	if ((sobj->cp.sipinfo_method == false) && (strlen(event->media_dtmf_digits.c_str()) > 0))
+	{
+		sobj->cp.inband_dtmf_method = true;
+		sobj->cp.sipinfo_method = false;
+   		sobj->switchboardparam.DigitReceived = event->media_dtmf_digits; 
+   		sobj->switchboardparam.SwbCallEvent = EN_SWB_GETDTMF_COMPLET;
+   		OnSwitchBoardCallProcess(sobj);
+	}
+  break;
+  default:{
+   CLog::Detail(THISMODULE,"SofiaSiphandler::OnProcessEvent ==> %s","Default");
+   if(event->sipeventtype  > 399){
+    // check incoming or out
+    // Call the Responce 1xx to 6xx function
+    if(event->calldir  ==  EN_INBOUND){
+     sobj->cp = event->cp;
+     RespondToPeer(event->sipeventtype,sobj);
+    }
+   }
+  break;	
+  }
+ }
+}
+/**
+ * */
+void SofiaSiphandler::OnSwitchBoardCallProcess(xGateSofiaobj *sobj){
+CLog::Detail(THISMODULE,"SofiaSiphandler::OnSwitchBoardCallProcess  event id %d callid  %s",sobj->switchboardparam.SwbCallEvent,sobj->cp.call_id.c_str());
+switch(sobj->switchboardparam.SwbCallEvent){
+	case EN_SWB_NULL:
+		return;
+	break;
+	case EN_SWB_WELCOME:
+	  sobj->switchboardparam.SwbCallEvent=  EN_SWB_IVRCONNECT;
+          RespondToPeer(EN_200_REL,sobj);
+	break;
+	///case EN_SWB_IVRCONNECT:
+	///break;
+	case EN_SWB_PLAY:
+	case EN_SWB_PLAY_PASSTHROUGH:
+	 sobj->cp.PbState = EN_XGATE_PB_PLAY;
+         sobj->cp.csfilename =  sobj->switchboardparam.PlayFile;
+         sobj->cp.Legid = 1;// TODO  Yadav Chang the Leg ID to 2 since this leb B (this code is for temp need to revert after testeing)
+         sobj->switchboardparam.DigitReceived = "$$$";
+         RequestForMedia(sobj, EN_MEDIA_UPDATE);
+	return;
+	case EN_SWB_PLAY_COMPLET:
+	sobj->switchboardparam.SwbCallEvent = EN_SWB_PLAY_COMPLET;
+	break;
+	case EN_SWB_GETDTMF:
+	sobj->switchboardparam.SwbCallEvent = EN_SWB_GETDTMF;
+	sobj->switchboardparam.DigitReceived = "$$$";
+	CLog::Detail(THISMODULE,"SofiaSiphandler::OnSwitchBoardCallProcess  Wating for MAX Digit %d",sobj->switchboardparam.MaxDigit);
+	return;
+	case EN_SWB_GETDTMF_COMPLET:
+	sobj->cp.csfilename = "";
+	sobj->switchboardparam.PlayFile = "";
+	sobj->switchboardparam.SwbCallEvent = EN_SWB_GETDTMF_COMPLET;
+	CLog::Detail(THISMODULE,"SofiaSiphandler::OnSwitchBoardCallProcess  DTMF Digit %s",sobj->switchboardparam.DigitReceived.c_str());
+	break;
+	case EN_SWB_DIAL:
+		CLog::Detail(THISMODULE,"SofiaSiphandler::OnSwitchBoardCallProcess : case EN_SWB_DIAL: calling DialOut(sobj)");
+	 DialOut(sobj);	
+	return;
+	case EN_SWB_CALLCONNECTED:
+	break;
+	case EN_SWB_DIALDEFAULT:
+	break;
+	case EN_SWB_CALLDISCONNECT:
+	break;
+	case EN_SWB_CALLDISCONNECTED:
+	break;
+	default:
+		return;
+
+}
+	xGateCallObj *callobj = new xGateCallObj;
+        callobj->xGateCallObjInit();
+	callobj->callid = sobj->callid;
+  	//callobj->cp = sobj->cp;
+        callobj->sipeventtype = EN_SWB_EVENT_REQ;
+        callobj->switchboardinfo.PlayFile = sobj->switchboardparam.PlayFile;
+        callobj->switchboardinfo.DigitReceived = sobj->switchboardparam.DigitReceived;
+        callobj->switchboardinfo.SwbCallEvent =  sobj->switchboardparam.SwbCallEvent;
+//	memcpy(&callobj->switchboardinfo, &sobj->switchboardparam,sizeof(sobj->switchboardparam));
+	PostMessageToProcessor(callobj);
+        sobj->switchboardparam.PlayFile = "";
+	sobj->switchboardparam.DigitReceived = "";
+
+
+
+}
+/**/
+RETCALLBACK SofiaSiphandler::SofiaCallBack(nua_event_t   event,  
+    int           status,  
+    char const   *phrase,  
+    nua_t       *nua,  
+    nua_magic_t  *magic,  
+    nua_handle_t *nh,  
+    nua_hmagic_t *hmagic,  
+    sip_t const  *sip,  
+    tagi_t        tags[]){
+  // future task move this to seperate function for modulaurity
+
+  CLog::Detail(THISMODULE,"SofiaSiphandler::SofiaCallBack(Event: %s status: %d Des: %s)",nua_event_name(event),status,phrase);
+  //  printf("Sofia Event %s Des %s \n",nua_event_name(event),phrase);
+  switch(event){
+    // Error & Status Handling Event Function
+
+    case nua_i_active:
+      break;
+    case nua_i_error:
+      CLog::Error(THISMODULE,"SofiaSiphandler::SofiaCallBack(Event: %s status: %d Des: %s)",nua_event_name(event),status,phrase);
+      break;
+    case nua_i_fork :
+      break;
+    case nua_i_media_error :
+      break;
+    case nua_i_subscription :
+      break;
+    case nua_i_state :
+      ((SofiaSiphandler*)magic)->OnStateChange(status,phrase,nua,magic,nh,hmagic,sip,tags);
+      break;
+    case nua_i_terminated:
+      break;
+      //................
+      // SIP Request Event Handler Function
+    case nua_i_ack :
+      break;
+    case nua_i_bye :
+      ((SofiaSiphandler*)magic)->OnByeRequest(status,phrase,nua,magic,nh,hmagic,sip,tags);
+      break;
+    case nua_i_cancel :
+      ((SofiaSiphandler*)magic)->OnInviteCancel(status,phrase,nua,magic,nh,hmagic,sip,tags);
+      break;
+    case nua_i_chat :
+      break;
+    case nua_i_info :
+	((SofiaSiphandler*)magic)->OnInfoRequest(status,phrase,nua,magic,nh,hmagic,sip,tags);
+      break;
+    case nua_i_invite :
+      CLog::Detail(THISMODULE, "ippbx-multithreaded : case nua_i_invite : ");
+      ((SofiaSiphandler*)magic)->OnInviteRequest(status,phrase,nua,magic,nh,hmagic,sip,tags);
+      break;
+    case nua_i_message :
+      //          OnMessageRequest();
+      break;
+    case nua_i_method :
+      break;
+    case nua_i_notify :
+      break;
+    case nua_i_options :
+      break;
+    case nua_i_prack :
+      break;
+    case nua_i_publish :
+      break;
+    case nua_i_refer :
+      break;
+    case nua_i_register :
+      ((SofiaSiphandler*)magic)->OnRegistrationRequest(status,phrase,nua,magic,nh,hmagic,sip,tags);
+      break;
+    case nua_i_subscribe :
+      break;
+    case nua_i_update:
+      break;
+      //--------------------
+      //  Response Event Handler Function 
+    case nua_r_get_params:
+      break;
+    case nua_r_notifier :
+      break;
+    case nua_r_shutdown :
+      break;
+    case nua_r_terminate:
+      break;
+      //-----------------------
+      // SIP Response Event Handler Function
+    case nua_r_bye:
+      break; 
+    case nua_r_cancel:
+      break;  
+    case nua_r_info:
+      break;  
+    case nua_r_invite:
+
+      ((SofiaSiphandler*)magic)->OnRequestResponse(status,phrase,nua,magic,nh,hmagic,sip,tags);
+      break;  
+    case nua_r_message:
+      break;  
+    case nua_r_notify:
+      break;  
+    case nua_r_options:
+      break;  
+    case nua_r_prack:
+      break;  
+    case nua_r_publish:
+      break;  
+    case nua_r_refer:
+      break;  
+    case nua_r_register:
+      break;  
+    case nua_r_subscribe:
+      break;  
+    case nua_r_unpublish:
+      break;  
+    case nua_r_unregister:
+      break;  
+    case nua_r_unsubscribe:
+      break;  
+    case nua_r_update:
+      break; 
+    default: //An unknown event can always be handled in the event callback
+      CLog::Warning(THISMODULE,"SofiaSiphandler::SofiaCallBack UNKOWN EVENT");
+      if(status < 200 && nua_event_is_incoming_request(event)){
+        nua_respond(nh,SIP_501_NOT_IMPLEMENTED, NUTAG_WITH_THIS(nua), TAG_END());
+        if(hmagic == NULL)
+          nua_handle_destroy(nh);
+      }
+      break;
+  }
+}
+/**/
+void SofiaSiphandler::SofiaRootStep(nua_t* sua_handle,su_root_t* nuaRoot){
+  if(sua_handle)
+    su_root_step(nuaRoot,0);
+}
+/**/
+void SofiaSiphandler::SofiaSendBye(nua_handle_t *nh){
+  nua_bye(nh,TAG_END());
+}
+
+void SofiaSiphandler::OnInfoRequest(int status,char const *phrase,nua_t *nua,\
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,
+    tagi_t        tags[]){
+
+        if(sip && sip->sip_payload && sip->sip_payload->pl_data)
+        {
+                xGateSofiaobj *sofiaobj = NULL;
+                if(hmagic){
+                        sofiaobj = (xGateSofiaobj*)hmagic;
+
+                if ((sofiaobj->cp._isSwitchBoardCall) && (sofiaobj->SofiaLegB->cp.inband_dtmf_method == false))
+                {
+			sofiaobj->cp.sipinfo_method = true;
+			sofiaobj->SofiaLegB->cp.sipinfo_method = true;
+                        CLog::Detail(THISMODULE, "SofiaSiphandler::sipinfo : cp._isSwitchBoardCall == true; business-process");
+
+                        //callobj->cp.dtmf_digits.assign(sip->sip_payload->pl_data, strlen(sip->sip_payload->pl_data));
+			char *token;
+			int count = 0; 
+			while(token = strtok_r(sip->sip_payload->pl_data,"=\r\n",&sip->sip_payload->pl_data)){
+//			cout <<"DTMF" << token << endl;
+			switch(count){
+			 case 0:
+                         break;
+			 case 1: // Signal digit
+			   if(sofiaobj->switchboardparam.SwbCallEvent == EN_SWB_GETDTMF){
+			//   if(strlen(sofiaobj->switchboardparam.DigitReceived.c_str()) < sofiaobj->switchboardparam.MaxDigit)
+			if(sofiaobj->switchboardparam.DigitReceived.compare("$$$") == 0)
+			   sofiaobj->switchboardparam.DigitReceived = "";
+			   ////if((strstr(token,"11") == NULL) || (strstr(token,"#") == NULL)) {
+			   if(strstr(token,"11") == NULL) {
+			   if(strlen(sofiaobj->switchboardparam.DigitReceived.c_str()) < sofiaobj->switchboardparam.MaxDigit)
+                             sofiaobj->switchboardparam.DigitReceived +=  token;
+				if(strlen(sofiaobj->switchboardparam.DigitReceived.c_str()) ==  1)
+				   {
+                        		CLog::Detail(THISMODULE, "SofiaSiphandler::sipinfo : DigitReceived == 1; stop playing background file...");
+					sofiaobj->cp.PbState = EN_XGATE_PB_STOP;
+          				sofiaobj->cp.csfilename =  "";
+          				sofiaobj->cp.Legid = 1; //TODO: stop rbt for origination leg
+          				RequestForMedia(sofiaobj, EN_MEDIA_UPDATE);
+				   } 
+			   }else	
+
+			    {
+				if (strlen(sofiaobj->switchboardparam.DigitReceived.c_str()) > 0)
+				{
+			     		sofiaobj->switchboardparam.SwbCallEvent = EN_SWB_GETDTMF_COMPLET;
+			     		OnSwitchBoardCallProcess(sofiaobj);
+				}
+			   }
+			 }
+//			  sofiaobj->switchboardparam.DigitReceived =  atoi(token);
+			 break;
+		 	 case 2:
+ 			 break;
+			 case 3:
+			 break;
+				
+			}
+			count++;
+			
+			}
+			
+
+                        // Post message to processor
+                        //PostMessageToProcessor(callobj);
+                }
+                else{
+                        CLog::Detail(THISMODULE, "SofiaSiphandler::sipinfo : cp._isSwitchBoardCall == false; business-process");
+                        //Forward Info
+                        sip_payload_t *payload =  sip_payload_dup(&m_homeMemory,sip->sip_payload);
+                        ForwardSipInfo(sofiaobj,payload);
+                }
+          }
+        }
+        else
+                CLog::Detail(THISMODULE,"SofiaSiphandler::OnInfoRequest : SIP-Info message does NOT contain message-body");
+}
+
+xGateReturn SofiaSiphandler::ForwardSipInfo(xGateSofiaobj *sofiaobj,  sip_payload_t *payload){
+
+ CLog::Detail(THISMODULE, "SofiaSiphandler::ForwardSipInfo(%s) Request", sofiaobj->callid.c_str());
+ nua_info((nua_handle_t*)sofiaobj->SofiaLegB->sofianh,SIPTAG_CONTENT_TYPE_STR("application/dtmf-info"),SIPTAG_PAYLOAD(payload), TAG_END());
+ //SofiaSendInfo(sofiaobj->SofiaLegB->sofianh);
+
+return SUCCESS;
+}
+
+/**/
+void SofiaSiphandler::OnInviteRequest(int status,char const *phrase,nua_t *nua,\  
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,  
+    tagi_t        tags[]){
+  // Check the sip information is available if not return as bad request
+  if(ValidateSipMessage(sip,SIPVALIDATE::FROM) == false || \
+      //  ValidateSipMessage(sip,SIPVALIDATE::REQUEST)== false || 
+      ValidateSipMessage(sip,SIPVALIDATE::CONTACT)== false || \
+      ValidateSipMessage(sip,SIPVALIDATE::CALLID) == false){
+    nua_respond(nh, 400,"Bad Request", TAG_END());
+    CLog::Error(THISMODULE,"inside SofiaSiphandler::OnInviteRequest() Header validation failed; call_id = %s", sip->sip_call_id->i_id);
+    return;
+  }
+  // Creating call id
+  std::string callidstring = CreateUniqueCallid(sip->sip_from->a_url->url_user,\
+      sip->sip_from->a_url->url_host,\
+      sip->sip_from->a_tag,\
+      sip->sip_call_id->i_id);
+  callidstring += '\0';
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnInviteRequest()Entry %s", callidstring.c_str());
+
+
+  /**************
+    std::string callidstring = sip->sip_call_id->i_id;
+    callidstring += '\0';
+    CLog::Detail(THISMODULE,"ippbx-multithreaded : inside SofiaSiphandler::OnInviteRequest() ; call_id = %s", sip->sip_call_id->i_id);
+   **************/
+
+  xGateSofiaobj *sofiaobj = NULL ;
+  XGATESIPEVENT sipevent; 
+  if(hmagic){
+    sofiaobj = (xGateSofiaobj*)hmagic;
+
+
+    CLog::Detail(THISMODULE,"SofiaSiphandler::OnInviteRequest() Re-Invite Handle %s", callidstring.c_str());
+    switch(sofiaobj->callstate){
+      case CallState::CS_Proceeding:
+      case CallState::CS_Alerting:
+        nua_respond(nh, 400,"Bad Request", TAG_END());
+        CLog::Error(THISMODULE,"inside SofiaSiphandler::OnInviteRequest()call in progress %s", callidstring.c_str());
+        return;
+      case CallState::CS_Connecting:
+      case CallState::CS_Connected:
+        // Set the call state to CS_Suspendi
+        sofiaobj->callstate =  CS_Suspended;
+        sofiaobj->mediastate =  EN_MED_SUSPENDED;
+        sofiaobj->SofiaLegB->mediastate = EN_MED_SUSPENDED;
+
+        sipevent = EN_HOLDRESUME_REQ;
+        break;
+      case CallState::CS_Suspended:
+        // Set The call state to CS_Conecting
+        sofiaobj->callstate = CS_Connecting;
+        sofiaobj->mediastate = EN_MED_RESUMED;
+        sofiaobj->SofiaLegB->mediastate = EN_MED_RESUMED;
+        sipevent = EN_HOLDRESUME_REQ;
+        break;
+
+      case CallState::CS_Initiating: // re-invite
+      default: 
+        sipevent  =  EN_REINVITE_REQ;	  
+        break;
+    }
+    //SofiaReBindhandle((nua_handle_t*)sofiaobj->sofianh,nh,(nua_hmagic_t*)sofiaobj);
+    // sofiaobj->sofianh = nh; // Explicitly doing 
+    //sofiaobj->sofiamh = (void*)magic;
+    // Creating new request
+
+    xGateCallObj* callobj = new xGateCallObj;
+    /*	if (sofiaobj->callstream == EN_OUTBOUND)
+        {
+        CreateCallobjparam(callobj,sofiaobj->callid,nh,sip,tags); // LegA having old callid.
+        sofiaobj->SofiaLegB->callid = callidstring; // LegB having new callid.
+
+        CreateSofiaobjparam(sofiaobj,callidstring,nh,magic,sip);
+        }
+        else
+        CreateCallobjparam(callobj,callidstring,nh,sip,tags);*/
+    sofiaobj->sipeventtype = sipevent;
+    CreateCallobjparam(callobj,sofiaobj->callid,nh,sip,tags);
+    // Post Message
+    callobj->sipeventtype = sipevent;
+    PostMessage(callobj,XGATEPOSTTYPE::EN_PROCESS);
+
+    /****
+      if (sofiaobj->callstream == EN_OUTBOUND)
+      {
+      CreateSofiaobjparam(sofiaobj,callidstring,nh,magic,sip);
+    //sofiaobj->callid = callidstring;
+    //InsertCallInfo(sofiaobj);
+    }
+     *****/
+    return;
+  }
+  // Verify PSTN or APP Invite
+  // check the domain name from auth list for 407 (APP to PSTN, DESK TO APP, DESK TO APP , APP to DESK ALL case )
+  /*  if(sip->sip_from && sip->sip_from->a_url->url_host)
+      if(CheckDomainForCallAuth(sip->sip_from->a_url->url_host) == true){
+      CLog::Info(THISMODULE,"SofiaSiphandler::OnInviteRequest(%s)","CheckDomainForCallAuth -- True");
+      if(AuthenticateSipSession(status,phrase,nua,magic,nh,hmagic,sip,tags)== true ){
+      CreateSofiaobjparam(sofiaobj,callidstring,nh,magic,sip);
+      }
+
+      return ;
+      }*/
+  CreateSofiaobjparam(sofiaobj,callidstring,nh,magic,sip);
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnInviteRequest ProcessInvite called %s", callidstring.c_str());
+  ProcessInviteRequest(nh,sip,tags,callidstring);
+}
+/**/
+void SofiaSiphandler::ProcessInviteRequest(nua_handle_t *nh,sip_t const  *sip,tagi_t tags[],std::string callidstring){
+
+
+  CLog::Warning(THISMODULE,"SofiaSiphandler::ProcessInviteRequest(%s)",callidstring.c_str());
+
+  // Create a New Call object Since it is new invite found
+  xGateCallObj* callobj = new xGateCallObj;
+  CreateCallobjparam(callobj,callidstring,nh,sip,tags);
+  // Post Message^M
+  callobj->sipeventtype = EN_INVITE_REQ;
+
+  PostMessage(callobj,XGATEPOSTTYPE::EN_PROCESS);
+}
+/**/
+void SofiaSiphandler::OnInviteCancel(int status,char const *phrase,nua_t *nua,\
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,
+    tagi_t        tags[]){
+
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnInviteCancel(%d)",status);
+ if(((xGateSofiaobj*)hmagic)->cp.isForkingenabled){
+   CallCancleForking(((xGateSofiaobj*)hmagic));
+  }
+  else{
+   nua_cancel((nua_handle_t*)((xGateSofiaobj*)hmagic)->SofiaLegB->sofianh,TAG_END());
+  }
+  xGateCallObj *callobj =  new xGateCallObj;
+  callobj->xGateCallObjInit();
+  callobj->callid = ((xGateSofiaobj*)hmagic)->callid;
+  callobj->cp = ((xGateSofiaobj*)hmagic)->cp;
+  callobj->sipeventtype = XGATESIPEVENT::EN_TERMINATED_REQ;
+
+  PostMessage(callobj,XGATEPOSTTYPE::EN_PROCESS);
+  ((SofiaSiphandler*)magic)->DeleteCallInfo((xGateSofiaobj*)hmagic);
+  //((SofiaSiphandler*)magic)->DeleteSofiaObject((xGateSofiaobj*)hmagic);
+}
+xGateReturn SofiaSiphandler::CallCancleForking(xGateSofiaobj *sobj){
+    std::vector<xGateSofiaobj*>::iterator itr = sobj->SofiaForkLeg.begin();
+    for(itr; itr != sobj->SofiaForkLeg.end(); itr++) {
+      xGateSofiaobj* forkSofiaObj = *itr;
+      if((forkSofiaObj != NULL) && (forkSofiaObj->sofianh != NULL)) {
+       if(forkSofiaObj->callstate > CS_Null && forkSofiaObj->callstate <= CS_Connected)
+         nua_cancel((nua_handle_t*)forkSofiaObj->sofianh,TAG_END());
+       if(forkSofiaObj->callstate > CS_Null)
+          DeleteForkedSofiaObject(forkSofiaObj);
+    
+      }
+    }
+
+return SUCCESS;
+}
+#if 0
+void SofiaSiphandler::OnInviteCancel(int status,char const *phrase,nua_t *nua,\
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,
+    tagi_t        tags[]){
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnInviteCancel(%d)",status);
+  xGateCallObj *callobj =  new xGateCallObj;
+  callobj->xGateCallObjInit();
+  callobj->callid = ((xGateSofiaobj*)hmagic)->callid;
+  callobj->cp = ((xGateSofiaobj*)hmagic)->cp;
+  callobj->sipeventtype = XGATESIPEVENT::EN_TERMINATED_REQ;
+  PostMessage(callobj,XGATEPOSTTYPE::EN_PROCESS);
+  ((SofiaSiphandler*)magic)->DeleteCallInfo((xGateSofiaobj*)hmagic);
+  ((SofiaSiphandler*)magic)->DeleteSofiaObject((xGateSofiaobj*)hmagic);
+
+}
+#endif
+#if 0
+void SofiaSiphandler::OnForked2xxResponse(nua_hmagic_t *hmagic, int status)
+{
+  xGateSofiaobj* orgSofiaObj = ((xGateSofiaobj*)hmagic)->SofiaLegB;
+  if(( orgSofiaObj->callstate < CS_Connected) || (orgSofiaObj->mediastate == EN_MED_SUSPENDED) || (orgSofiaObj->mediastate == EN_MED_RESUMED)){
+    ((xGateSofiaobj*)hmagic)->SofiaLegB->sipeventtype = status;
+    RespondToPeer(status,((xGateSofiaobj*)hmagic)->SofiaLegB);
+    nua_handle_t *handle = NULL;
+    handle=((xGateSofiaobj*)hmagic)->sofianh;
+    SofiaSendAck(handle);
+
+    //xGateSofiaobj* orgSofiaObj = ((xGateSofiaobj*)hmagic)->SofiaLegB;
+    std::vector<xGateSofiaobj*>::iterator itr = orgSofiaObj->SofiaForkLeg.begin();
+    while(itr != orgSofiaObj->SofiaForkLeg.end()) {
+      xGateSofiaobj* forkSofiaObj = *itr;
+      if(forkSofiaObj) {
+        if(((xGateSofiaobj*)hmagic)->forkedLegId != forkSofiaObj->forkedLegId) {
+          nua_handle_t *handle = NULL;
+          handle=forkSofiaObj->sofianh;
+          //if(handle != NULL)
+          nua_cancel(handle,TAG_END());
+          orgSofiaObj->noOfPeers--;
+          itr = orgSofiaObj->SofiaForkLeg.erase(itr);
+          continue;
+        }
+      }
+      ++itr;
+    }
+  }
+  else
+  {
+    nua_handle_t *handle = NULL;
+    handle=((xGateSofiaobj*)hmagic)->sofianh;
+    //xGateSofiaobj* orgSofiaObj = ((xGateSofiaobj*)hmagic)->SofiaLegB;
+    std::vector<xGateSofiaobj*>::iterator itr = orgSofiaObj->SofiaForkLeg.begin();
+    while(itr != orgSofiaObj->SofiaForkLeg.end()) {
+      xGateSofiaobj* forkSofiaObj = *itr;
+      if(forkSofiaObj) {
+        if(((xGateSofiaobj*)hmagic)->forkedLegId == forkSofiaObj->forkedLegId)
+        {
+          orgSofiaObj->noOfPeers--;
+          itr = orgSofiaObj->SofiaForkLeg.erase(itr);
+          break;
+        }
+      }
+      ++itr;
+    }
+    SofiaSendAck(handle);
+    SofiaSendBye(handle);
+    CLog::Detail(THISMODULE,"SofiaSiphandler::OnRequestResponse(%d) disconncted to mapped call %d",status,__LINE__);
+  }
+}
+#endif
+void SofiaSiphandler::OnFailureResponse(nua_hmagic_t *hmagic, int status)
+{
+  xGateSofiaobj* orgSofiaObj = NULL;
+  orgSofiaObj = ((xGateSofiaobj*)hmagic)->SofiaLegB;
+  if((orgSofiaObj != NULL)&&(orgSofiaObj->SofiaForkLeg.size() > 0))
+  {
+  /*  if(orgSofiaObj->noOfPeers == 1)
+    {
+      ((xGateSofiaobj*)hmagic)->SofiaLegB->sipeventtype = status;
+      RespondToPeer(status,((xGateSofiaobj*)hmagic)->SofiaLegB);
+    }
+    else
+    {*/
+      std::vector<xGateSofiaobj*>::iterator itr = orgSofiaObj->SofiaForkLeg.begin();
+      while(itr != orgSofiaObj->SofiaForkLeg.end()) {
+        xGateSofiaobj* forkSofiaObj = *itr;
+        if(forkSofiaObj) {
+          if(((xGateSofiaobj*)hmagic)->forkedLegId == forkSofiaObj->forkedLegId)
+          {
+            orgSofiaObj->noOfPeers--;
+            itr = orgSofiaObj->SofiaForkLeg.erase(itr);
+            DeleteForkedSofiaObject(((xGateSofiaobj*)hmagic));
+            break;
+          }
+        }
+        ++itr;
+      }
+ //   }
+  }
+}
+
+/* This functionality will handle the reponse event from Sip Leg's 
+ * and post the information to Main or Sip processor thread for further manipulation, 
+ * */
+void SofiaSiphandler::OnRequestResponse(int status,char const *phrase,nua_t *nua,\  
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,  
+    tagi_t        tags[]){
+
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnRequestResponse(%d)",status);
+  ((xGateSofiaobj*)hmagic)->siptag = sip;
+  //  ((xGateSofiaobj*)hmagic)->SofiaLegB->sipeventtype= status;
+  // Since reply from peer B reply send back to be peer A should be done
+  // so SofiaLegB of peer B is peer A
+  if(CheckResponseRequired(status,(xGateSofiaobj*)hmagic)== false){
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnRequestResponse(CheckResponseRequired) return false");
+    return; 
+}
+     RespondToPeer(status,((xGateSofiaobj*)hmagic)->SofiaLegB);
+
+  // TODO write sperate function to Authentication reply
+
+  xGateCallObj *callobj =  new xGateCallObj;
+  callobj->xGateCallObjInit();
+  callobj->callid = ((xGateSofiaobj*)hmagic)->callid;
+  callobj->cp = ((xGateSofiaobj*)hmagic)->cp;
+  if(status > 399){
+    callobj->sipeventtype = XGATESIPEVENT::EN_TERMINATED_REQ;
+    callobj->callstate = CS_Disconnected;
+  }
+  else{
+    callobj->sipeventtype = XGATESIPEVENT::EN_INVITE_RES;
+  }
+
+  switch(status){
+    case 183:
+      if(((xGateSofiaobj*)hmagic)->callstate < CS_Proceeding){
+        ((xGateSofiaobj*)hmagic)->callstate = CS_Proceeding;
+        ((xGateSofiaobj*)hmagic)->SofiaLegB->callstate = CS_Proceeding;
+        callobj->callstate = CS_Proceeding;
+      }
+      break;
+    case 180:
+      if(((xGateSofiaobj*)hmagic)->callstate < CS_Alerting){
+        ((xGateSofiaobj*)hmagic)->callstate = CS_Alerting;
+        ((xGateSofiaobj*)hmagic)->SofiaLegB->callstate = CS_Alerting;
+        callobj->callstate = CS_Alerting;
+      }
+      break;;
+    case 200: 
+      if(((xGateSofiaobj*)hmagic)->callstate <= CS_Connected) { // TODO  need verification the logic yadav
+        ((xGateSofiaobj*)hmagic)->callstate = CS_Connected;
+        ((xGateSofiaobj*)hmagic)->SofiaLegB->callstate = CS_Connected;
+        callobj->callstate = CS_Connected;
+      }else if(((xGateSofiaobj*)hmagic)->callstate ==  CS_Mediawait) {
+        callobj->callstate = CS_Connected;
+      }
+	if ((!((xGateSofiaobj*)hmagic)->SofiaLegB->cp.rbtFile.empty()) ||
+		(!((xGateSofiaobj*)hmagic)->SofiaLegB->cp.csfilename.empty())) {
+	   CLog::Detail(THISMODULE, "SofiaSiphandler::OnRequestResponse : case 200; stop playing RBT...");
+          ((xGateSofiaobj*)hmagic)->SofiaLegB->cp.PbState = EN_XGATE_PB_STOP;
+          ((xGateSofiaobj*)hmagic)->SofiaLegB->cp.rbtFile =  "";
+          ((xGateSofiaobj*)hmagic)->SofiaLegB->cp.csfilename =  "";
+          ((xGateSofiaobj*)hmagic)->SofiaLegB->cp.Legid = 1; //TODO: stop rbt for origination leg
+	RequestForMedia(((xGateSofiaobj*)hmagic)->SofiaLegB, EN_MEDIA_UPDATE);
+	}
+      break;
+    case 404:
+      callobj->callcauseB = CC_NoRouteToDestination;
+      break;
+    case 486:
+      callobj->callcauseB = CC_UserBusy;
+      break;
+    case 408:
+      callobj->callcauseB = CC_NoUserResponding;
+      break;
+    case 480:
+      callobj->callcauseB = CC_NoAnswerFromUser;
+      break;
+    case EN_403_REL:
+      callobj->callcauseB = CC_CallRejected;
+      break;	
+    case EN_503_REL:
+      callobj->callcauseB = CC_ResourceUnavailable;
+      break;
+    default:
+      if(status > 399)
+        callobj->callcauseB = CC_NormalUnspecified;
+      break;
+
+  }
+  PostMessage(callobj,XGATEPOSTTYPE::EN_PROCESS);
+
+}
+void SofiaSiphandler::OnByeRequest(int status,char const *phrase,nua_t *nua,\
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,
+    tagi_t        tags[]){
+
+  if(!hmagic)
+    return;
+  xGateSofiaobj x;
+//   if(GetCallInfo(&x,((xGateSofiaobj*)hmagic)->callid) == true){
+
+ 
+
+// TODO Since URAPP is sending bye for busy case on forking explicitly we are doing this , if they rectify this can be deleted -- Yadav
+   if(((xGateSofiaobj*)hmagic)->callstream == EN_OUTBOUND ){
+    if(((xGateSofiaobj*)hmagic)->SofiaLegB->callstate <  CS_Connected || ((xGateSofiaobj*)hmagic)->callstate < CS_Connected)
+     return;
+   if(((xGateSofiaobj*)hmagic)->cp.isForkingenabled )
+    if(((xGateSofiaobj*)hmagic)->SofiaLegB->SofiaForkLeg.size() > 1)
+   return; 
+}
+  SofiaRespond(nh,200,"OK");
+  xGateCallObj *callobj =  new xGateCallObj;
+  callobj->xGateCallObjInit();
+  callobj->callid = ((xGateSofiaobj*)hmagic)->callid;
+  callobj->sipeventtype = XGATESIPEVENT::EN_BYE_REQ;
+  callobj->cp = ((xGateSofiaobj*)hmagic)->cp;
+  PostMessage(callobj,EN_PROCESS);
+
+  // Disconnect the peer call, no ack will be take from soifa call back
+  if(((xGateSofiaobj*)hmagic)->SofiaLegB){
+    if(((xGateSofiaobj*)hmagic)->SofiaLegB->sofianh)
+      SofiaSendBye(((xGateSofiaobj*)hmagic)->SofiaLegB->sofianh);
+  }
+  //    nua_bye(((xGateSofiaobj*)hmagic)->SofiaLegB->sofianh,TAG_END());
+  // }
+  // Deleteting all the call info both peer
+  DeleteCallInfo(((xGateSofiaobj*)hmagic));
+}
+
+#if 0
+void SofiaSiphandler::OnByeRequest(int status,char const *phrase,nua_t *nua,\  
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,  
+    tagi_t        tags[]){
+
+  if(!hmagic)
+    return;
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnByeRequest(%s)",((xGateSofiaobj*)hmagic)->callid.c_str());
+  xGateSofiaobj x;
+  if(GetCallInfo(&x,((xGateSofiaobj*)hmagic)->callid) == true){
+    xGateCallObj *callobj =  new xGateCallObj;
+    callobj->xGateCallObjInit();
+    callobj->callid = ((xGateSofiaobj*)hmagic)->callid;
+    callobj->sipeventtype = XGATESIPEVENT::EN_BYE_REQ;
+    callobj->cp = ((xGateSofiaobj*)hmagic)->cp;
+    PostMessage(callobj,EN_PROCESS);
+
+    SofiaRespond(nh,200,"OK");
+    // Disconnect the peer call, no ack will be take from soifa call back 
+    if(((xGateSofiaobj*)hmagic)->SofiaLegB){
+      if(((xGateSofiaobj*)hmagic)->SofiaLegB->sofianh)
+        SofiaSendBye(((xGateSofiaobj*)hmagic)->SofiaLegB->sofianh);
+    }
+    //    nua_bye(((xGateSofiaobj*)hmagic)->SofiaLegB->sofianh,TAG_END());
+  }
+  // Deleteting all the call info both peer
+  DeleteCallInfo(((xGateSofiaobj*)hmagic));
+}
+#endif
+void SofiaSiphandler::RequestTermination(xGateSofiaobj *sobj){
+  xGateCallObj *callobj =  new xGateCallObj;
+  callobj->xGateCallObjInit();
+  callobj->callid = sobj->callid;
+  callobj->cp = sobj->cp;
+  callobj->sipeventtype = XGATESIPEVENT::EN_TERMINATED_REQ;
+  callobj->callstate = CS_Disconnected;
+  PostMessage(callobj,EN_PROCESS);
+
+}
+/**/
+void SofiaSiphandler::OnStateChange(int status,char const *phrase,nua_t *nua,\  
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,  
+    tagi_t        tags[]){
+
+  if(!hmagic)
+    return;
+  xGateSofiaobj *sofiaobjsiphandle;
+  sdp_session_t* lsdp = NULL;
+  sdp_session_t* rsdp = NULL;
+
+  sofiaobjsiphandle = (xGateSofiaobj*)hmagic;
+  tl_gets(tags,NUTAG_CALLSTATE_REF(sofiaobjsiphandle->Sipcallstate),SOATAG_LOCAL_SDP_REF(lsdp),SOATAG_REMOTE_SDP_REF(rsdp),TAG_END());
+
+  cout <<"\n SofiaSiphandler::OnStateChange " << nua_callstate_name(sofiaobjsiphandle->Sipcallstate) << endl;
+
+
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnStateChange %s of %s",nua_callstate_name(sofiaobjsiphandle->Sipcallstate),\
+      sofiaobjsiphandle->callid.c_str());
+  //printf("State change %s callid %s\n",nua_callstate_name(sofiaobjsiphandle->Sipcallstate),sofiaobjsiphandle->callid.c_str());
+  switch(sofiaobjsiphandle->Sipcallstate){
+    case nua_callstate_init:
+
+      break;
+    case nua_callstate_authenticating:
+      break;
+    case nua_callstate_calling: // Invite Sent
+      //Get lsdp
+      if(lsdp){
+        //duplicate the sdp structure to sofia object void pointer
+        sdp_session_t* SofiaLocalsdp =	sdp_session_dup(&m_homeMemory,lsdp);
+        sofiaobjsiphandle->lsdp = (void*)SofiaLocalsdp;
+      }
+      break;
+    case nua_callstate_proceeding: // 18x Received (for outgoing invite response)
+      {
+        if(rsdp)
+        {
+          sdp_session_t* SofiaRemotesdp =  sdp_session_dup(&m_homeMemory,rsdp);
+          sofiaobjsiphandle->rsdp = (void*)SofiaRemotesdp;
+          if(sofiaobjsiphandle->SofiaLegB->isParallelForked == false)
+          {
+            SDPPharser(SofiaRemotesdp,sofiaobjsiphandle->SofiaSDPinfo);
+            if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+            {
+              sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+            }
+            if(sofiaobjsiphandle->cp.csCallAgenttype == 1)
+            {
+              sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS";
+            }
+            sofiaobjsiphandle->cp.Legid = 2;
+            sofiaobjsiphandle->mediastate = EN_MED_REQ;
+            RequestForMedia(sofiaobjsiphandle);
+          }
+        }
+        break;
+      } 
+    case nua_callstate_ready: // ACK send for 2xx received  or ACK received for 2xx sent
+      {
+        if(rsdp){
+          if ((sofiaobjsiphandle->mediastate != EN_MED_SUSPENDED) && (sofiaobjsiphandle->mediastate != EN_MED_RESUMED)){
+//	     if(sofiaobjsiphandle->cp.isForkingenabled != 1)
+{	
+            //duplicate the sdp structure to sofia object void pointer
+            sdp_session_t* SofiaRemotesdp =  sdp_session_dup(&m_homeMemory,rsdp);
+            sofiaobjsiphandle->rsdp = (void*)SofiaRemotesdp;
+            SDPPharser(SofiaRemotesdp,sofiaobjsiphandle->SofiaSDPinfo);
+            if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+              sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+            if(sofiaobjsiphandle->cp.csCallAgenttype == 1)
+              sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS";
+
+            sofiaobjsiphandle->cp.Legid = 2;
+            sofiaobjsiphandle->mediastate = EN_MED_REQ;
+            RequestForMedia(sofiaobjsiphandle);
+	   }
+          }
+        }
+        break;
+      }
+    case nua_callstate_completing: // 2xx Received (for outgoing invite response)
+      CLog::Detail(THISMODULE,"SofiaSiphandler::OnStateChange : nua_callstate_completing / 2xx Received / ACK");
+      if(rsdp){
+        //duplicate the sdp structure to sofia object void pointer
+        sdp_session_t* SofiaRemotesdp =  sdp_session_dup(&m_homeMemory,rsdp);
+        sofiaobjsiphandle->rsdp = (void*)SofiaRemotesdp;
+        sofiaobjsiphandle->SofiaSDPinfo.outproto = GetRtpPortType(sofiaobjsiphandle);
+
+        /* if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+           sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+           if(sofiaobjsiphandle->cp.csCallAgenttype == 1 || sofiaobjsiphandle->cp.csCallAgenttype == 3)
+           sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS";*/
+        SDPPharser(SofiaRemotesdp,sofiaobjsiphandle->SofiaSDPinfo);
+        sofiaobjsiphandle->cp.Legid = 2;
+        sofiaobjsiphandle->mediastate = EN_MED_REQ;
+        RequestForMedia(sofiaobjsiphandle);
+      }
+      break;
+    case nua_callstate_received: // Invite Received (incoming call)
+      CLog::Detail(THISMODULE,"SofiaSiphandler::OnStateChange : Invite Received (incoming call)");
+      if(rsdp){
+        //duplicate the sdp structure to sofia object void pointer
+        sdp_session_t* SofiaRemotesdp =  sdp_session_dup(&m_homeMemory,rsdp);
+        sofiaobjsiphandle->rsdp = (void*)SofiaRemotesdp;
+        SDPPharser(SofiaRemotesdp,sofiaobjsiphandle->SofiaSDPinfo);
+#if 0 // Yogesh Changes not requried commet by Yadav
+	sofiaobjsiphandle->cp.inband_dtmf_method = false;
+        sofiaobjsiphandle->SofiaLegB->cp.inband_dtmf_method = false;
+
+	for (int index = 0; (sofiaobjsiphandle->SofiaSDPinfo.audiocodec[index].name.length() > 0); index++)
+	{
+	    CLog::Detail(THISMODULE,"SofiaSiphandler::OnStateChange : sofiaobjsiphandle->SofiaSDPinfo.audiocodec[index].name = %s",sofiaobjsiphandle->SofiaSDPinfo.audiocodec[index].name.c_str());
+	    CLog::Detail(THISMODULE,"SofiaSiphandler::OnStateChange : sofiaobjsiphandle->SofiaSDPinfo.audiocodec[index].payloadtype = %u",sofiaobjsiphandle->SofiaSDPinfo.audiocodec[index].payloadtype);
+	    if (!(strcmp(sofiaobjsiphandle->SofiaSDPinfo.audiocodec[index].name.c_str(), RTP_TELEPHONE_EVENT_STR)) &&
+		(sofiaobjsiphandle->SofiaSDPinfo.audiocodec[index].payloadtype == RTP_PAYLOADTYPE_101))
+		{
+      			CLog::Detail(THISMODULE,"SofiaSiphandler::OnStateChange : telephone-event == true AND...");
+      			CLog::Detail(THISMODULE,"SofiaSiphandler::OnStateChange : payloadtype == 101");
+			// comment-out 2 lines of code below -if want to test sip-info using any Aastra-phone.
+			sofiaobjsiphandle->cp.inband_dtmf_method = true;
+                        sofiaobjsiphandle->SofiaLegB->cp.inband_dtmf_method = true;
+			break;
+		}
+	}
+#endif
+      }
+      break;
+    case nua_callstate_early: // 18x sent with/without  sdp (for incoming call)
+      break;
+    case nua_callstate_completed:  //2xx sent (for incoming call)
+      break;
+      //          case nua_callstate_ready: // ACK send for 2xx received  or ACK received for 2xx sent
+      //                                                      break;
+      // On this event delete the handle and Sipobject alone no  need to remove from map it is already done 
+    case nua_callstate_terminating: // BYE send 
+      break;
+    case nua_callstate_terminated: // ACK send for Bye Request
+      CLog::Detail(THISMODULE,"SofiaSiphandler::OnStateChange case nua_callstate_terminated ****");
+     // DeleteCallInfo(sofiaobjsiphandle);
+      // DeleteSofiaObject(sofiaobjsiphandle);
+      if(sofiaobjsiphandle->cp.isForkingenabled)
+        DeleteForkedSofiaObject(sofiaobjsiphandle); 
+      else{
+       DeleteCallInfo(sofiaobjsiphandle);
+       DeleteSofiaObject(sofiaobjsiphandle);
+      }
+      //sofiaobjsiphandle->DeleteAll();
+           /*	SofiaBindhandle(nh, NULL);
+          nua_handle_destroy(nh);
+          if(sofiaobjsiphandle){
+          sofiaobjsiphandle->DeleteAll();
+          delete sofiaobjsiphandle;
+          }	*/
+      break;
+    default:
+      break;
+  }
+
+}
+/**/
+xGateSofiaobj*  SofiaSiphandler::GetProcessEvent(){
+
+  xGateSofiaobj *sobj = NULL;
+  xGateCallState *callstateobj;
+
+  try{
+    if((callstateobj = ReadFromReceiver()) != NULL){
+
+      if(m_incomingCallHashTable.find(callstateobj->callid.c_str(),sobj) != -1){
+        // sobj->callstate = callstateobj->callstate;
+        // sobj->cp = callstateobj->cp;
+        //sobj->sipeventtype = callstateobj->sipeventtype;
+        ((SofiaSiphandler*)sobj->sofiamh)->OnProcessEvent(sobj,callstateobj);
+        CLog::Warning("SofiaSiphandler", "GetProcessEvent  %s" ,callstateobj->callid.c_str());    
+      }
+      if(callstateobj)
+        delete callstateobj;
+    }
+  }catch(...){
+    CLog::Warning("SofiaSiphandler", "SetCallState- Exception ");
+    return NULL;
+  }
+  return sobj;
+}
+/**/
+void SofiaSiphandler::OnMessageRequest(){
+
+}
+/**/
+void SofiaSiphandler::OnRegistrationRequest(int status,char const *phrase,nua_t *nua,\
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,
+    tagi_t        tags[]){
+
+  CLog::Detail("SofiaSiphandler", " OnRegistrationRequest");
+  //Validating From header
+  //Validating To Header
+  //Validating Contact Header
+  if(ValidateSipMessage(sip,SIPVALIDATE::FROM) == false || \
+      ValidateSipMessage(sip,SIPVALIDATE::TO)== false || \
+      ValidateSipMessage(sip,SIPVALIDATE::CONTACT)== false || \
+      ValidateSipMessage(sip,SIPVALIDATE::CALLID) == false){
+    nua_respond(nh, 400,"Bad Request", TAG_END());
+
+    return;
+  }
+  // Create the Registration object to post to Registration Manager 
+  xGateSofiaSipRegobj *sipregobj = (xGateSofiaSipRegobj*)hmagic;
+  //static xGateSofiaSipRegobj *sipregobj = NULL;
+  if(!sipregobj){
+    sipregobj = new xGateSofiaSipRegobj();
+    CreateSofiaRegobj(*sipregobj,sip);
+
+  }
+  sipregobj->Reghandle = (void*) nh;
+  sipregobj->sofiamh = (void*)magic; 
+
+  // Save  the Registration Event help in reply Since REGISTRATION is not a full dialogi 
+  // sip stack does not retain the handle on out of scope
+  nua_saved_event_t *RegEvent = new nua_saved_event_t;
+  nua_save_event(m_nuaHandle,RegEvent);
+  sipregobj->sofiahmsg  = (void*)RegEvent;
+  //msg_dup(nua_current_request(m_nuaHandle));
+  SofiaBindhandle(nh,(nua_hmagic_t*)sipregobj);
+  //printf(" Event Occured %s\n",sipregobj->callid.c_str());
+  // Post the Message to DB Manager
+  if(RegistarResponse(sipregobj) == SUCCESS){
+    xGateSipMsgBlock *pSipRegMsg = new xGateSipMsgBlock(EN_XGATE_MSG_SIPREG_IN);
+    pSipRegMsg->m_sipregobj = sipregobj;
+    PostMessage(pSipRegMsg,XGATEPOSTTYPE::EN_DBMANAGER);
+  }
+}
+xGateReturn SofiaSiphandler:: RegistarResponse(xGateSofiaSipRegobj *regobj){
+  CLog::Detail("SofiaSiphandler", "RegistarReponse(%s)",regobj->callid.c_str());
+  xGateReturn ret = SUCCESS;
+  sip_t *sip = (sip_t*)regobj->regsip;
+  nua_handle_t *nh = (nua_handle_t *)regobj->Reghandle;
+  switch(regobj->Regevent){
+    case EN_VALIDATE:{
+                       char contact_uri[500];
+                       sprintf(contact_uri,"<sip:%s@%s:%s;%s>",sip->sip_from->a_url->url_user,sip->sip_contact->m_url->url_host,\
+                           sip->sip_contact->m_url->url_port,sip->sip_contact->m_url->url_params);
+                       nua_respond(nh,SIP_100_TRYING,SIPTAG_CONTACT_STR(contact_uri),\
+                           SIPTAG_DATE(sip->sip_date),NUTAG_WITH(nua_saved_event_request((nua_saved_event_t const*)regobj->sofiahmsg)),NUTAG_M_PARAMS(sip->sip_contact->m_url->url_params),TAG_END());
+                     }
+                     break;
+    case EN_GETUSRPWD:
+                     CLog::Detail("SofiaSiphandler", "RegistarReponse(%s)-- Get User Name Password for verification",regobj->callid.c_str());
+                     break;	
+    case EN_REGISTER:
+    case EN_DEREGISTER:
+                     if(VerifyAuthorisationResponce(sip,regobj,"REGISTER") == false){
+                       ret = FAIL;
+                       CLog::Detail("SofiaSiphandler", "RegistarReponse(%s)-- Auth Failed",regobj->callid.c_str());
+                     }else{  // On Success verfication send 200 ok
+                       xGateSipMsgBlock *pSipRegMsg = new xGateSipMsgBlock(EN_XGATE_MSG_SIPREG_IN);
+                       pSipRegMsg->m_sipregobj = regobj;
+                       PostMessage(pSipRegMsg,XGATEPOSTTYPE::EN_DBMANAGER);
+                       break; // Break is required only success case
+                     } 
+
+    case EN_REG_FAILED:
+    case EN_SEND401:{
+                      char authwww[500] = "";
+                      char buffer[1024] = "";
+                      mod  = SofiaInitAuth(m_root);
+                      if(mod){
+
+                        auth_generate_digest_nonce (mod,buffer,1024,false,msg_now());
+
+                        //char buffer[1024] ="\0" ;
+                        //sprintf(buffer,"%s",CreateDigiestNonce().c_str());
+                        //std::string buffer = CreateDigiestNonce();	
+                        //  sprintf(authwww," Digest realm=\"%s\",qop=\"auth\",nonce=\"%s\",opaque=\"%s\",stale=FALSE,algorithm=\"MD5\"",\
+                        //sip->sip_contact->m_url->url_host,buffer,"");
+                        //  sip->sip_to->a_url->url_host,buffer,"");
+                        sprintf(authwww," Digest realm=\"%s\",nonce=\"%s\"",\
+                            sip->sip_to->a_url->url_host,buffer);
+
+                        nua_respond(nh,401,"Unauthorized",SIPTAG_WWW_AUTHENTICATE_STR(authwww),\
+                            SIPTAG_DATE(sip->sip_date),NUTAG_WITH_THIS(m_nuaHandle),NUTAG_WITH_SAVED((nua_saved_event_t const*)regobj->sofiahmsg),NUTAG_M_PARAMS(sip->sip_contact->m_url->url_params),TAG_END());
+                        nua_destroy_event((nua_saved_event_t*)regobj->sofiahmsg);
+                      }
+                    }
+                    if(regobj) delete regobj;
+                    break;
+
+                    break;
+    case EN_REG_SUCESS:{
+                         char contact_uri[500];
+                         sprintf(contact_uri,"<sip:%s@%s:%s;%s>;received=\"sip:%s:%s\"",sip->sip_contact->m_url->url_user,sip->sip_contact->m_url->url_host,\
+                             sip->sip_contact->m_url->url_port,sip->sip_contact->m_url->url_params,sip->sip_contact->m_url->url_host,sip->sip_contact->m_url->url_port,sip->sip_contact->m_url->url_host,sip->sip_contact->m_url->url_port);
+                         //         sprintf(contact_uri,"<sip:%s@%s:%s;%s>;expires=3600;received=\"sip:%s:%s\"",sip->sip_from->a_url->url_user,sip->sip_to->a_url->url_host,\
+                         sip->sip_to->a_url->url_port,sip->sip_contact->m_url->url_params,sip->sip_contact->m_url->url_host,sip->sip_contact->m_url->url_port,sip->sip_contact->m_url->url_host,sip->sip_contact->m_url->url_port);
+                         nua_respond(nh,200,"OK", SIPTAG_CONTACT_STR(contact_uri),SIPTAG_DATE(sip->sip_date),NUTAG_WITH_THIS(m_nuaHandle),\
+                             NUTAG_WITH_SAVED((nua_saved_event_t const*)regobj->sofiahmsg),NUTAG_M_PARAMS(sip->sip_contact->m_url->url_params),TAG_END());
+                         nua_destroy_event((nua_saved_event_t*)regobj->sofiahmsg);
+                       }
+                       if(regobj) delete regobj;
+                       break;
+    case EN_AUTHCALL:{ // Event will handle invite auth
+                       if(VerifyAuthorisationResponce(sip,regobj,"INVITE") == false){
+                         CLog::Detail("SofiaSiphandler", "RegistarReponse(%s)- Call/Session Auth Verification failed",regobj->callid.c_str());
+                         ret = FAIL;
+                       }else{
+
+                         std::string callidstring = CreateUniqueCallid(sip->sip_from->a_url->url_user,\
+                             sip->sip_from->a_url->url_host,\
+                             sip->sip_from->a_tag,\
+                             sip->sip_call_id->i_id);
+                         CLog::Detail("SofiaSiphandler", "RegistarReponse(%s)- Call/Session Verification Successed",callidstring.c_str());
+                         ProcessInviteRequest((nua_handle_t*)regobj->Reghandle,sip,(tagi_t*)regobj->siptags,callidstring);
+                         if(regobj) delete regobj;	
+                         break;	
+                       }
+
+                     }
+    case EN_SEND407:{  
+                      char proxyauth[500] = "";
+                      char buffer[1024] = "";
+                      mod  = SofiaInitAuth(m_root);
+                      if(mod){
+
+                        auth_generate_digest_nonce (mod,buffer,1024,false,msg_now());
+
+                        /*                        sprintf(proxyauth," Digest realm=\"%s\",qop=\"auth\",nonce=\"%s\",opaque=\"%s\",stale=FALSE,algorithm=\"MD5\"",\
+                                                  sip->sip_contact->m_url->url_host,buffer,"");*/
+                        sprintf(proxyauth," Digest realm=\"%s\",nonce=\"%s\"",\
+                            sip->sip_contact->m_url->url_host,buffer);
+
+                        nua_respond(nh,407,"Proxy Authentication Required",SIPTAG_PROXY_AUTHENTICATE_STR(proxyauth),\
+                            SIPTAG_DATE(sip->sip_date),TAG_END());
+                        CLog::Detail("SofiaSiphandler", "RegistarReponse(%s)- 407 Proxy Authentication Required sent",regobj->callid.c_str());
+                      }
+                      if(regobj) delete regobj;
+                    }
+                    break;
+
+    default:
+                    break;
+  }
+  return ret;
+}
+bool SofiaSiphandler::AuthenticateSipSession(int status,char const *phrase,nua_t *nua,\
+    nua_magic_t  *magic,nua_handle_t *nh,nua_hmagic_t *hmagic,sip_t const  *sip,
+    tagi_t        tags[]){
+
+  xGateSofiaSipRegobj *sipregobj = new xGateSofiaSipRegobj();
+  CreateSofiaRegobj(*sipregobj,sip);
+  CLog::Detail("SofiaSiphandler","AuthenticateSipSession(%s)",sipregobj->callid.c_str());
+  sipregobj->Reghandle = (void*) nh;
+  sipregobj->sofiamh = (void*)magic;
+  sipregobj->siptags = (void*)tags;
+  bool ret = false;
+
+  if(sip->sip_proxy_authorization){ // Request has auth paramaters
+
+    //Post message to DB thread  
+
+    sipregobj->Regevent = EN_AUTHCALL;  
+    xGateSipMsgBlock *pSipRegMsg = new xGateSipMsgBlock(EN_XGATE_MSG_SIPREG_IN);
+    pSipRegMsg->m_sipregobj = sipregobj;
+    PostMessage(pSipRegMsg,XGATEPOSTTYPE::EN_DBMANAGER);
+    CLog::Detail("SofiaSiphandler","AuthenticateSipSession(%s) - Verification Request to DB Manager",sipregobj->callid.c_str());
+    ret = true;
+  }else{
+    // Send 407 
+    sipregobj->Regevent = EN_SEND407;
+    RegistarResponse(sipregobj); 
+
+  }
+  return ret;
+}
+bool SofiaSiphandler::VerifyAuthorisationResponce(sip_t const *sip, xGateSofiaSipRegobj *regobj,char requestmethod[15]="REGISTER"){
+
+  CLog::Detail("SofiaSiphandler", "VerifyAuthorisationResponce(%s)",regobj->callid.c_str());
+
+  auth_response_t ar[1] = {{ 0 }};
+  char const *md5 = NULL, *md5sess = NULL, *sha1 = NULL,
+       *qop_auth = NULL, *qop_auth_int = NULL;
+  struct msg_auth_s *rr  = NULL;
+  if(strstr(requestmethod,"INVITE")){
+    rr = sip->sip_proxy_authorization;
+  }else{
+    rr = sip->sip_authorization;
+  }
+  if (rr){
+    auth_get_params(&m_homeMemory, rr->au_params,
+        "username=", &ar->ar_username,
+        "realm=", &ar->ar_realm,
+        "nonce=", &ar->ar_nonce,
+        "uri=", &ar->ar_uri,
+        "response=", &ar->ar_response,
+        "algorithm=", &ar->ar_algorithm,
+        "opaque=", &ar->ar_opaque,
+        "cnonce=", &ar->ar_cnonce,
+        "qop=", &ar->ar_qop,
+        "nc=", &ar->ar_nc,
+        "algorithm=md5", &md5,
+        "algorithm=md5-sess", &md5sess,
+        "algorithm=sha1", &sha1,
+        "qop=auth", &qop_auth,
+        "qop=auth-int", &qop_auth_int,
+        NULL);
+    //    ar->ar_auth = 1;  // TODO not required for aastrat phone it isoptional all other phone
+    //    ar->ar_qop = "auth";
+    // Creating HA1 hash
+    auth_hexmd5_t ha1;
+    auth_digest_ha1(ha1,ar->ar_username,ar->ar_realm,regobj->password.c_str());
+
+    // Creating  HA2 and responce 
+    auth_hexmd5_t Regresponce;
+    auth_digest_response(ar,Regresponce,ha1,requestmethod,NULL,0);
+    CLog::Detail(THISMODULE, "\n**SofiaSiphandler VerifyAuthorisationResponceUsername = (%s)&& password = (%s)", ar->ar_username,regobj->password.c_str());
+    CLog::Detail("SofiaSiphandler VerifyAuthorisationResponce(%s)Create Hash %s -- Received Hash %s ",regobj->callid.c_str(),Regresponce,ar->ar_response);
+    if(strstr(ar->ar_response, Regresponce) != NULL){
+      return true;
+    }
+  }
+  return false;
+
+}
+std::string SofiaSiphandler::CreateDigiestNonce(){
+  std::string retnonce = "";
+  //auth_mod_t *
+  mod  = SofiaInitAuth(m_root);
+  if(mod){
+    char buffer[1024] = "";
+    auth_generate_digest_nonce (mod,buffer,1024,false,msg_now());
+    retnonce = buffer;
+    //printf(" Nonce value %s", buffer);
+  }       
+}
+void SofiaSiphandler::GetProcessRegisterEvent(){
+  xGateSofiaSipRegobj *RegQEvt = NULL;
+  if((RegQEvt = PopFromReceiver()) != NULL){
+    ((SofiaSiphandler*)RegQEvt->sofiamh)->RegistarResponse(RegQEvt);
+  }
+
+}
+
+/**/
+void SofiaSiphandler::parsestringtokens(std::string input, char delimit, std::string &token1, std::string &token2 ){
+std:string::size_type pos = input.find(delimit);
+
+    if( pos == std::string::npos){
+      token1 = input;
+      token2 = "";
+    }
+    else{
+      token1 =input.substr(0,pos);
+      token2 = input.substr(pos+1);
+    }
+}
+/**/
+std::string SofiaSiphandler::ValidateDialParam(const char *pVal, SIPVALIDATE header,XGATESIPKEY key,CallParameter cp){
+  std::string ret = "";
+  std::string temp = "";  // TODO Need to removed after audit/review with current logic
+  if(ValidateSipMsgPointer(pVal))
+  {
+    ret = pVal;
+
+  } else
+    //on url is void get form callparameter
+    switch (header){
+      case FROM:
+        {
+          cp.cnCalling.erase(std::remove(cp.cnCalling.begin(),cp.cnCalling.end(),'\"'),cp.cnCalling.end());
+          {
+            switch(key){
+              case EN_USER:
+                parsestringtokens(cp.cnCalling,':',ret,temp); 
+                break;
+              case EN_PWD:
+                parsestringtokens(cp.cnCalling,':',temp,ret);
+                break;
+              case EN_HOST:
+                parsestringtokens(cp.csaCalling,':',ret,temp); 
+                break;
+              case EN_PORT:
+                parsestringtokens(cp.csaCalling,':',temp,ret);
+                if(ret.empty())
+                  ret = "5060";
+                break;
+              case EN_SCHEMA:
+                ret = "sip";
+                break;
+              case EN_PARAM:
+                ret="";
+                break;
+              default:
+                ret = "";
+                break;
+            }
+          }
+
+        }
+        break;
+      case TO:
+        {
+          switch(key){
+            case EN_USER:
+
+              ParseUserPassword(cp.cnCalled,ret,temp); 
+              break;
+            case EN_PWD:
+              ParseUserPassword(cp.cnCalled,temp,ret);
+              break;
+            case EN_HOST:
+              parsestringtokens(cp.csaCalled,':',ret,temp); 
+              break;
+            case EN_PORT:
+              parsestringtokens(cp.csaCalled,':',temp,ret);
+              if(ret.empty())
+                ret = "5060";
+              break;
+            case EN_SCHEMA:
+              ret = "sip";
+              break;
+            case EN_PARAM:
+              ret="";
+              break;
+            default:
+              ret = "";
+              break;
+          }
+        }
+        break;
+      case CONTACT:
+        {
+          cp.cnCalling.erase(std::remove(cp.cnCalling.begin(),cp.cnCalling.end(),'\"'),cp.cnCalling.end());
+          switch(key){
+            case EN_USER:
+              parsestringtokens(cp.cnCalling,':',ret,temp); 
+              break;
+            case EN_PWD:
+              parsestringtokens(cp.cnCalling,':',temp,ret);
+              break;
+            case EN_HOST:
+              parsestringtokens(cp.csaCalling,':',ret,temp); 
+              break;
+            case EN_PORT:
+              parsestringtokens(cp.csaCalling,':',temp,ret);
+              if(ret.empty())
+                ret = "5060";
+
+              break;
+            case EN_SCHEMA:
+              ret = "sip";
+              break;
+            case EN_PARAM:
+              ret="";
+              break;
+            default:
+              ret = "";
+              break;
+          }
+        }
+        break;
+      case PAI:
+        {
+          switch(key){
+            case EN_USER:
+              parsestringtokens(cp.cnCalling,':',ret,temp); 
+              break;
+            case EN_PWD:
+              parsestringtokens(cp.cnCalling,':',temp,ret);
+              break;
+            case EN_HOST:
+              // parsestringtokens(cp.csaCalling,':',ret,temp); 
+              //parsestringtokens(xGateUtil::GetLocalIPAddress(),':',ret,temp); 
+              //parsestringtokens(xGateUtil::getLocalIpAddr(),':',ret,temp); 
+              parsestringtokens(XGSIP_HOST(),':',ret,temp); 
+              break;
+            case EN_PORT:
+              parsestringtokens(cp.csaCalling,':',temp,ret);
+              if(ret.empty())
+                ret = "5060";
+              break;
+            case EN_SCHEMA:
+              ret = "sip";
+              break;
+            case EN_PARAM:
+              ret="";
+              break;
+            default:
+              ret = "";
+              break;
+          }
+        }
+        break;
+      case CALLID:
+        break;
+        break;
+      case VIA:
+      default:
+        break;
+    }
+  return ret;
+
+}
+/**/
+bool SofiaSiphandler::ValidateSipMessage(sip_t const *sip,SIPVALIDATE header){
+  if(sip){
+    switch(header){
+      case SIPVALIDATE::FROM:
+
+        if(!sip->sip_from || \
+            !sip->sip_from->a_url->url_user || !sip->sip_from->a_url->url_host ||\
+            !sip->sip_from->a_tag){
+          CLog::Warning(THISMODULE,"SofiaSiphandler::ValidateSipMessage(%s)","Failed-Sip From Header Validation");
+          return false;    
+        }
+        break;
+      case SIPVALIDATE::REQUEST:
+        if( !sip->sip_request || \
+            !sip->sip_request->rq_url->url_user || !sip->sip_request->rq_url->url_host || \
+            !sip->sip_request->rq_url->url_port){
+          CLog::Warning(THISMODULE,"SofiaSiphandler::ValidateSipMessage(%s)","Failed-Sip Request Header Validation");
+          return false;
+        }
+        break;
+      case SIPVALIDATE::CONTACT:
+        if(!sip->sip_contact){
+          CLog::Warning(THISMODULE,"SofiaSiphandler::ValidateSipMessage(%s)","Failed-Sip Contact Header Validation");
+          return false;
+        }
+        break;
+      case SIPVALIDATE::TO:
+        if(!sip->sip_to || \
+            !sip->sip_to->a_url->url_user || !sip->sip_to->a_url->url_host){
+          CLog::Warning(THISMODULE,"SofiaSiphandler::ValidateSipMessage(%s)","Failed-Sip To Header Validation");
+          return false; 
+        }
+        break;
+      case SIPVALIDATE::TAG:
+        break;
+      case SIPVALIDATE::CALLID:
+        if(!sip->sip_call_id ||\
+            !sip->sip_call_id->i_id){
+          CLog::Warning(THISMODULE,"SofiaSiphandler::ValidateSipMessage(%s)","Failed-Sip Callid Header Validation");
+          return false; 
+        }
+        break;
+      default:
+        CLog::Warning(THISMODULE,"SofiaSiphandler::ValidateSipMessage(%s)","No Header option to check");
+        return false;
+        break;
+    } //swicth case Header 
+  } //Sip check point
+  else{
+    CLog::Warning(THISMODULE,"SofiaSiphandler::ValidateSipMessage(%s)","Failed-Sip Structure Validation");
+    return false;
+  }
+  return true;
+
+} // ValidateSipMessage
+
+
+/**/
+std::string SofiaSiphandler::FillHeader(url_t *url,CallParameter cp,SIPVALIDATE header){
+  std::stringstream xgateSipheader ;
+  if(url ==NULL){
+    xgateSipheader << ValidateDialParam(NULL,header,XGATESIPKEY::EN_USER,cp)  ; //User
+    xgateSipheader << "<" ;
+    xgateSipheader << ValidateDialParam(NULL,header,XGATESIPKEY::EN_SCHEMA,cp) << ":" ;
+    xgateSipheader << ValidateDialParam(NULL,header,XGATESIPKEY::EN_USER,cp) << "@" ;
+    xgateSipheader << ValidateDialParam(NULL,header,XGATESIPKEY::EN_HOST,cp) << ":" ;
+    xgateSipheader << ValidateDialParam(NULL,header,XGATESIPKEY::EN_PORT,cp);
+
+  }else{
+
+    xgateSipheader << ValidateDialParam(url->url_user,header,XGATESIPKEY::EN_USER,cp)  ; //User
+    xgateSipheader << "<" ;
+    xgateSipheader << ValidateDialParam(url->url_scheme,header,XGATESIPKEY::EN_SCHEMA,cp) << ":" ;
+    xgateSipheader << ValidateDialParam(url->url_user,header,XGATESIPKEY::EN_USER,cp) << "@" ;
+    xgateSipheader << ValidateDialParam(url->url_host,header,XGATESIPKEY::EN_HOST,cp)<< ":" ;
+    xgateSipheader << ValidateDialParam(url->url_port,header,XGATESIPKEY::EN_PORT,cp);
+  }
+  switch (header){
+    case FROM:
+      xgateSipheader << ">";
+      break;
+    case TO:
+      xgateSipheader << ">";
+
+
+      break;
+    case CONTACT:
+      /*if(strstr(ValidateDialParam(url->url_params,header,XGATESIPKEY::EN_PARAM,cp).c_str(),"transport=tcp"))
+        xgateSipheader << ";transport=tcp";
+        xgateSipheader << ";" << ValidateDialParam(url->url_params,header,XGATESIPKEY::EN_PARAM,cp);*/
+      if(strstr(ValidateDialParam(NULL,header,XGATESIPKEY::EN_PARAM,cp).c_str(),"transport=tcp"))
+        xgateSipheader << ";transport=tcp";
+      else
+        xgateSipheader << ";transport=udp";
+      /*xgateSipheader << ";" << ValidateDialParam(NULL,header,XGATESIPKEY::EN_PARAM,cp);*/
+      xgateSipheader << ">";
+      break;
+    case PAI:
+      xgateSipheader << ";user=phone";
+      xgateSipheader << ">";
+      break;
+    case REQUEST:
+      break;
+    case TAG:
+      break;
+    case CALLID:
+      break;
+      break;
+    case SUBJECT:
+      break;
+    case VIA:
+    case CONTACTLEN :
+      break;
+    default:
+      break;
+  }
+
+
+
+  return xgateSipheader.str();
+}
+
+/**/
+//nua_handle_t* SofiaSiphandler::CreateSofiaDialhandle(xGateSofiaobj *sobj, UserDeviceType deviceType){
+nua_handle_t* SofiaSiphandler::CreateSofiaDialhandle(CallParameter cp, sip_t const *sip){
+  //#define TLS !ValidateDialParam(url->url_scheme,header,XGATESIPHEADER::EN_SCHEMA,cp)
+#define FURL sip->sip_from->a_url
+#define PURL Paidurl->paid_url
+//  if(!sobj || sobj == NULL)
+  //  return NULL;
+  nua_handle_t *nhob = NULL;
+  try{
+    su_home_t su_home;
+
+//    cp.csaCalled = "10.22.5.39"; // Commet for Live this only for sippy testing TODO yadav
+    printf("Registerd Number %s \n",cp.csaCalled.c_str());
+    // Below parser is for PSTN to APP support , This code need to moduled properly TODO yadav
+    std::string to_host, to_port;
+    //   if (sobj->cp.proxyUserName.empty())
+    parsestringtokens(cp.csaCalled,':',to_host,to_port);
+    //else
+    //parsestringtokens(sobj->cp.proxyUserName,':',to_userpart,to_port);
+
+    cout << " TO USER PART " << to_host << " Proxy Name " << cp.proxyUserName << endl;
+
+    //url_t *url = SofiaCreateMake(su_home,sobj->cp.csaCalled.c_str()); // creating url structure
+    url_t *url = SofiaCreateMake(su_home,to_host.c_str()); // creating url structure
+
+   // sip_t *sip = (sip_t*)siptag;
+    if(!cp.proxyUserName.empty())
+      url->url_user =  cp.proxyUserName.c_str();
+    std::string dest = FillHeader(url, cp, SIPVALIDATE::TO);
+    url_sanitize(url);  // Only required for destination
+    SofiaDeInitMemory(su_home);
+    cout << dest.c_str() << endl;
+
+    cp.csaCalling = XGSIP_HOST();
+    std::string src = FillHeader(NULL, cp, SIPVALIDATE::FROM);
+
+    //CLog::Detail("SofiaSiphandler sobj->cp.csaCalling = (%s)",sobj->cp.csaCalling);
+    /*sobj->cp.csaCalling += ":";
+      sobj->cp.csaCalling += XGSIPPORT; */
+    ////std::string src = FillHeader(NULL, sobj->cp, SIPVALIDATE::FROM);
+    cout << src.c_str() << endl;
+
+    std::string contact = FillHeader(NULL, cp, SIPVALIDATE::CONTACT);
+    cout << contact.c_str() << endl;
+
+	// follwoing code-change is added for testing; to be removed later...
+    sip_p_asserted_identity_t * Paidurl=NULL; // = sip_p_asserted_identity(sip);
+
+    std::string pai = "";
+    std::string privacy = "";
+    if(Paidurl){
+      //pai = FillHeader(PURL,sobj->cp,SIPVALIDATE::PAI);
+      pai = FillHeader(NULL,cp,SIPVALIDATE::PAI);
+      if(cp.ccp == CCP_Restricted) {
+        privacy = "id";
+      }
+    }
+
+    //#define nuahandle (((SofiaSiphandler*)((nua_magic_t*)sobj->sofiamh))->GetAppContext())
+    //nua_t *apphandle = (nua_t*)nuahandle;
+    //TODO To fill Userinfo & Privateinfo
+    String params("");
+    String scheme("");
+    //printf("\ncui info %s\n",sobj->cp.cui.c_str());
+    if(ValidateSipMsgPointer(cp.cui.c_str()))
+    {
+      params=XGATE_SOFIA_HEADER_USER_INFO;
+      params+=": ";
+      params+=SipHeaderEncode(cp.cui);
+    }
+
+    //printf("XGATE_SOFIA_HEADER_USER_INFO %s\n",params.c_str());
+    // reuse scheme for private info
+    if(ValidateSipMsgPointer(cp.cpinfo.c_str()))
+    {
+      scheme=XGATE_SOFIA_HEADER_PRIVATE_INFO;
+      scheme+=": ";
+      scheme+=SipHeaderEncode(cp.cpinfo);
+    }
+
+    std::string route = "";
+    //  TODO This for testing proxy headers by yadav, needto change to dynamic data
+    if(strstr(cp.calledDeviceType.c_str(),"URAPP") || strstr(cp.calledDeviceType.c_str(),"URDESK")) {// SBC Routing
+	if(sbcip.size() > 0)
+            {
+              route = "<sip:";
+              route += GetCurrentSbcInfo();
+              route += ":5060;lr>";
+            }
+	
+    }else if (strstr(cp.calledDeviceType.c_str(),"URWEB")) {// Signalling Gateway Routing
+	if(pbxip.size() > 0)
+          {
+            route = "<sip:";
+            route += GetSignalGateWayInfo();
+            route += ":5060;lr>";
+          }
+	
+    }else if (strstr(cp.calledDeviceType.c_str(),"PSTN")) {// MGC/PBX Routing
+	if(sbcip.size() > 0)
+            {
+              route = "<sip:";
+              route += GetCurrentPbxInfo();
+              route += ":5060;lr>";
+            }
+
+    }else{// Default SBC
+	if(sbcip.size() > 0)
+            {
+              route = "<sip:";
+              route += GetCurrentSbcInfo();
+              route += ":5060;lr>";
+            }
+
+    }
+#if 0
+
+    switch(deviceType) {
+      case XGATE_UT_PSTN:
+        {
+          if(sobj->SofiaLegB->isParallelForked  == true){
+            if(sbcip.size() > 0)
+            {
+              route = "<sip:";
+              route += GetCurrentPbxInfo();
+              route += ":5060;lr>";
+            }
+
+          }else{
+            if(sbcip.size() > 0)
+            {
+              route = "<sip:";
+              route += GetCurrentSbcInfo();
+              route += ":5060;lr>";
+            }
+
+          }
+          break;
+        }
+
+      case XGATE_UT_URAPP:
+      case XGATE_UT_DESKPHONE:
+        {
+          printf("\n***** create sofia handle for XGATE_UT_DESKPHONE\n");
+          if(sbcip.size() > 0)
+          {
+            route = "<sip:";
+            route += GetCurrentSbcInfo();
+            route += ":5060;lr>";
+          }
+          break;
+        }
+      case XGATE_UT_URWEB:
+        {
+          printf("\n***** create sofia handle for XGATE_UT_URWEB\n");
+          if(pbxip.size() > 0)
+          {
+            route = "<sip:";
+            route += GetSignalGateWayInfo();
+            route += ":5060;lr>";
+          }
+          break;
+        }
+      case XGATE_UT_UNKNOWN:
+      default:
+        {
+          if(sbcip.size() > 0){
+            route = "<sip:";
+            route += GetCurrentSbcInfo();
+            route += ":5060;lr>";   }
+        }
+        break;
+    }
+#endif
+    //printf( "**********check GtCurrentSbcInfo %s\n",route.c_str());
+    //    nhob = nua_handle(GetAppContext(),NULL, SPTAG_SERVICE_ROUTE_STR("<sip:10.22.3.111:5060;lr>"),SIPTAG_ROUTE_STR("<sip:10.22.3.111:5060;lr>")
+    nhob = nua_handle(GetAppContext(),NULL,\
+        SIPTAG_TO_STR(dest.c_str()),\
+        SIPTAG_FROM_STR(src.c_str()),\
+        SIPTAG_CONTACT_STR(contact.c_str()),\
+        TAG_IF(!route.empty(),SIPTAG_ROUTE_STR(route.c_str())),\  
+        TAG_IF(Paidurl,SIPTAG_P_ASSERTED_IDENTITY_STR(pai.c_str())),\
+        TAG_IF(!privacy.empty(), SIPTAG_PRIVACY_STR("id")), \
+        TAG_IF(!params.empty(), SIPTAG_HEADER_STR(params.c_str())),\
+        TAG_IF(!scheme.empty(), SIPTAG_HEADER_STR(scheme.c_str())),\
+        NUTAG_AUTOANSWER(0),\
+        TAG_END());
+
+//    if(nhob)
+  //    sobj->SofiaLegB->sofianh = (void*)nhob;
+   // else
+     // sobj->SofiaLegB->sofianh = NULL;
+
+//    sobj->SofiaLegB->callstream = EN_OUTBOUND;
+    // sobj->SofiaLegB->SofiaLegB =  sobj; // TODO need some more logic for circuly list
+  //  SofiaBindhandle(nhob,(nua_hmagic_t*)sobj->SofiaLegB);
+  }catch(...) {
+    CLog::Warning(THISMODULE,"SofiaSiphandler::CreateSofiaDialhandle Exception ");
+    return NULL;
+  }
+  CLog::Warning(THISMODULE,"SofiaSiphandler::CreateSofiaDialhandle Completed ");
+  return nhob;
+}
+/*------------------------------ inherted Dispatcher Functions--------------------------------------*/
+/*
+*/
+xGateReturn SofiaSiphandler::RespondWith1xx(xGateSofiaobj* pSipMgc ){
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith1xx start ");
+  switch(pSipMgc->sipeventtype){
+    case XGATESIPEVENT::EN_100_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_100_REL,"Trying");
+      break;
+    case XGATESIPEVENT::EN_180_REL:
+      if(  CreateLocalSdpParam(pSipMgc->SofiaLegB) == true){
+        nua_set_hparams((nua_handle_t*)pSipMgc->sofianh, NUTAG_EARLY_MEDIA (1),
+            NUTAG_EARLY_ANSWER(1),
+            NUTAG_AUTOANSWER(0),
+            TAG_NULL());
+
+        SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_180_REL,"Ringing");
+      }
+      /* nua_respond((nua_handle_t*)pSipMgc->sofianh, 180, "Ringing",
+         NUTAG_EARLY_MEDIA (1),
+         NUTAG_EARLY_ANSWER(1),
+         NUTAG_AUTOANSWER(0),
+         TAG_NULL());*/
+
+      break;
+    case XGATESIPEVENT::EN_183_REL:
+      //if (pSipMgc->SofiaSDPinfo.mediamode.compare("RTP")== 0) { // TODO Frederick to stop DTLS playback
+        if( CreateLocalSdpParam(pSipMgc->SofiaLegB) == true){
+          nua_set_hparams((nua_handle_t*)pSipMgc->sofianh, NUTAG_EARLY_MEDIA (1),
+              NUTAG_EARLY_ANSWER(1),
+              NUTAG_AUTOANSWER(0),
+              TAG_NULL());
+
+
+          SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_183_REL,"Processing");
+        }
+      //}
+      /*       nua_respond((nua_handle_t*)pSipMgc->sofianh, 183, "Processing",
+               NUTAG_EARLY_MEDIA (1),
+               NUTAG_EARLY_ANSWER(1),
+               NUTAG_AUTOANSWER(0),
+               TAG_NULL());*/
+
+      break;
+    default:
+      break;
+
+  }
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith1xx Event(%d - %s) ",pSipMgc->sipeventtype,pSipMgc->callid.c_str());
+  return xGateReturn::SUCCESS;
+}
+
+xGateReturn SofiaSiphandler::RespondWithInvite(xGateSofiaobj* pSipMgc ){
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWithInvite start ");
+
+  nua_handle_bind ((nua_handle_t*)pSipMgc->sofianh, (nua_hmagic_t *)this);
+
+  // we must NUTAG_AUTOANSWER(0) again despite this already done
+  // in higher, general nua parameters (sofia's bug)
+  ////nua_set_hparams((nua_handle_t*)pSipMgc->sofianh, NUTAG_AUTOANSWER(0), /*** TAG_IF(!(sofiaCall->IsUsingVirtualRtp()), NUTAG_ALLOW("UPDATE")), *****/  TAG_END());
+  nua_invite((nua_handle_t*)pSipMgc->sofianh, NUTAG_AUTOANSWER(0), /*** TAG_IF(!(sofiaCall->IsUsingVirtualRtp()), NUTAG_ALLOW("UPDATE")), *****/  TAG_END());
+
+  /****************
+    nua_set_hparams((nua_handle_t*)pSipMgc->sofianh, NUTAG_EARLY_MEDIA (1),
+    NUTAG_EARLY_ANSWER(1),
+    NUTAG_AUTOANSWER(0),
+    TAG_NULL());
+   ****************/
+
+  SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_INVITE_REQ,"Invite");
+}
+/*
+*/
+xGateReturn SofiaSiphandler::RespondWith2xx(xGateSofiaobj* pSipMgc){
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith2xx start ");
+  switch(pSipMgc->sipeventtype){
+    case XGATESIPEVENT::EN_200_REL:
+      if(pSipMgc->SofiaLegB->mediastate == EN_MED_SET){
+        if(CreateLocalSdpParam(pSipMgc->SofiaLegB) == true){
+          nua_respond((nua_handle_t*)pSipMgc->sofianh, 200, "OK",
+              NUTAG_OFFER_SENT(1),
+              TAG_NULL());
+          pSipMgc->SofiaLegB->callstate = CS_Connected;
+          pSipMgc->callstate = CS_Connected;
+          pSipMgc->SofiaLegB->mediastate	= EN_MED_CONNECTED;
+        }else{
+          // Error 
+          RespondToPeer(EN_503_REL,pSipMgc);
+        }
+      }
+      else if(pSipMgc->SofiaLegB->mediastate == EN_MED_SUSPENDED){
+        pSipMgc->SofiaLegB->callstate = CS_Suspended;
+        pSipMgc->callstate = CS_Suspended;
+
+        if(CreateLocalSdpParam(pSipMgc->SofiaLegB) == true){
+          nua_respond((nua_handle_t*)pSipMgc->sofianh, 200, "OK",
+              TAG_NULL());
+        }
+      }else if(pSipMgc->SofiaLegB->mediastate == EN_MED_RESUMED){
+        pSipMgc->SofiaLegB->callstate = CS_Connecting;
+        pSipMgc->callstate = CS_Connecting;
+
+        if(CreateLocalSdpParam(pSipMgc->SofiaLegB) == true){
+          nua_respond((nua_handle_t*)pSipMgc->sofianh, 200, "OK",
+              TAG_NULL());
+        }
+      }else{
+        //pSipMgc->SofiaLegB->callstate =  CS_Mediawait;
+        CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith2xx Event(%d - %s) Media Not yet allocate",pSipMgc->sipeventtype,pSipMgc->callid.c_str());
+      }
+
+      break;
+
+    default:
+      break;
+
+  }
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith2xx Event(%d - %s) ",pSipMgc->sipeventtype,pSipMgc->callid.c_str());
+  return xGateReturn::SUCCESS;
+}
+/*
+*/
+xGateReturn SofiaSiphandler::RespondWith3xx(xGateSofiaobj* pSipMgc){
+  switch(pSipMgc->sipeventtype){
+    case XGATESIPEVENT::EN_300_REL:
+      break;
+    default:
+      break;
+
+  }
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith3xx Event(%d - %s) ",pSipMgc->sipeventtype,pSipMgc->callid.c_str());
+  return xGateReturn::SUCCESS;
+}
+/*
+*/
+xGateReturn SofiaSiphandler::RespondWith4xx(xGateSofiaobj* pSipMgc){
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith4xx()....entered ");
+
+  if(!pSipMgc && !pSipMgc->sofianh){
+    CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith4xx - Invalid sofia handle");
+    return  xGateReturn::FAIL ;
+  }
+  //TODO: we are getting core dump here in live. so we comment.
+  //CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith4xx Event(%d - %s) ",pSipMgc->sipeventtype,pSipMgc->callid.c_str());
+  switch(pSipMgc->sipeventtype){
+    case XGATESIPEVENT::EN_400_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_400_REL,"Bad Request"); 
+      break;
+    case XGATESIPEVENT::EN_401_REL:{
+                                     std::string auth = Authenticating(pSipMgc->SofiaLegB,((sip_t*)(pSipMgc->SofiaLegB->siptag))->sip_www_authenticate);
+                                     nua_authenticate((nua_handle_t*)pSipMgc->SofiaLegB->sofianh, NUTAG_AUTH(auth.c_str()), TAG_END());}
+                                   //SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_401_REL,"Unauthorized");
+                                   // Return done since for this error call must not be disconnected
+                                   return  xGateReturn::SUCCESS;
+    case XGATESIPEVENT::EN_407_REL:{
+                                     // return done since for this error call must not disconnected
+                                     // sip_proxy_authenticate
+
+                                     std::string auth  = Authenticating(pSipMgc->SofiaLegB,((sip_t*)(pSipMgc->SofiaLegB->siptag))->sip_proxy_authenticate);
+                                     nua_authenticate((nua_handle_t*)pSipMgc->SofiaLegB->sofianh, NUTAG_AUTH(auth.c_str()), TAG_END());}
+                                   return  xGateReturn::SUCCESS;
+    case XGATESIPEVENT::EN_403_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_403_REL,"Forbidden");
+                                   break;
+    case XGATESIPEVENT::EN_404_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_404_REL,"Not Found  or No Route");
+                                   break;
+    case XGATESIPEVENT::EN_408_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_408_REL,"Request Timeout");
+                                   break;
+    case XGATESIPEVENT::EN_410_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_410_REL,"Gone");
+                                   break;
+    case XGATESIPEVENT::EN_480_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_480_REL,"Temporarily Unavailable");
+                                   break;
+    case XGATESIPEVENT::EN_484_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_484_REL,"Address Incomplete");
+                                   break;
+    case XGATESIPEVENT::EN_486_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_486_REL,"Busy Here");
+                                   break;
+    case XGATESIPEVENT::EN_487_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_487_REL,"Request Terminated");
+                                   break;
+    case XGATESIPEVENT::EN_488_REL:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_488_REL,"Not Acceptable Here");
+                                   break;
+    default:
+                                   SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_408_REL,"default-Request Timeout");
+                                   break;
+
+  }
+  // since it is error in Server we need to delete the call
+  /*if(pSipMgc->SofiaLegB && pSipMgc->SofiaLegB->sofianh)
+    SofiaSendBye((nua_handle_t*)pSipMgc->SofiaLegB->sofianh);*/
+
+
+  DeleteCallInfo((pSipMgc));
+
+  return xGateReturn::SUCCESS;
+}
+/*
+*/
+xGateReturn SofiaSiphandler::RespondWith5xx(xGateSofiaobj* pSipMgc){
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith5xx()....entered ");
+  if(!pSipMgc && !pSipMgc->sofianh){
+    CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith4xx - Invalid sofia handle");
+    return  xGateReturn::FAIL;
+  }
+
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith5xx Event(%d - %s) ",pSipMgc->sipeventtype,pSipMgc->callid.c_str());
+  switch(pSipMgc->sipeventtype){
+    case XGATESIPEVENT::EN_500_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_500_REL,"Server Internal Error");
+      CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith5xx Event(%d - %s) ",pSipMgc->sipeventtype,pSipMgc->callid.c_str());
+      break;
+    case XGATESIPEVENT::EN_501_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_501_REL,"Not Implemented");
+      break;
+    case XGATESIPEVENT::EN_502_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_502_REL,"Bad Gateway");
+      break;
+    case XGATESIPEVENT::EN_503_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_503_REL,"Service Unavailable");
+      break;
+    case XGATESIPEVENT::EN_504_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_504_REL,"Server Time-out");
+      break;
+    case XGATESIPEVENT::EN_510_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_510_REL,"Facility Rejected");
+      break;
+    default:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_504_REL,"default-Server Time-out");
+      break;
+
+  }
+  // since it is error in Server we need to delete the call
+  /*if(pSipMgc->SofiaLegB && pSipMgc->SofiaLegB->sofianh)
+    SofiaSendBye((nua_handle_t*)pSipMgc->SofiaLegB->sofianh);*/
+
+  DeleteCallInfo((pSipMgc));
+
+  return xGateReturn::SUCCESS;
+}
+/*
+*/
+xGateReturn SofiaSiphandler::RespondWith6xx(xGateSofiaobj* pSipMgc){
+
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith6xx()....entered ");
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith6xx Event(%d - %s) ",pSipMgc->sipeventtype,pSipMgc->callid.c_str());
+  switch(pSipMgc->sipeventtype){
+    case XGATESIPEVENT::EN_600_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_600_REL,"Busy Everywhere");
+      break;
+    case  XGATESIPEVENT::EN_603_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_603_REL,"Decline");
+      break;
+    case XGATESIPEVENT::EN_604_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_604_REL,"Does Not Exist Anywhere");
+      break;
+    case XGATESIPEVENT::EN_606_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_606_REL,"Not Acceptable");
+      break;
+    case XGATESIPEVENT::EN_607_REL:
+      SofiaRespond((nua_handle_t*)pSipMgc->sofianh,EN_607_REL,"Unwanted");
+      break;
+
+    default:
+      CLog::Detail(THISMODULE,"SofiaSiphandler::RespondWith6xx Event(%d)- Event Not Impemented",pSipMgc->sipeventtype); 
+      break;
+
+
+  }
+  // since it is error in Server we need to delete the calli
+  /*if(pSipMgc->SofiaLegB && pSipMgc->SofiaLegB->sofianh)
+    SofiaSendBye((nua_handle_t*)pSipMgc->SofiaLegB->sofianh);*/
+
+  DeleteCallInfo((pSipMgc));
+
+  return xGateReturn::SUCCESS;
+}
+bool SofiaSiphandler::CheckResponseRequired(int status, xGateSofiaobj *sobj){
+if (!sobj)
+ return false;
+if(sobj->cp.isForkingenabled){ // Forking Enabled
+  return ForkingResponse(status,sobj);
+ }
+
+return true;
+}
+bool SofiaSiphandler::ForkingResponse(int status, xGateSofiaobj *sobj){
+CLog::Detail(THISMODULE,"SofiaSiphandler::ForkingResponse Proxy Name %s Callid %s ",sobj->cp.proxyUserName.c_str(), sobj->callid.c_str());
+std::vector<xGateSofiaobj*>::iterator itr;
+switch(status/100){
+case 1:
+ if(status ==  180)
+   sobj->callstate = CS_Alerting;
+else if(status == 183)
+  sobj->callstate = CS_Proceeding;
+CLog::Detail(THISMODULE,"SofiaSiphandler::ForkingResponse 1XX Proxy Name %s Callid %s ",sobj->cp.proxyUserName.c_str(), sobj->callid.c_str());
+
+
+return false;
+
+case 2:
+{
+CLog::Detail(THISMODULE,"SofiaSiphandler::ForkingResponse 2XX Proxy Name %s Callid %s ",sobj->cp.proxyUserName.c_str(), sobj->callid.c_str());
+if(sobj->callstream == EN_OUTBOUND){ // Check for Forked B Leg object
+// sobj is Forkign Leg
+// sobj->SofiaLegB is A Leg (Orginator Leg)
+// sobj->SofiaLegB->SofiaLegB is B Leg of A Leg
+// Send cancle to other Leg
+//std::vector<xGateSofiaobj*>::iterator 
+//itr =  sobj->SofiaLegB->SofiaForkLeg.begin();
+if(sobj->callstate ==CS_Connected || sobj->callstate == CS_Connecting) // call already connected this is Hold and resume case simple retrun true for forwarding yadav
+   return true;
+for(itr = sobj->SofiaLegB->SofiaForkLeg.begin(); itr != sobj->SofiaLegB->SofiaForkLeg.end(); itr++) {
+xGateSofiaobj* forkSofiaObj = *itr;
+if(forkSofiaObj->callstate == CS_Connected) // Already Connect Avaiable
+{// So send Bye 
+if(sobj != forkSofiaObj){ 
+ SofiaSendAck((nua_handle_t*)sobj->sofianh);
+ SofiaSendBye((nua_handle_t*)sobj->sofianh);
+ DeleteForkedSofiaObject(sobj);
+  return false;
+}
+}
+if(sobj == forkSofiaObj)
+  continue;
+nua_cancel(forkSofiaObj->sofianh,TAG_END());
+//sobj->SofiaLegB->SofiaForkLeg.erase(itr);
+
+}
+sobj->SofiaLegB->SofiaLegB =  sobj; // Subsuting forking  Leg to A Leg's B Peer  
+sobj->SofiaLegB->cp.calledDeviceType = sobj->cp.calledDeviceType;
+sobj->SofiaLegB->cp.csCalledCodec = sobj->cp.csCalledCodec;
+sobj->callstate = CS_Connected;
+}
+}
+return true;
+case 3:
+
+CLog::Detail(THISMODULE,"SofiaSiphandler::ForkingResponse 3XX Proxy Name %s Callid %s ",sobj->cp.proxyUserName.c_str(), sobj->callid.c_str());
+return false;
+case 4:
+CLog::Detail(THISMODULE,"SofiaSiphandler::ForkingResponse 4XX Proxy Name %s Callid %s ",sobj->cp.proxyUserName.c_str(), sobj->callid.c_str());
+//std::vector<xGateSofiaobj*>::iterator 
+itr =  sobj->SofiaLegB->SofiaForkLeg.begin();
+for(itr; itr != sobj->SofiaLegB->SofiaForkLeg.end(); itr++) {
+xGateSofiaobj* forkSofiaObj = *itr;
+if(sobj == forkSofiaObj){
+  sobj->SofiaLegB->SofiaForkLeg.erase(itr);
+  break; // for loop
+}
+}
+
+//cout << "List size: " << sobj->SofiaLegB->SofiaForkLeg.size() << endl;
+
+if(sobj->SofiaLegB->SofiaForkLeg.size() ==  0){
+   RespondToPeer(status,sobj->SofiaLegB);
+}
+DeleteForkedSofiaObject(sobj);
+
+return false;
+default:
+
+CLog::Detail(THISMODULE,"SofiaSiphandler::ForkingResponse Default Proxy Name %s Callid %s ",sobj->cp.proxyUserName.c_str(), sobj->callid.c_str());
+return false;
+}
+}
+void SofiaSiphandler::RespondToPeer(int status,xGateSofiaobj *sobj){
+  if(!sobj){
+    CLog::Warning(THISMODULE,"SofiaSiphandler::RespondToPeer Error - Invalid sobj");
+    return;
+  }
+  CLog::Detail(THISMODULE,"SofiaSiphandler::RespondToPeer Event(%d - callid %s) ",(status/100), sobj->callid.c_str());
+  sobj->sipeventtype = status;
+
+
+  switch(status/100){
+    case 1:
+      RespondWith1xx(sobj);
+      break;
+    case 2:
+      RespondWith2xx(sobj);
+      break;
+    case 3:
+      RespondWith3xx(sobj);
+      break;
+    case 4:
+      RespondWith4xx(sobj);
+      break;
+    case 5:
+      RespondWith5xx(sobj);
+      break;
+    case 6:
+      RespondWith6xx(sobj);
+      break;
+    default:
+      break;
+  }
+}
+
+bool SofiaSiphandler::DeleteForkedSofiaObject(xGateSofiaobj *sobj){
+  if(sobj){
+    if(sobj->sofianh){
+      SofiaBindhandle(sobj->sofianh, NULL);
+      nua_handle_destroy(sobj->sofianh);
+    } // Leg A handle clean up This stops the even for Leg A
+    printf("****** delated forked LegId: %d\n",sobj->forkedLegId);
+    sobj->sofianh = NULL;
+    sobj->xGateSofiaobjInit();
+    delete sobj;
+    sobj = NULL;
+  }
+  return true;
+}
+
+bool SofiaSiphandler::DeleteSofiaObject(xGateSofiaobj *sobj){
+
+  // Check A/B Leg Object isvalid
+
+  if(sobj){
+    if(sobj->sofianh){
+      SofiaBindhandle(sobj->sofianh, NULL);
+      nua_handle_destroy(sobj->sofianh);
+    } // Leg A handle clean up This stops the even for Leg A
+    if(sobj->SofiaLegB){
+      if(sobj->SofiaLegB->sofianh){
+        SofiaBindhandle(sobj->SofiaLegB->sofianh, NULL);
+        nua_handle_destroy(sobj->SofiaLegB->sofianh);
+      } // Leg B handle clean up this stops the event for Leb B
+      // Deleting Leg B First;
+      sobj->SofiaLegB->DeleteAll();
+      delete sobj->SofiaLegB;
+    } 
+    // Deleting Leg A Obj
+    sobj->DeleteAll();
+    delete sobj;
+  }
+  return true;
+}
+bool SofiaSiphandler::CheckCodecCompatablity(xGateAVCodec *avcodec){
+  for(int i =0; i < MAXAVCODEC ; i++){
+    //printf("code List %s\n", avcodec[i].name.c_str());
+    if(GetCodecFromList(avcodec[i].payloadtype) >= 0)
+      return true;
+  }
+  //printf("Return false from CheckCodecCompatablity\n");
+  return false;
+}
+sdp_rtpmap_t *SofiaSiphandler::CheckCodecCompatablity(sdp_session_t *rsdp){
+  if(rsdp){
+    sdp_rtpmap_t *rtpmap = rsdp->sdp_media->m_rtpmaps;
+    while(rtpmap != NULL){
+      if(GetCodecFromList(rtpmap->rm_pt) >= 0)
+        return rtpmap;
+      rtpmap = rtpmap->rm_next;	 
+    }
+  }
+  return NULL;
+} 
+int SofiaSiphandler::GetCodecFromList(int payload){
+  int ret = -1;
+  for (int index=0 ; index < MAXCODEC ; index++){
+    if (xGateCodecList[index].payload == payload)
+      return index;
+  }
+  return ret;
+}
+std::string SofiaSiphandler::Authenticating(xGateSofiaobj *sobj, sip_www_authenticate_t const *auth){
+  std::string ret = "";
+  if(sobj){
+    if(strlen(sobj->cp.credential.crUserName.c_str()) > 0 && strlen(sobj->cp.credential.crPassword.c_str()) > 0){
+      if(auth){
+        ret = auth->au_scheme;
+        sip_www_authenticate_t const *authloop = auth;
+        while(authloop){
+          const char * realm = strstr((char*)authloop->au_params, "realm=");
+          if(realm){
+            realm += 6;
+            ret += ":" ;
+            ret += realm;
+            break;
+          }
+          authloop = authloop->au_next;
+        }// for loop
+        ret += ":" ;
+        ret += sobj->cp.credential.crUserName;
+        ret += ":";
+        ret += sobj->cp.credential.crPassword;   
+      }
+    }
+  }
+  return ret;
+}
+/**/
+bool SofiaSiphandler::CreateSofiaRegobj(xGateSofiaSipRegobj &regparam,sip_t const  *sip){
+  regparam.callid = sip->sip_call_id->i_id;
+
+
+  regparam.proxyusername = sip->sip_contact->m_url->url_user;
+  regparam.ipaddress = sip->sip_contact->m_url->url_host;
+  regparam.contactaddress = sip->sip_contact->m_url->url_host;
+  if(sip->sip_contact->m_url->url_port){
+    regparam.contactaddress +=  ":";
+    regparam.contactaddress += sip->sip_contact->m_url->url_port;
+    printf("New Registration contact address %s\n",regparam.contactaddress.c_str());
+  }
+
+  //	regparam.domainname = sip->sip_from->a_url->url_host;
+  regparam.domainname = sip->sip_request->rq_url->url_host;	
+  regparam.username = sip->sip_to->a_url->url_user;
+  regparam.mobileno = sip->sip_to->a_url->url_user; 
+  if( sip->sip_user_agent && sip->sip_user_agent->g_string ){
+    if(strstr(sip->sip_user_agent->g_string,"DCAPP"))
+      regparam.devicetype =  "DCAPP" ;
+    else if (strstr(sip->sip_user_agent->g_string,"VAPP"))
+      regparam.devicetype =  "VAPP";
+    else 
+      regparam.devicetype =  "URAPP";
+  }else 
+    regparam.devicetype =  "URAPP";
+
+
+
+  regparam.aaa =  EN_AAA_AUTHEN;
+  regparam.Regevent = EN_VALIDATE;
+  if(sip->sip_authorization && sip->sip_authorization->au_params ){
+    regparam.username = msg_params_find(sip->sip_authorization->au_params,"username=");
+    regparam.password =""; 
+    regparam.Regevent = EN_GETUSRPWD; 
+    CLog::Detail(THISMODULE, "****************username == %s & password == %s", regparam.username ,regparam.password);
+    /*char *authstr = (char*)sip->sip_authorization->au_params;
+      char *rauthstr = authstr;
+      char *token;
+      while(token = strtok_r(authstr,",",&rauthstr)){ // r token to support multi thread enviroment
+      char *temptok;
+      if(temptok = strstr(token,"username="))
+      regparam.username = temptok;
+      else if(temptok = strstr(token, "response="))
+      regparam.password = temptok;
+      }*/
+  }else if(sip->sip_proxy_authorization && sip->sip_proxy_authorization->au_params ){
+    regparam.username = msg_params_find(sip->sip_proxy_authorization->au_params,"username=");
+    regparam.mobileno = sip->sip_from->a_url->url_user;
+    regparam.password ="";
+    regparam.Regevent = EN_AUTHCALL;
+
+  }
+  regparam.cseq = sip->sip_cseq->cs_seq;
+  if(sip->sip_expires){ // TODO need logic to loop all the conatct to be deleted if expire = 0 as per rfc 3261
+    regparam.expries =(int) sip->sip_expires->ex_delta;
+    if(regparam.expries == 0)
+      regparam.Regevent = EN_GETUSRPWD;
+  }
+  else if(sip->sip_contact && sip->sip_contact->m_expires){
+    regparam.expries =atoi(sip->sip_contact->m_expires);
+    if(regparam.expries == 0)
+      regparam.Regevent = EN_GETUSRPWD;
+  }else
+    regparam.expries = 3600; 
+  regparam.regsip =  (void*)sip; 
+
+  return true;
+}
+void SofiaSiphandler::SDPPharser(sdp_session_t *rsdp,xGateSDPInfo &sdpinfo){
+  // Check the media poto type
+  // UNKNOWN,TCP,Plain UDP,RTP/UDP, RTP/SAVP,UDPTL, TLS, wildcard
+  CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser");
+  switch(rsdp->sdp_media->m_proto){
+    case sdp_proto_x:{ // Unknown may be any introduce in future will have this proto type.currently SAVPF
+                       CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser sdp_proto_x");
+                       IceCandidatePharser(rsdp,sdpinfo);
+                     }
+                     break;
+    case sdp_proto_srtp:{ // RTP/SAVP is the proto supported
+                          CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser sdp_proto_srtp");
+                          IceCandidatePharser(rsdp,sdpinfo);
+                        }
+                        break;
+    case sdp_proto_tcp:
+                        CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser sdp_proto_tcp");
+                        break;
+    case sdp_proto_udp:
+                        CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser sdp_proto_udp");
+                        break;
+    case sdp_proto_rtp:{ // RTP/AVP is the proto supported
+                         CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser sdp_proto_rtp");
+                         RtpAvpPharser(rsdp,sdpinfo);
+                       }
+                       break;
+    case sdp_proto_udptl:
+                       CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser sdp_proto_udptl");
+                       break;
+    case sdp_proto_tls:
+                       CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser sdp_proto_tls");
+                       break;
+    case sdp_proto_any:
+                       CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser sdp_proto_any");
+                       break;
+    default:
+                       CLog::Detail(THISMODULE,"SofiaSiphandler::SDPPharser default");
+                       break;
+  }
+
+}
+void SofiaSiphandler::SetSDPAnswer(sdp_session_t &dup, std::string tagname){
+  sdp_attribute_t* iceattributes = NULL;
+  sdp_session_t* rsdp =  &dup;
+  if(rsdp){
+    if(rsdp->sdp_media->m_attributes){
+      iceattributes = rsdp->sdp_media->m_attributes;
+    }
+
+  }
+  while(iceattributes){
+    if(strcmp(iceattributes->a_name,"setup") == 0){
+      iceattributes->a_value =  "active";
+      cout << "setup " << iceattributes->a_value << endl;
+      break;
+    }
+    iceattributes = iceattributes->a_next;
+  }
+}
+void SofiaSiphandler::IceCandidatePharser(sdp_session_t *rsdp,xGateSDPInfo &sdpinfo){
+  // rtp map is in atrribute paramater
+  sdp_attribute_t* iceattributes = NULL;
+  if(rsdp){
+    if(rsdp->sdp_media){
+      sdpinfo.mediatype = rsdp->sdp_media->m_type;
+      if(rsdp->sdp_connection && rsdp->sdp_connection->c_address)
+        sdpinfo.ipaddress =rsdp->sdp_connection->c_address;
+      else if(rsdp->sdp_media->m_connections && rsdp->sdp_media->m_connections->c_address)
+        sdpinfo.ipaddress =  rsdp->sdp_media->m_connections->c_address;
+      sdpinfo.port = rsdp->sdp_media->m_port;
+
+      if(rsdp->sdp_media->m_attributes){
+        iceattributes =  rsdp->sdp_media->m_attributes;
+      }
+      if(rsdp->sdp_media->m_proto_name)
+        if(strstr(rsdp->sdp_media->m_proto_name,"UDP/TLS/RTP/SAVPF"))
+          sdpinfo.mediamode = "DTLS";
+        else sdpinfo.mediamode = "SRTP";
+
+    }
+  }
+  // TODO need to implement video codec
+  int i = 0;
+  while (iceattributes){
+    //printf("ice attribute %s\n", iceattributes->a_name);
+    if(strcmp(iceattributes->a_name,"ice-ufrag") == 0)
+      sdpinfo.iceufrag = iceattributes->a_value;
+    if(strcmp(iceattributes->a_name,"ice-pwd") == 0)
+      sdpinfo.icepwd = iceattributes->a_value;
+    if(strcmp(iceattributes->a_name,"fingerprint") == 0)
+      sdpinfo.fingerprint =  iceattributes->a_value;
+    if(strcmp(iceattributes->a_name,"rtpmap") == 0){
+      if(i < MAXAVCODEC){
+        sdpinfo.audiocodec[i].Value = iceattributes->a_value;
+        sdpinfo.audiocodec[i].ExtractCodecInfo(sdpinfo.audiocodec[i].Value);
+        i++;
+      }
+    }
+    if(strcmp(iceattributes->a_name,"candidate") == 0){
+      std::string temp =  iceattributes->a_value;
+      char *token =  strtok(temp.c_str()," ");
+      std::string ipaddr="",port="";
+      int count  = 1 ;
+      while(token){
+        if (count == 9) break;
+        switch(count){
+          case 5:
+            ipaddr = token;
+            break;
+          case 6:
+            port = token;
+            break;
+          case 8:
+            if(strstr(token,"relay")){
+              sdpinfo.relayip = ipaddr;
+              sdpinfo.relayport = atoi(port.c_str()); 
+            }else if (strstr(token,"srflx")){
+              sdpinfo.reflexip = ipaddr;
+              sdpinfo.reflexport = atoi(port.c_str());
+            }else {
+              sdpinfo.ipaddress = ipaddr;
+              sdpinfo.port = atoi(port.c_str());
+            }
+            break;
+          default:
+            break;
+        }
+        count ++;
+        token = strtok(NULL," ");
+      }
+    }
+    iceattributes = iceattributes->a_next;
+  }
+}
+void SofiaSiphandler::RtpAvpPharser(sdp_session_t *rsdp,xGateSDPInfo &sdpinfo){
+  sdp_rtpmap_t *rtpmaps = NULL;
+  sdp_attribute_t *rtpatt = NULL;
+  if(rsdp){
+    if(rsdp->sdp_media){
+      sdpinfo.mediatype = rsdp->sdp_media->m_type;
+      if(rsdp->sdp_connection && rsdp->sdp_connection->c_address)
+        sdpinfo.ipaddress =rsdp->sdp_connection->c_address;
+      else if(rsdp->sdp_media->m_connections && rsdp->sdp_media->m_connections->c_address)
+        sdpinfo.ipaddress =  rsdp->sdp_media->m_connections->c_address;
+
+      sdpinfo.port = rsdp->sdp_media->m_port;
+      if(rsdp->sdp_media->m_rtpmaps)
+        rtpmaps = rsdp->sdp_media->m_rtpmaps;
+      sdpinfo.mediamode = "RTP";
+      if(rsdp->sdp_media->m_attributes){
+        rtpatt =  rsdp->sdp_media->m_attributes;
+      }
+    }
+    if(rsdp->sdp_attributes){
+      rtpatt = rsdp->sdp_attributes;
+    }
+
+  }
+  while(rtpatt){
+	cout << "\nSWB : new rtp-attribute ....1 ********** = " << rtpatt->a_name;
+    if(rtpatt->a_name && !strcmp(rtpatt->a_name, "ptime")){
+      //    sdpinfo.ptime = (int*)rtpatt->a_value;
+      sdpinfo.ptime = atoi(rtpatt->a_value);
+      if(sdpinfo.ptime > 30)
+        sdpinfo.ptime = 0;
+      break;
+    }
+    rtpatt =  rtpatt->a_next;
+  }
+
+  int i =0;
+  while(rtpmaps){
+	cout << "\nSWB : new rtpmaps ....2 ********** = " << rtpmaps->rm_encoding;
+	cout << "\nSWB : new rtpmaps ....2 ********** = " << rtpmaps->rm_fmtp;
+    //printf("codec rtpaavp %s\n",rtpmaps->rm_encoding);
+    if(i < MAXAVCODEC){
+    	if (rtpmaps->rm_encoding && !strcmp(rtpmaps->rm_encoding, "telephone-event"))
+    		if (rtpmaps->rm_fmtp && !strcmp(rtpmaps->rm_fmtp, "101"))
+			cout << "\nSWB : TELEPHONE-EVENT 101********\n";		
+		
+      sdpinfo.audiocodec[i].name = rtpmaps->rm_encoding;
+      sdpinfo.audiocodec[i].samplingrate = rtpmaps->rm_rate;
+      if(rtpmaps->rm_fmtp)
+        sdpinfo.audiocodec[i].fmtp = rtpmaps->rm_fmtp;
+      if(rtpmaps->rm_pt)
+        sdpinfo.audiocodec[i].payloadtype = rtpmaps->rm_pt;
+      i++;
+    }
+    rtpmaps = rtpmaps->rm_next;
+  }
+
+}
+/*
+ * */
+void SofiaSiphandler::RequestForMedia(xGateSofiaobj *sofiaobjsiphandle,XGATEMGUPDATE mgMsgType=EN_MEDIA_CREATE){
+
+  if(sofiaobjsiphandle->callstream == EN_INBOUND &&  CheckCodecCompatablity(sofiaobjsiphandle->SofiaSDPinfo.audiocodec) == false) {
+    RespondToPeer(EN_488_REL,sofiaobjsiphandle);
+    RequestTermination(sofiaobjsiphandle); // Requesting SL application to stop the processing
+    DeleteSofiaObject(sofiaobjsiphandle); // Deleting the object so it won't get further process or event
+    CLog::Detail(THISMODULE,"SofiaSiphandler::RequestForMedia(%s) Codec Compatablity failed ",sofiaobjsiphandle->callid.c_str());
+    return;
+  }
+
+  if(PostMessageToMGCDispatcher(sofiaobjsiphandle,mgMsgType) == true){
+    if (sofiaobjsiphandle->mediastate != EN_MED_SUSPENDED && sofiaobjsiphandle->mediastate != EN_MED_RESUMED) // This need to re-vist Yadav
+      sofiaobjsiphandle->mediastate = EN_MED_REQ;
+    //printf("Post Message To dispatch Success %s\n",sofiaobjsiphandle->callid.c_str());
+    CLog::Detail(THISMODULE,"SofiaSiphandler::RequestForMedia(%s) Media Direction  %d ",sofiaobjsiphandle->callid.c_str(),sofiaobjsiphandle->callstream );
+  }else{
+    RespondToPeer(EN_503_REL,sofiaobjsiphandle);
+    RequestTermination(sofiaobjsiphandle); // Reqting SL application to stop the processing
+    DeleteSofiaObject(sofiaobjsiphandle);
+    CLog::Detail(THISMODULE,"SofiaSiphandler::RequestForMedia(%s) Post Message Failed  %d ",sofiaobjsiphandle->callid.c_str(),sofiaobjsiphandle->callstream );
+  }
+
+
+}
+
+void SofiaSiphandler::OnHold_Resume(xGateSofiaobj *sobj){
+
+  CLog::Detail(THISMODULE,"SofiaSiphandler::OnHold_Resume %s",sobj->callid.c_str() );
+  bool ONHOLD = true;
+  bool ONRESUME = false;
+
+  if(sobj->callstate == CS_Suspended && sobj->mediastate == EN_MED_SUSPENDED) // On Hold Leg A peer send to Leg B
+  {
+    // Forward the Invite B Party 
+    ForwardReInvite(sobj,ONHOLD);
+    // Send 200 ok to  A Party
+    // RespondToPeer(EN_200_REL,sobj);
+  }else if(sobj->SofiaLegB->callstate == CS_Suspended && sobj->SofiaLegB->mediastate == EN_MED_SUSPENDED) // On Hold Leg B send to Leg A
+  {
+    //Forward the Invite to A Party
+
+    ForwardReInvite(sobj->SofiaLegB,ONHOLD);
+    //Send 200 ok to B Party
+    // RespondToPeer(EN_200_REL,sobj->SofiaLegB);
+
+  }else if(sobj->callstate == CS_Connecting && sobj->mediastate == EN_MED_RESUMED) {// On Resume Leg A peer send to Leg B
+    // Forward the Invite to  B Party
+    ForwardReInvite(sobj,ONRESUME);
+    // Send 200 ok to A Party
+    RespondToPeer(EN_200_REL,sobj);
+  }else if(sobj->SofiaLegB->callstate == CS_Connecting && sobj->SofiaLegB->mediastate == EN_MED_RESUMED) {// OnResume Leg B send to Leg A
+    // Forward the Invite to A Party
+    ForwardReInvite(sobj->SofiaLegB,ONRESUME);
+    // Send 200 ok to B Party
+    // RespondToPeer(EN_200_REL,sobj->SofiaLegB);
+  }
+
+  // This for Hold on 
+  //else if(sobj->callstate == CS_Suspended)
+  // This for Resume
+}
+
+xGateReturn SofiaSiphandler::ForwardReInvite(xGateSofiaobj *sofiaobj, bool hold_resume){
+  CLog::Detail(THISMODULE, "SofiaSiphandler::ForwardReInvite(%s) Request", sofiaobj->callid.c_str());
+  if( CreateLocalSdpParam(sofiaobj) == true)
+  {
+    CLog::Detail(THISMODULE, "SofiaSiphandler::ForwardReInvite CreateLocalSdpParam(sofiaobj) == true");
+    nua_set_hparams(sofiaobj->SofiaLegB->sofianh, TAG_IF(hold_resume,SOATAG_HOLD("audio")), TAG_IF(!hold_resume,SOATAG_HOLD("")),TAG_END());
+    nua_invite(sofiaobj->SofiaLegB->sofianh,NUTAG_AUTOACK(1),TAG_END());
+    CLog::Detail(THISMODULE, "SofiaSiphandler::ForwardReInvite Sent out....");
+  }
+  else
+  {
+    CLog::Detail(THISMODULE, "SofiaSiphandler::ForwardReInvite CreateLocalSdpParam(sofiaobj) == FALSE");
+    RespondToPeer(EN_503_REL,sofiaobj);
+  }
+  music_on_hold(sofiaobj,hold_resume);
+  return SUCCESS;
+}
+
+xGateReturn SofiaSiphandler::music_on_hold(xGateSofiaobj *sofiaobj, bool ONHOLD)
+{
+  // will play music-on-hold or stop playing it during call-resume...
+  if (sofiaobj->callstream == EN_OUTBOUND)
+  {
+    CLog::Detail(THISMODULE, "SofiaSiphandler::music_on_hold cp.callOnHoldFilenameCalledParty = %s", sofiaobj->SofiaLegB->cp.callOnHoldFilenameCalledParty.c_str());
+    sofiaobj->cp.Legid = 1;
+    sofiaobj->cp.csfilename = sofiaobj->SofiaLegB->cp.csfilename = sofiaobj->SofiaLegB->cp.callOnHoldFilenameCalledParty; 
+  }
+  else
+  { // else resume/hold from caller
+    CLog::Detail(THISMODULE, "SofiaSiphandler::music_on_hold cp.callOnHoldFilenameCallingParty = %s", sofiaobj->cp.callOnHoldFilenameCallingParty.c_str());
+    sofiaobj->cp.Legid = 2;
+    sofiaobj->cp.csfilename = sofiaobj->SofiaLegB->cp.csfilename = sofiaobj->cp.callOnHoldFilenameCallingParty;
+  }
+
+  if (ONHOLD)
+  {
+    sofiaobj->cp.PbState = EN_XGATE_PB_HOLD;
+    CLog::Detail(THISMODULE, "SofiaSiphandler::music_on_hold ONHOLD ");
+  }
+  else // else on-resume
+  {
+    sofiaobj->cp.PbState = EN_XGATE_PB_RESUME;
+    CLog::Detail(THISMODULE, "SofiaSiphandler::music_on_hold ONRESUME ");
+  }
+  RequestForMedia(sofiaobj,EN_MEDIA_HOLD_RESUME);
+  sofiaobj->cp.csfilename = "";
+  sofiaobj->SofiaLegB->cp.csfilename = "";
+  return SUCCESS;
+}
+

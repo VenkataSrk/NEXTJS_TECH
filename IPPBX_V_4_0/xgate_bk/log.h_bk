@@ -1,0 +1,166 @@
+/* $Header: /xGate/log.h 7     22/05/02 17:59 Junanto $
+ *   
+ * CTENGINE
+ * (C) 2001 Switchlab, Ltd
+ *
+ * LOGGING interface.
+ *
+ * $Log: /xGate/log.h $
+ * 
+ * 7     22/05/02 17:59 Junanto
+ * Application logging to terminal can now be filtered out
+ * (to concentrate on system messages only) by a 
+ * new parameter "application" in "term logging".
+ * By default, application logging is displayed to terminal.
+ * To disable it: "no term logging application".
+ * 
+ * 6     2/06/01 14:35 Junanto
+ * Changed output format of call trace
+ * 
+ * 5     26/04/01 12:04 Junanto
+ * added choice for logging output display
+ * 
+ * 4     4/18/01 10:56a Bennylp
+ * Added CT_TRACE.
+ * 
+ * 3     4/17/01 10:04p Bennylp
+ * Added tracing.
+ * 
+ * 2     4/12/01 8:08p Bennylp
+ * Integration.
+ *
+ */
+#ifndef __CLOG_H__
+#define __CLOG_H__
+
+#include "types.h"
+
+
+//-----------------------------------------------------------------------------
+
+class CTask;
+class KLog;
+
+//-----------------------------------------------------------------------------
+// Verbosity level
+//
+enum LogVerbosity {
+    LOG_DETAIL,		// Detailed debug info for developer
+    LOG_DEBUG,		// Information for developer
+    LOG_INFO,		// Information for admin/user
+    LOG_WARNING,		// Warning for admin/user
+    LOG_ERRORS,		// Error for admin/user
+    LOG_FATAL,		// Error for developer
+    LOG_TRACE=100
+};
+
+
+//-----------------------------------------------------------------------------
+// CLog: convenient interface for writing to the log
+//
+struct CLog {
+    static void Write( LogVerbosity level, const char *sender, const char *format, va_list marker);
+    static void Write( LogVerbosity level, const char *sender, CTask *, const char *format, va_list marker);
+
+    static void Log( LogVerbosity level, const char *sender, const char *format, ...);
+    static void Log( LogVerbosity level, const char *sender, CTask *, const char *format, ...);
+
+    static void Detail( const char *sender, const char *format, ...);
+    static void Detail( const char *sender, CTask *, const char *format, ...);
+
+    static void Debug( const char *sender, const char *format, ...);
+    static void Debug( const char *sender, CTask *, const char *format, ...);
+
+    static void Info( const char *sender, const char *format, ...);
+    static void Info( const char *sender, CTask *, const char *format, ...);
+    static void InfoApp( const char *sender, CTask *, const char *format, ...);
+
+    static void Warning( const char *sender, const char *format, ...);
+    static void Warning( const char *sender, CTask *, const char *format, ...);
+    static void WarningApp( const char *sender, CTask *, const char *format, ...);
+
+    static void Error( const char *sender, const char *format, ...);
+    static void Error( const char *sender, CTask *, const char *format, ...);
+    static void ErrorApp( const char *sender, CTask *, const char *format, ...);
+
+    static void Fatal( const char *sender, const char *format, ...);
+    static void Fatal( const char *sender, CTask *, const char *format, ...);
+
+    static void SysLastError( const char *sender, const char *msgfmt, ...);
+    static void SysLastError( const char *sender, CTask *, const char *msgfmt, ...);
+
+};
+
+
+//-----------------------------------------------------------------------------
+// CLogDevice: Interface definition for log device
+//
+struct CLogDevice {
+
+    // constructor
+    CLogDevice( LogVerbosity verbosity=LOG_DETAIL ) 
+    : __m_Verbosity(verbosity) {
+	__m_AcceptAppLog = true;
+    }
+
+    // destructor
+    virtual ~CLogDevice() {};
+    
+    // name/identification interface
+    virtual const char* GetName( ) = 0;
+
+    bool AcceptAppLog() {
+	return __m_AcceptAppLog;
+    }
+
+protected:
+    // members that should not be publicly accessible because it might 
+    // be manipulated in the different thread in KLog have '__' prefix
+
+    // verbosity
+    LogVerbosity __m_Verbosity;
+
+    // accept application logs
+    bool __m_AcceptAppLog;
+
+    // write interface
+    virtual bool __Write( LogVerbosity v, size_t length, const char *data ) = 0;
+
+    friend class KLog;
+};
+
+/** This class describes a log trace identifier.
+ */
+class Log_Trace {
+public:
+    /** TraceId will appear as the source sender in the trace.
+     */
+    String  traceId;
+
+    /** Trace name will appear as the trace name in the command.
+     */
+    String  traceName;
+
+    /** Description of the trace.
+     */
+    String  traceDescription;
+
+    /** Determine whether a trace is currently enabled.
+     */
+    char    traceEnabled;
+
+    /** Constructor.
+     */
+    Log_Trace (const String & trace_id, const String & trace_name, const String & desc)
+	: traceId(trace_id), traceName(trace_name), traceDescription(desc), traceEnabled(0)
+    {
+    }
+};
+
+
+
+
+#define LOGGER		CLog
+#define CT_TRACE	KLog::Instance()->TraceStandard
+
+#endif

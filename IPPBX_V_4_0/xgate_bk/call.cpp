@@ -1,0 +1,2233 @@
+/*----------------------------------------------------------------* 
+ * $Archive: /xGate/call.cpp $
+ * $Date: 5/19/05 3:37p $
+ * $Revision: 86 $
+ *
+ * $History: call.cpp $
+ * 
+ * *****************  Version 86  *****************
+ * User: Bennylp      Date: 5/19/05    Time: 3:37p
+ * Updated in $/xGate
+ * Check state is not NULL in DisconnectInd()
+ * 
+ * *****************  Version 85  *****************
+ * User: Bennylp      Date: 3/16/04    Time: 10:45a
+ * Updated in $/xGate
+ * Added API CallGetAuthorization
+ * 
+ * *****************  Version 84  *****************
+ * User: Bennylp      Date: 3/01/04    Time: 7:28p
+ * Updated in $/xGate
+ * Added extra parameter info
+ * 
+ * *****************  Version 83  *****************
+ * User: Bennylp      Date: 3/06/03    Time: 5:11p
+ * Updated in $/xGate
+ * Changed trace format to support per-user trace
+ * 
+ * *****************  Version 82  *****************
+ * User: Junanto      Date: 23/09/02   Time: 16:40
+ * Updated in $/xGate
+ * 
+ * *****************  Version 81  *****************
+ * User: Bennylp      Date: 9/17/02    Time: 6:07p
+ * Updated in $/xGate
+ * Reset _peerCall in the Call's destructor.
+ * 
+ * *****************  Version 80  *****************
+ * User: Junanto      Date: 17/06/02   Time: 12:33
+ * Updated in $/xGate
+ * added new commands in ISUP:
+ *   block-faulty-TS
+ *   auto-proceeding
+ * 
+ * *****************  Version 79  *****************
+ * User: Junanto      Date: 6/06/02    Time: 13:25
+ * Updated in $/xGate
+ * Corrected behaviour of SignallingConnect to pass
+ * the last progress indication IE
+ * 
+ * *****************  Version 78  *****************
+ * User: Junanto      Date: 28/05/02   Time: 10:19
+ * Updated in $/xGate
+ * fixed bug when call is waiting for more
+ * digits and detached from task
+ * 
+ * *****************  Version 77  *****************
+ * User: Junanto      Date: 27/05/02   Time: 10:16
+ * Updated in $/xGate
+ * 
+ * *****************  Version 76  *****************
+ * User: Junanto      Date: 27/05/02   Time: 10:05
+ * Updated in $/xGate
+ * Added CallGetMoreDigitsEx which adds max. number of digits.
+ * This function will block until either one of this condition occurs:
+ *   - max. number of digits collected
+ *   - "number complete" received
+ *   - interdigit time out
+ * 
+ * *****************  Version 75  *****************
+ * User: Junanto      Date: 26/05/02   Time: 17:23
+ * Updated in $/xGate
+ * Implemented CallGetMoreDigits
+ * 
+ * *****************  Version 74  *****************
+ * User: Bennylp      Date: 5/16/02    Time: 5:44p
+ * Updated in $/xGate
+ * Check the result of DeviceSuspendReq/DeviceResumeReq
+ * 
+ * *****************  Version 73  *****************
+ * User: Junanto      Date: 15/05/02   Time: 11:27
+ * Updated in $/xGate
+ * 
+ * *****************  Version 72  *****************
+ * User: Bennylp      Date: 4/04/02    Time: 3:36p
+ * Updated in $/xGate
+ * Update call state to CS_Suspended when SUSPEND is recvd.
+ * 
+ * *****************  Version 71  *****************
+ * User: Sonny        Date: 6/02/02    Time: 19:01
+ * Updated in $/xGate
+ * optimizations for quality monitoring
+ * 
+ * *****************  Version 70  *****************
+ * User: Sonny        Date: 4/02/02    Time: 12:33
+ * Updated in $/xGate
+ * calls get quality from media
+ * 
+ * *****************  Version 69  *****************
+ * User: Junanto      Date: 9/01/02    Time: 12:09
+ * Updated in $/xGate
+ * remove dependency to class Timer
+ * 
+ * *****************  Version 68  *****************
+ * User: Bennylp      Date: 11/15/01   Time: 11:56a
+ * Updated in $/xGate
+ * Implement API CallExSetDisconnectMsg
+ * 
+ * *****************  Version 67  *****************
+ * User: Junanto      Date: 17/10/01   Time: 14:46
+ * Updated in $/xGate
+ * Added conditional compilation to include/exclude
+ * call transition logging
+ * 
+ * *****************  Version 66  *****************
+ * User: Junanto      Date: 1/10/01    Time: 14:26
+ * Updated in $/xGate
+ * Added protection against spurious ConnectInd/ConnectCnf
+ * 
+ * *****************  Version 65  *****************
+ * User: Junanto      Date: 1/10/01    Time: 11:02
+ * Updated in $/xGate
+ * Added protection against spurious DisconnectInd
+ * 
+ * *****************  Version 64  *****************
+ * User: Bennylp      Date: 8/20/01    Time: 4:26p
+ * Updated in $/xGate
+ * Show interface name in warning in RelComInd
+ * 
+ * *****************  Version 63  *****************
+ * User: Junanto      Date: 10/08/01   Time: 19:44
+ * Updated in $/xGate
+ * 
+ * *****************  Version 62  *****************
+ * User: Junanto      Date: 29/07/01   Time: 15:16
+ * Updated in $/xGate
+ * Moved connected counters from ConnectReq to ConnectCnf
+ * NormalCallClearing is not considered as success
+ * 
+ * *****************  Version 61  *****************
+ * User: Junanto      Date: 23/07/01   Time: 22:13
+ * Updated in $/xGate
+ * Present call disconnected to the application for early RelComInd
+ * 
+ * *****************  Version 60  *****************
+ * User: Junanto      Date: 22/07/01   Time: 19:39
+ * Updated in $/xGate
+ * Default call cause set to normal call clearing after connected
+ * 
+ * *****************  Version 59  *****************
+ * User: Junanto      Date: 22/07/01   Time: 13:45
+ * Updated in $/xGate
+ * Small changes on timing and condition to display call trace
+ * 
+ * *****************  Version 58  *****************
+ * User: Junanto      Date: 20/07/01   Time: 20:08
+ * Updated in $/xGate
+ * Changed the way CancelJob works: disconnect pending call
+ * rather than ResumeTask
+ * 
+ * *****************  Version 57  *****************
+ * User: Junanto      Date: 20/07/01   Time: 18:51
+ * Updated in $/xGate
+ * Fixed bug when task is woken up more than once
+ * 
+ * *****************  Version 56  *****************
+ * User: Junanto      Date: 19/07/01   Time: 19:33
+ * Updated in $/xGate
+ * Changed some functions name
+ * 
+ * *****************  Version 55  *****************
+ * User: Bennylp      Date: 7/19/01    Time: 2:17p
+ * Updated in $/xGate
+ * Changes to MediaManager functions to support rtp/aud shared stats.
+ * 
+ * *****************  Version 54  *****************
+ * User: Junanto      Date: 18/07/01   Time: 19:00
+ * Updated in $/xGate
+ * Disconnect orphaned calls
+ * 
+ * *****************  Version 53  *****************
+ * User: Junanto      Date: 17/07/01   Time: 13:48
+ * Updated in $/xGate
+ * Corrected behaviour of RelComInd during Initiating state
+ * In most of cases, RelComInd will detach call from task
+ * 
+ * *****************  Version 52  *****************
+ * User: Junanto      Date: 16/07/01   Time: 22:43
+ * Updated in $/xGate
+ * Protect against more than once RelComInd
+ * 
+ * *****************  Version 51  *****************
+ * User: Junanto      Date: 15/07/01   Time: 22:26
+ * Updated in $/xGate
+ * Cause code set to normal unspecified if not set
+ * 
+ * *****************  Version 50  *****************
+ * User: Bennylp      Date: 7/15/01    Time: 7:03p
+ * Updated in $/xGate
+ * RelComInd will not immediately delete call instance.
+ * 
+ * *****************  Version 49  *****************
+ * User: Junanto      Date: 15/07/01   Time: 16:26
+ * Updated in $/xGate
+ * 
+ * *****************  Version 48  *****************
+ * User: Bennylp      Date: 7/15/01    Time: 3:00p
+ * Updated in $/xGate
+ * Fixed bug in signalling connect when received ALERTING/CONNECT.
+ * 
+ * *****************  Version 47  *****************
+ * User: Bennylp      Date: 7/13/01    Time: 3:11p
+ * Updated in $/xGate
+ * Reorganization of call statistic counters.
+ * 
+ * *****************  Version 46  *****************
+ * User: Junanto      Date: 12/07/01   Time: 14:36
+ * Updated in $/xGate
+ * Fixed bug in CallSignallingConnect when CONNECT is received without
+ * ALERTING but the leg A state is already ALERTING
+ * 
+ * *****************  Version 45  *****************
+ * User: Junanto      Date: 10/07/01   Time: 19:06
+ * Updated in $/xGate
+ * Changed interface of Call class constructor
+ * 
+ * *****************  Version 44  *****************
+ * User: Junanto      Date: 4/07/01    Time: 19:54
+ * Updated in $/xGate
+ * 
+ * *****************  Version 43  *****************
+ * User: Junanto      Date: 4/07/01    Time: 17:33
+ * Updated in $/xGate
+ * Added SCR tracing and display
+ * 
+ * *****************  Version 42  *****************
+ * User: Junanto      Date: 2/07/01    Time: 20:59
+ * Updated in $/xGate
+ * Added trace call and call list by group and private info
+ * 
+ * *****************  Version 41  *****************
+ * User: Junanto      Date: 29/06/01   Time: 22:46
+ * Updated in $/xGate
+ * Some minor changes
+ * 
+ * *****************  Version 40  *****************
+ * User: Junanto      Date: 29/06/01   Time: 13:02
+ * Updated in $/xGate
+ * Added PrivateInfo (cpinfo) field in the call parameter
+ * 
+ * *****************  Version 39  *****************
+ * User: Junanto      Date: 28/06/01   Time: 21:10
+ * Updated in $/xGate
+ * Fixed bug in auto-call-proceeding handling
+ * 
+ * *****************  Version 38  *****************
+ * User: Junanto      Date: 26/06/01   Time: 17:16
+ * Updated in $/xGate
+ * Removed auto call-proceeding
+ * 
+ * *****************  Version 37  *****************
+ * User: Junanto      Date: 26/06/01   Time: 10:58
+ * Updated in $/xGate
+ * Added new parameter in application "call-proceeding"
+ * which indicates whether a PROCEEDING needs to
+ * be sent automatically during incoming call or not
+ * 
+ * *****************  Version 36  *****************
+ * User: Junanto      Date: 25/06/01   Time: 16:40
+ * Updated in $/xGate
+ * Centralized SETUP tracing
+ * 
+ * *****************  Version 35  *****************
+ * User: Bennylp      Date: 6/22/01    Time: 11:03p
+ * Updated in $/xGate
+ * Instead of calling Interface::IncConnectedMediaCount, call
+ * Media::NotifyCallState().
+ * 
+ * *****************  Version 34  *****************
+ * User: Junanto      Date: 19/06/01   Time: 21:27
+ * Updated in $/xGate
+ * Pending overlap digits are sent during CallSignallingConnect
+ * 
+ * *****************  Version 33  *****************
+ * User: Junanto      Date: 18/06/01   Time: 13:12
+ * Updated in $/xGate
+ * 
+ * *****************  Version 32  *****************
+ * User: Junanto      Date: 9/06/01    Time: 19:55
+ * Updated in $/xGate
+ * Protect "call list" and "trace call" against GPF when
+ * call doesn't have media
+ * 
+ * *****************  Version 31  *****************
+ * User: Junanto      Date: 7/06/01    Time: 17:00
+ * Updated in $/xGate
+ * Added selective call trace
+ * 
+ * *****************  Version 30  *****************
+ * User: Junanto      Date: 4/06/01    Time: 13:54
+ * Updated in $/xGate
+ * Output of interface list contains nb of connected/busy
+ * for incoming/outgoing calls
+ * 
+ * *****************  Version 29  *****************
+ * User: Junanto      Date: 2/06/01    Time: 22:46
+ * Updated in $/xGate
+ * Fixed bug when a call is disconnected while
+ * in state initiating
+ * 
+ * *****************  Version 28  *****************
+ * User: Junanto      Date: 2/06/01    Time: 14:35
+ * Updated in $/xGate
+ * Changed output format of call trace
+ * 
+ * *****************  Version 27  *****************
+ * User: Bennylp      Date: 6/01/01    Time: 11:31a
+ * Updated in $/xGate
+ * Changed Session ID to generate unique values
+ * 
+ * *****************  Version 26  *****************
+ * User: Junanto      Date: 25/05/01   Time: 13:05
+ * Updated in $/xGate
+ * Corrected behaviour of SignallingConnect
+ * 
+ * *****************  Version 25  *****************
+ * User: Junanto      Date: 21/05/01   Time: 15:54
+ * Updated in $/xGate
+ * Added call holding and connected duration (in secs)
+ * 
+ * *****************  Version 24  *****************
+ * User: Junanto      Date: 10/05/01   Time: 12:40
+ * Updated in $/xGate
+ * Replaced "\r\n" sequence to "\n". Telnet translates
+ * an orphaned "\n" into "\r\n" during output
+ * 
+ * *****************  Version 23  *****************
+ * User: Junanto      Date: 8/05/01    Time: 13:11
+ * Updated in $/xGate
+ * Fixed warning in Purify
+ * 
+ * *****************  Version 22  *****************
+ * User: Junanto      Date: 3/05/01    Time: 11:14
+ * Updated in $/xGate
+ * 
+ * *****************  Version 21  *****************
+ * User: Junanto      Date: 2/05/01    Time: 20:12
+ * Updated in $/xGate
+ * Task detached before calling DeviceDisconnectReq
+ * to accommodate pipelines
+ * 
+ * *****************  Version 20  *****************
+ * User: Junanto      Date: 2/05/01    Time: 18:40
+ * Updated in $/xGate
+ * Added support for call statistics
+ * 
+ * *****************  Version 19  *****************
+ * User: Junanto      Date: 2/05/01    Time: 15:17
+ * Updated in $/xGate
+ * Add new state CS_Releasing
+ * 
+ * *****************  Version 18  *****************
+ * User: Junanto      Date: 1/05/01    Time: 15:43
+ * Updated in $/xGate
+ * Include source in RaiseException
+ * for logging purpose
+ * 
+ * *****************  Version 17  *****************
+ * User: Junanto      Date: 1/05/01    Time: 14:18
+ * Updated in $/xGate
+ * Simplified and reduced log output
+ * 
+ * *****************  Version 16  *****************
+ * User: Junanto      Date: 30/04/01   Time: 21:21
+ * Updated in $/xGate
+ * Fixed bug in pipeline
+ * 
+ * *****************  Version 15  *****************
+ * User: Junanto      Date: 29/04/01   Time: 17:35
+ * Updated in $/xGate
+ * added support for pipeline signalling
+ * 
+ * *****************  Version 14  *****************
+ * User: Junanto      Date: 26/04/01   Time: 17:27
+ * Updated in $/xGate
+ * DisconnectReq while in CS_Null state
+ * does not produce display on call trace
+ * output anymore
+ * 
+ * *****************  Version 13  *****************
+ * User: Junanto      Date: 26/04/01   Time: 12:05
+ * Updated in $/xGate
+ * Changed call trace output to take
+ * benefit of new facilities in KLog
+ * 
+ * *****************  Version 12  *****************
+ * User: Bennylp      Date: 4/25/01    Time: 10:05a
+ * Updated in $/xGate
+ * Added call direction in call name.
+ * 
+ * *****************  Version 11  *****************
+ * User: Junanto      Date: 25/04/01   Time: 11:57
+ * Updated in $/xGate
+ * added call tracing facility
+ * 
+ * *****************  Version 10  *****************
+ * User: Junanto      Date: 18/04/01   Time: 19:54
+ * Updated in $/ct15
+ * 
+ * *****************  Version 9  *****************
+ * User: Junanto      Date: 18/04/01   Time: 15:30
+ * Updated in $/ct15
+ * 
+ * *****************  Version 8  *****************
+ * User: Bennylp      Date: 4/18/01    Time: 3:29p
+ * Updated in $/ct15
+ * Resolve conflicting member names in Call.
+ * 
+ * *****************  Version 7  *****************
+ * User: Junanto      Date: 15/04/01   Time: 20:48
+ * Updated in $/ct15
+ * 
+ * *****************  Version 6  *****************
+ * User: Junanto      Date: 14/04/01   Time: 20:00
+ * Updated in $/ct15
+ * Add more APIs
+ * 
+ * *****************  Version 5  *****************
+ * User: Junanto      Date: 13/04/01   Time: 22:37
+ * Updated in $/ct15
+ * 
+ * *****************  Version 4  *****************
+ * User: Junanto      Date: 13/04/01   Time: 21:03
+ * Updated in $/ct15
+ * 1st version of integration with call manager
+ * 
+ * *****************  Version 3  *****************
+ * User: Junanto      Date: 12/04/01   Time: 19:54
+ * Updated in $/ct15
+ * 
+ * *****************  Version 2  *****************
+ * User: Junanto      Date: 11/04/01   Time: 22:01
+ * Updated in $/ct15
+ * 
+ * *****************  Version 1  *****************
+ * User: Junanto      Date: 10/04/01   Time: 18:17
+ * Created in $/ct15
+ * 
+ * *****************  Version 4  *****************
+ * User: Junanto      Date: 8/04/01    Time: 19:43
+ * Updated in $/ct2
+ * 
+ * *****************  Version 3  *****************
+ * User: Junanto      Date: 2/04/01    Time: 18:33
+ * Updated in $/ct2
+ *----------------------------------------------------------------*/
+
+/*----------------------------------------------------------------* 
+ * Description:
+ *  Call class serves as base class and must be derived by Signalling
+ *  Driver to implement network specific operations.
+ *  - Methods XXXReq are implemented by SignallingDriver
+ *  - Methods XXXReq are called by the framework and serve as entry 
+ *    point to XXXReq. These methods check and change the current state
+ *    before calling their XXXReq counterparts.
+ *----------------------------------------------------------------*/
+
+//#include "stdafx.h"
+#include <unistd.h>
+#include "call.h"
+#include "callmanager.h"
+#include "MediaManager.h"
+#include "task.h"
+#include "kernel.h"
+#include "log.h"
+#include "commonutil.h"	//linux porting
+
+//extern int gethostname (char *__name, size_t __len);
+
+//-----------------------------------------------------------------
+static char __modname__[] =	"Call";
+#define THISMODULE		__modname__
+
+
+//-----------------------------------------------------------------
+#define NEWLINE			"\n"
+
+
+/*----------------------------------------------------------------* 
+ * Useful helper functions
+ *----------------------------------------------------------------*/
+
+static unsigned long GetTickCount()
+{
+  struct timeval tv;
+  if( gettimeofday(&tv, NULL) != 0 )
+  return 0;
+
+  return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+
+static const char *HostName()
+{
+    static char hostname[128];
+    gethostname(hostname,sizeof(hostname)-1);
+    return hostname;
+}
+
+static void CreateCallSessionId(String &csi)
+{
+    static unsigned counter = 0;
+    static const char *hostname = HostName();
+    static time_t start_time = time(NULL);
+    char buffer[200];
+    sprintf(buffer,"%s-%08X-%08X",hostname,start_time,counter++);
+    if (counter == 0) start_time++;
+    csi = buffer;
+}
+
+/** Map CallProgress enum to its string representation
+ */
+static const char *StrCallProgress(CallProgress progress)
+{
+    static struct {
+	CallProgress progress;
+	char *str;
+    } xlat[] = {
+#define MAKESTR(x)	{ x, #x }
+	MAKESTR(CP_NoIndication),
+	MAKESTR(CP_NotEndToEndISDN),
+	MAKESTR(CP_DestinationNonISDN),
+	MAKESTR(CP_OriginationNonISDN),
+	MAKESTR(CP_ReturnedToISDN),
+	MAKESTR(CP_InBandInfoAvailable),
+#undef MAKESTR
+    };
+
+    for (int i=0;i<sizeof(xlat)/sizeof(xlat[0]);i++) {
+	if (progress == xlat[i].progress) return xlat[i].str+3;
+    }
+    return "UnknownProgress";
+}
+
+/** Map CallCause enum to its string representation
+ */
+const char *StrCallState(CallState state)
+{
+    static struct {
+	CallState state;
+	char *str;
+    } xlat[] = {
+#define MAKESTR(x)	{ x, #x }
+    MAKESTR(CS_Null),
+    MAKESTR(CS_Initiating),
+    MAKESTR(CS_Overlap),
+    MAKESTR(CS_Proceeding),
+    MAKESTR(CS_Alerting),
+    MAKESTR(CS_Connecting),
+    MAKESTR(CS_Connected),
+    MAKESTR(CS_Suspended),
+    MAKESTR(CS_Disconnected),
+    MAKESTR(CS_Clearing),
+    MAKESTR(CS_Releasing),
+#undef MAKESTR
+    };
+
+    for (int i=0;i<sizeof(xlat)/sizeof(xlat[0]);i++) {
+	if (state == xlat[i].state) return xlat[i].str+3;
+    }
+    return "UnknownState";
+}
+
+
+/*----------------------------------------------------------------* 
+ * Implementation of CallPaarmeter
+ *----------------------------------------------------------------*/
+
+/** default constructor
+ */
+CallParameter::CallParameter() :
+    _signature(DEADCODE),
+    cct(CCT_Speech),
+    ccl(CCL_ALaw),
+    cpcCalled(CPC_Unknown),
+    cnpCalled(CNP_ISDN),
+    cntCalled(CNT_Unknown),
+    cpcCalling(CPC_Ordinary),
+    cnpCalling(CNP_ISDN),
+    cntCalling(CNT_Unknown),
+    cnpOriginalCalledNumber(CNP_ISDN),
+    cntOriginalCalledNumber(CNT_Unknown),
+    ccpOriginalCalledNumber(CCP_Allowed),
+    cnpRedirectingNumber(CNP_ISDN),
+    cntRedirectingNumber(CNT_Unknown),
+    ccpRedirectingNumber(CCP_Allowed),
+    cnpLocationNumber(CNP_ISDN),
+    cntLocationNumber(CNT_Unknown),
+    ccpLocationNumber(CCP_Allowed),
+    redirectionIndicator(0),
+    redirectionOrigReason(0),
+    redirectionCounter(0),
+    redirectionReason(0),
+
+    complete(true),
+    _isHuntGroupCaller(false),
+    _isSwitchBoardCall(false),
+    isForkingenabled(0),
+    inband_dtmf_method(false),
+    sipinfo_method(false),
+    ccp(CCP_Allowed),
+    ccs(CCS_Network),
+    cmitCalling(CMIT_No_Identity),
+    ct(CT_Normal),
+    bssapDHVal(0),
+    suspend_resume_notification(false),
+    cw(false),
+    ect_notification(false),
+    call_id(""),
+    Legid(0),
+    PbState(0),
+    cnCalled(""),
+    cnCalling(""),
+    csfilename(""),
+    callOnHoldFilenameCallingParty(""),
+    callOnHoldFilenameCalledParty(""),
+    callForwardingFile(""),
+    voicemailRecordingFile(""),
+    rbtFile(""),
+    callingDeviceType("")
+{
+
+    //memset(&swbinfo,'\0', sizeof(swbinfo));
+    CreateCallSessionId(csi);
+}
+
+/** override default copy constructor
+ */
+CallParameter::CallParameter(const CallParameter &rhs) :
+    _signature(DEADCODE),
+    csi(rhs.csi),
+    cct(rhs.cct),
+    ccl(rhs.ccl),
+    cpcCalled(rhs.cpcCalled),
+    cnCalled(rhs.cnCalled),
+    proxyUserName(rhs.proxyUserName),
+    csfilename(rhs.csfilename),
+    callOnHoldFilenameCallingParty(rhs.callOnHoldFilenameCallingParty),
+    callOnHoldFilenameCalledParty(rhs.callOnHoldFilenameCalledParty),
+    rbtFile(rhs.rbtFile),
+    callForwardingFile(rhs.callForwardingFile),
+    voicemailRecordingFile(rhs.voicemailRecordingFile),
+
+    calledDeviceType(rhs.calledDeviceType),
+    PbState(rhs.PbState),
+    Legid(rhs.Legid),
+    call_id(rhs.call_id),
+     isForkingenabled(rhs.isForkingenabled),
+//    swbinfo(rhs.swbinfo),
+    //domainName(rhs.domainName),
+    cnpCalled(rhs.cnpCalled),
+    cntCalled(rhs.cntCalled),
+    csCalled(rhs.csCalled),
+    csaCalled(rhs.csaCalled),
+    routeAddr(rhs.routeAddr),
+    complete(rhs.complete),
+    _isHuntGroupCaller(false),
+    _isSwitchBoardCall(rhs._isSwitchBoardCall),
+    inband_dtmf_method(rhs.inband_dtmf_method),
+    sipinfo_method(rhs.sipinfo_method),
+    confFlag(rhs.confFlag),
+    cui(rhs.cui),
+    cpcCalling(rhs.cpcCalling),
+    cnCalling(rhs.cnCalling),
+    cnpCalling(rhs.cnpCalling),
+    cntCalling(rhs.cntCalling),
+    cnOriginalCalledNumber(rhs.cnOriginalCalledNumber),
+    cnpOriginalCalledNumber(rhs.cnpOriginalCalledNumber),
+    cntOriginalCalledNumber(rhs.cntOriginalCalledNumber),
+    ccpOriginalCalledNumber(rhs.ccpOriginalCalledNumber),
+    transferType(rhs.transferType),
+    cnRedirectingNumber(rhs.cnRedirectingNumber),
+    cnpRedirectingNumber(rhs.cnpRedirectingNumber),
+    cntRedirectingNumber(rhs.cntRedirectingNumber),
+    ccpRedirectingNumber(rhs.ccpRedirectingNumber),
+    #ifdef CALL_TRANSFER
+//        csaRedirected(rhs.csaRedirected),
+    #endif
+    cnLocationNumber(rhs.cnLocationNumber),
+    cnpLocationNumber(rhs.cnpLocationNumber),
+    cntLocationNumber(rhs.cntLocationNumber),
+    ccpLocationNumber(rhs.ccpLocationNumber),
+    redirectionIndicator(rhs.redirectionIndicator),
+    redirectionOrigReason(rhs.redirectionOrigReason),
+    redirectionCounter(rhs.redirectionCounter),
+    redirectionReason(rhs.redirectionReason),
+    csCalling(rhs.csCalling),
+    csaCalling(rhs.csaCalling),
+    ccp(rhs.ccp),
+    ccs(rhs.ccs),
+    cpinfo(rhs.cpinfo),
+    extraInfo(rhs.extraInfo),
+    cmitCalling(rhs.cmitCalling),
+    ct(rhs.ct),
+    bssapDHVal(rhs.bssapDHVal),
+    suspend_resume_notification(rhs.suspend_resume_notification),
+    cw(rhs.cw),
+    ect_notification(rhs.ect_notification),
+    csCalledCodec(rhs.csCalledCodec),
+    callRecording(rhs.callRecording),
+    callingDeviceType(rhs.callingDeviceType)
+
+{ 
+   // memcpy(&swbinfo, &rhs.swbinfo,sizeof(rhs.swbinfo));
+}
+
+/** override default copy operator
+ */
+CallParameter &CallParameter::operator=(const CallParameter &rhs) 
+{
+    _signature = DEADCODE;
+    csi = rhs.csi;
+    cct = rhs.cct;
+    ccl = rhs.ccl;
+    cpcCalled = rhs.cpcCalled;
+    cnCalled = rhs.cnCalled;
+    proxyUserName = rhs.proxyUserName;
+    csfilename = rhs.csfilename;
+    callOnHoldFilenameCallingParty = rhs.callOnHoldFilenameCallingParty;
+    callOnHoldFilenameCalledParty = rhs.callOnHoldFilenameCalledParty;
+    callForwardingFile = rhs.callForwardingFile;
+    voicemailRecordingFile = rhs.voicemailRecordingFile;
+    rbtFile = rhs.rbtFile;
+    isForkingenabled = rhs.isForkingenabled;
+    calledDeviceType = rhs.calledDeviceType;
+    Legid = rhs.Legid;
+    PbState = rhs.PbState;
+    callingDeviceType = rhs.callingDeviceType;
+    callRecording =  rhs.callRecording;
+    m_mappedUserList = rhs.m_mappedUserList;
+//    swbinfo =  rhs.swbinfo;
+    swbinfo = rhs.swbinfo;
+//memcpy(&swbinfo, &rhs.swbinfo,sizeof(rhs.swbinfo));
+    //domainName = rhs.domainName;
+    cnpCalled = rhs.cnpCalled;
+    cntCalled = rhs.cntCalled;
+    csCalled = rhs.csCalled;
+    csaCalled = rhs.csaCalled;
+    routeAddr = rhs.routeAddr;
+    complete = rhs.complete;
+    cui = rhs.cui;
+    cpcCalling = rhs.cpcCalling;
+    cnCalling = rhs.cnCalling;
+    cnpCalling = rhs.cnpCalling;
+    cntCalling = rhs.cntCalling;
+    transferType = rhs.transferType;
+    cnOriginalCalledNumber = rhs.cnOriginalCalledNumber;
+    cnpOriginalCalledNumber = rhs.cnpOriginalCalledNumber;
+    cntOriginalCalledNumber = rhs.cntOriginalCalledNumber;
+    ccpOriginalCalledNumber = rhs.ccpOriginalCalledNumber;
+    cnRedirectingNumber = rhs.cnRedirectingNumber;
+    cnpRedirectingNumber = rhs.cnpRedirectingNumber;
+    cntRedirectingNumber = rhs.cntRedirectingNumber;
+    ccpRedirectingNumber = rhs.ccpRedirectingNumber;
+    #ifdef CALL_TRANSFER
+//       csaRedirected = rhs.csaRedirected;
+    #endif
+    cnLocationNumber = rhs.cnLocationNumber;
+    cnpLocationNumber = rhs.cnpLocationNumber;
+    cntLocationNumber = rhs.cntLocationNumber;
+    ccpLocationNumber = rhs.ccpLocationNumber;
+    redirectionIndicator = rhs.redirectionIndicator;
+    redirectionOrigReason = rhs.redirectionOrigReason;
+    redirectionCounter = rhs.redirectionCounter;
+    redirectionReason = rhs.redirectionReason;
+
+    csCalling = rhs.csCalling;
+    csaCalling = rhs.csaCalling;
+    ccp = rhs.ccp;
+    ccs = rhs.ccs;
+    cpinfo = rhs.cpinfo;
+    extraInfo = rhs.extraInfo;
+    cmitCalling = rhs.cmitCalling;
+    ct = rhs.ct;
+    bssapDHVal = rhs.bssapDHVal;
+    //suspend_resume_notification = rhs.suspend_resume_notification;
+    cw = rhs.cw;
+    //ect_notification = rhs.ect_notification;
+
+    _isSwitchBoardCall = rhs._isSwitchBoardCall;
+    inband_dtmf_method = rhs.inband_dtmf_method;
+    sipinfo_method = rhs.sipinfo_method;
+	confFlag = rhs.confFlag;
+    cnCallingOrig = rhs.cnCallingOrig;
+
+    call_id = rhs.call_id;
+    csCalledCodec = rhs.csCalledCodec;
+
+    return *this;
+}
+
+bool CallParameter::IsValid() 
+{
+    try {
+	return (_signature == DEADCODE);
+    } catch (...) {
+	return false;
+    }
+}
+
+
+/*----------------------------------------------------------------* 
+ * Implementation of Call
+ *----------------------------------------------------------------*/
+
+Call::Call(CallDirection dir,const char* defInterfaceName)
+{
+    static unsigned short CallId = 0;
+     _groupName = "";
+    SetInterface(defInterfaceName);// Yadav changes 
+//    _interfaceName = defInterfaceName;
+    
+
+    //char buffer[16];
+    //sprintf(buffer,"%04X", CallId++);
+    //_name = buffer;
+
+    // call duration variables
+    _hasBeenConnected = false;
+    _tmHolding.start();
+
+    _task = NULL;
+    _peerCall = NULL;
+    _cause = CC_Unassigned;
+    _taskSuspendCount = 1;
+    _taskAwareOfLineDrop = false;
+    _media = NULL;
+    _trace = false;
+    _released = false;
+    _state = CS_Null;
+    _lastProgress = CP_NoIndication;
+    _overlapRcvd = "";
+
+    _waitForMoreDigits = false;
+    _timeLastDigit = 0;
+    _delayInterDigit = 0;
+    _appComplete = NULL;
+    _appDigits = NULL;
+
+    SetDirection(dir);
+    SetState(CS_Null);
+
+    CallManager::Instance()->InsertActiveCall(this);
+    CallManager::Instance()->StatIncCallCounter(dir);
+}
+
+//CallParameter::~CallParameter()
+//{
+//}
+
+Call::~Call()
+{
+    //assert(_peerCall == NULL);
+//    if (_peerCall) {
+//	_peerCall->_peerCall = NULL;
+  //  }
+    CallManager::Instance()->RemoveActiveCall(this);
+    CallManager::Instance()->StatDecCallCounter(_direction);
+}
+
+/** Call trace related
+ */
+void Call::EnableTrace()
+{
+    _trace = true;
+}
+
+void Call::DisableTrace()
+{
+    _trace = false;
+}
+
+bool Call::TraceEnabled()
+{
+    return _trace;
+}
+
+unsigned Call::GetTraceId() const
+{
+    return _traceId;
+}
+
+/** Return a pointer to call parameter
+ */
+CallParameter *Call::GetCallParameter()
+{
+    return &_callParam;
+}
+/*yadav changes in live xgate*/
+void Call::SetInterface(const char* defInterfaceName){
+        static unsigned short CallId = 0;
+        if(defInterfaceName){
+                _interfaceName = defInterfaceName;
+                if(strlen(_interfaceName)<6){
+                        char buffer[16];
+                        sprintf(buffer,"%04X", CallId++);
+                        _name = buffer;
+                }
+        }
+}
+
+/** Set call direction: incoming/outgoing
+ */
+void Call::SetDirection(CallDirection direction)
+{
+    _direction = direction;
+}
+
+/** Return call direction: incoming/outgoing
+ */
+CallDirection Call::GetDirection()
+{
+    return _direction;
+}
+
+/** Return call name
+ */
+const char *Call::GetName() 
+{
+    return _name.c_str();
+}
+
+/** Return the task attached to this call
+ */
+CTask *Call::GetTask() 
+{
+    return _task;
+}
+
+/** Change the current call state to another state
+ */
+void Call::SetState(CallState state)
+{
+    if (_state != state) {
+	//***CLog::Detail(THISMODULE,"Call %s set to %s",GetName(),StrCallState(state));
+	_state = state;
+    }
+}
+
+/** Return the current call state
+ */
+CallState Call::GetState()
+{
+    return _state;
+}
+
+/** Return the current call state
+ *
+ */
+CallMediaState Call::GetMediaState()
+{
+        return _mediaState;
+}
+
+/** Change the current call media state to another state
+ *
+ */
+void Call::SetMediaState(CallMediaState state)
+{
+        if(this)
+        {
+                _mediaState = state;
+        }
+}
+
+/** Return call cause code
+ */
+CallCause Call::GetCause()
+{
+    return _cause;
+}
+
+/** Set call cause if not already set
+ */
+void Call::SetCause(CallCause cause)
+{
+    if (_cause == CC_Unassigned) {
+	//***CLog::Detail(THISMODULE,"Call %s cause set to 0x%02X %s",GetName(),cause,CallManager::Instance()->StrCallCause(cause));
+	if ((int)cause < 0 || (int)cause > 0xffff) cause = CC_NormalUnspecified;
+	_cause = cause;
+    }
+}
+
+/** This function is called when a DisconnectInd is received by a call
+ */
+void Call::OnDisconnectInd()
+{
+    CTask *task = GetTask(); 
+    if (task) {
+	//ResumeTask();
+	if (!_taskAwareOfLineDrop)
+		task->RaiseException(EX_LINE_DROP,"Call",GetName());
+#ifdef __linux__
+	DisconnectReq(_cause,CP_NoIndication);
+#endif
+	_taskAwareOfLineDrop = true;
+    } else {
+	DisconnectReq(CC_NormalCallClearing,CP_NoIndication);
+    }
+}
+
+/** This function is called when a RelComInd is received by a call
+ */
+void Call::OnRelComInd()
+{
+    CTask *task = GetTask(); 
+    if (task) {
+	//ResumeTask();
+	if (!_taskAwareOfLineDrop) 
+	{
+		//printf ("******IPPBX :  Call::OnRelComInd() : task->RaiseException(EX_LINE_DROP \n");
+		task->RaiseException(EX_LINE_DROP,"Call",GetName());
+	}
+	_taskAwareOfLineDrop = true;
+	/////_before_first_call = false;
+    }
+}
+
+/** Inform Call Manager or Kernel about the new incoming call
+    - if accepted, attach call to task
+    - otherwise, disconnect the call
+ */
+
+/** Called on receipt of SETUP message
+ */
+void Call::SetupInd(CallParameter &cparam)
+{
+	CLog::Detail(THISMODULE,"callmanager.cpp : Inside  Call::SetupInd");
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_SetupInd);
+#endif
+    _callParam = cparam;
+
+    TraceSetup();
+
+    SetDirection(CD_Incoming);
+    if (!_callParam.complete) {
+	_overlapRcvd = cparam.cnCalled;
+	SetState(CS_Overlap);
+    } else {
+	SetState(CS_Initiating);
+
+	//***no more automatic call proceeding
+	//ProceedingReq(CP_NoIndication);
+    }
+	
+    Media* med = GetMedia();
+    Interface *itf = med ? med->GetInterface() : 0;
+    if (!itf || !itf->IsDynamic())  {
+	CallManager::Instance()->OnIncomingCall(this);
+    }
+	// added for multithreaded_ippbx : calling OnIncomingCall() explicitely.
+	///////CallManager::Instance()->OnIncomingCall(this);
+}
+
+/** Called on receipt of SETUP message
+ */
+void Call::TraceSetup()
+{
+    CallManager::Instance()->TestTraceCondition(this, &_traceId);
+    if (TraceEnabled()) {
+	Media *media = GetMedia();
+	CallManager::Instance()->
+	    TraceCall(
+		this,GetDirection() == CD_Incoming,
+		"SETUP",
+		"ddi:%s%s cli:%s%s%s%s%s%s%s%s%s%s%s%s%s media=%s group=%s sesId:%s ",
+		_callParam.cnCalled.c_str(),
+		_callParam.complete ? "." : "",
+		_callParam.cnCalling.c_str(),
+		_callParam.cnOriginalCalledNumber.length() ? " ocn:" : "",
+		_callParam.cnOriginalCalledNumber.length() ? _callParam.cnOriginalCalledNumber.c_str() : "",
+		_callParam.cnRedirectingNumber.length() ? " rn:" : "",
+		_callParam.cnRedirectingNumber.length() ? _callParam.cnRedirectingNumber.c_str() : "",
+		_callParam.cnLocationNumber.length() ? " loc:" : "",
+		_callParam.cnLocationNumber.length() ? _callParam.cnLocationNumber.c_str() : "",
+		_callParam.csaCalled.length() ? " cldSig:" : "",
+		_callParam.csaCalled.length() ? _callParam.csaCalled.c_str() : "",
+		_callParam.cui.length() ? " ui:" : "",
+		_callParam.cui.length() ? _callParam.cui.c_str() : "",
+		_callParam.cpinfo.length() ? " pinfo:" : "",
+		_callParam.cpinfo.length() ? _callParam.cpinfo.c_str() : "",
+		media ? media->GetName() : "(null)",
+		GetGroupName(),
+		_callParam.csi.c_str());
+    }
+}
+
+/** Called on receipt of SETUP_ACK or in the case where the network
+    does not provide such facility, after the task is suspended (to
+    resume the task).
+ */
+void Call::SetupCnf()
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_SetupCnf);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"SETUP_ACK",
+		NULL);
+
+    if (GetState() <= CS_Initiating) {
+	if (!GetCallParameter()->complete) SetState(CS_Overlap);
+
+	//***else SetState(CS_Proceeding);
+	ResumeTask();  //*** TBD: review the need to block
+    }
+}
+
+/** Called on receipt of additional digits from the network
+ */
+void Call::OverlapInd(const char *additionalDigits,bool complete)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_OverlapInd);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"INFORMATION",
+		"cldNb:%s%s",
+		additionalDigits,
+		complete ? "." : "");
+
+    if (_peerCall && (_peerCall->GetState() == GetState())) {
+	_peerCall->OverlapReq(additionalDigits,complete);
+    } else {
+	_overlapRcvd += additionalDigits;
+    }
+    CallParameter *cparam = GetCallParameter();
+    cparam->cnCalled += additionalDigits;
+    if (complete) {
+	// call enter Proceeding state
+	cparam->complete = true;
+
+	CTask *task = GetTask();
+	if (task && task->GetApplication()->AppSendCallProceeding()) {
+	    ProceedingReq(CP_NoIndication, 0);
+	}
+    }
+
+    // if the call is suspended in GetMoreDigits
+    // check if the condition to resume the task is satisfied
+    if (_waitForMoreDigits) {
+
+	if ((_overlapRcvd.length() >= _maxDigits) || complete) {
+	    *_appComplete = cparam->complete;
+	    safe_strcpy(_appDigits, _overlapRcvd.c_str(), MAXAPPSTRLEN);
+	    ResumeTask();
+	    CallManager::Instance()->RemoveCallFromWaitDigitsList(this);
+	} else {
+	    _timeLastDigit = GetTickCount();
+	}
+    }
+}
+
+/** Called on receipt of PROCEEDING message from the network
+ */
+void Call::ProceedingInd(CallProgress progress, CallExtraInfo* exinfo)
+{
+    if (GetState() < CS_Proceeding) {
+#ifdef CALL_LOG_TRANSITION
+	_transition.push_back(CT_ProceedingInd);
+#endif
+	
+	if (progress == CP_NoIndication) {
+	    if (TraceEnabled())
+		CallManager::Instance()->
+		TraceCall(this, true, "PROCEEDING", "");
+	} else {
+	    _lastProgress = progress;
+	    if (TraceEnabled())
+		CallManager::Instance()->
+		TraceCall(this, true, "PROCEEDING", "progress:%s", StrCallProgress(progress));
+	}
+	
+	if (GetState() == CS_Initiating) 
+	    ResumeTask();
+	
+	if (_peerCall) {
+	    switch (_peerCall->GetState()) {
+	    case CS_Null:
+	    case CS_Initiating:
+	    case CS_Overlap:
+		_peerCall->ProceedingReq(progress, exinfo);
+		break;
+	    case CS_Proceeding:
+		_peerCall->ProgressReq(progress, exinfo);
+		break;
+	    }
+	}
+	SetState(CS_Proceeding);
+
+    } else if (GetState() == CS_Proceeding) {
+	ProgressInd(progress, exinfo);
+
+    } else {
+	CLog::Info(
+	    THISMODULE, GetTask(), 
+	    "Unexpected PROCEEDING received by call %s in state %s",
+	    GetName(), StrCallState(GetState()));
+    }
+}
+
+/** Called on receipt of PROGRESS message from the network
+ */
+void Call::ProgressInd(CallProgress progress, CallExtraInfo* exinfo)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ProgressInd);
+#endif
+
+    if (progress == CP_NoIndication) {
+	if (TraceEnabled())
+	    CallManager::Instance()->
+		TraceCall(this, true, "PROGRESS", "");
+    } else {
+	_lastProgress = progress;
+	if (TraceEnabled())
+	    CallManager::Instance()->
+		TraceCall(this, true, "PROGRESS", "progress:%s", StrCallProgress(progress));
+    }
+
+    //*** might be necessary
+    if (GetState() == CS_Initiating) {
+	ResumeTask();
+	//??? if (!GetCallParameter()->complete) SetState(CS_Overlap);
+    }
+    //***/
+    if (GetState() == CS_Initiating)
+	CLog::Debug(THISMODULE,GetTask(),"Unexpected PROGRESS received by call %s in state %s",GetName(),StrCallState(GetState()));
+
+    if (_peerCall && (_peerCall->GetState() <= CS_Connected)) {
+	_peerCall->ProgressReq(progress, exinfo);
+    }
+}
+
+/** Called on receipt of ALERTING message from the network
+ */
+void Call::AlertingInd(CallProgress progress, CallExtraInfo* exinfo)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_AlertingInd);
+#endif
+
+    if (progress == CP_NoIndication) {
+	if (TraceEnabled())
+	    CallManager::Instance()->
+		TraceCall(this, true, "ALERTING", "");
+    } else {
+	_lastProgress = progress;
+	if (TraceEnabled())
+	    CallManager::Instance()->
+		TraceCall(this, true, "ALERTING", "progress:%s", StrCallProgress(progress));
+    }
+
+    if (GetState() == CS_Initiating) 
+	ResumeTask();
+
+    if (_peerCall && (_peerCall->GetState() <= CS_Alerting)) {
+	_peerCall->AlertingReq(progress, exinfo);
+    }
+    SetState(CS_Alerting);
+}
+
+/** Called on receipt of CONNECT message from the network
+ */
+void Call::ConnectInd(CallExtraInfo* exinfo)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ConnectInd);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"CONNECT",
+		NULL);
+
+    if (GetState() < CS_Connected) {
+
+	// start call duration timers
+	_hasBeenConnected = true;
+	_tmConnected.start();
+
+	if(GetMedia()) {
+	GetMedia()->NotifyCallState (this, CS_Connected);
+	GetMedia()->GetInterface()->IncTotalCallConnected(GetMedia(), GetDirection());
+	GetMedia()->GetInterface()->IncTotalCallSuccess(GetMedia(), GetDirection());
+	}
+
+	if (GetState() == CS_Initiating) 
+	    ResumeTask();
+
+	if (_peerCall && (_peerCall->GetState() <= CS_Connected)) {
+	    _peerCall->ConnectReq(exinfo);
+	}
+
+	SetState(CS_Connected);
+	SetCause(CC_NormalCallClearing);
+
+	if (GetTask()) 
+	{
+		GetTask()->RaiseException(EX_DIAL_STATUS,"Call",GetName());
+	}
+    } else {
+	CLog::Warning(THISMODULE,"Call %s received spurious ConnectInd in state %s, ignored", GetName(), StrCallState(GetState()));
+    }
+}
+
+void Call::ReferInd(void)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ReferInd);
+#endif
+
+    printf("****** Inside ReferInd *********\n");
+
+    if (GetTask())
+    {
+	if (GetDirection() == CD_Incoming) // A transfers to C
+	{
+	        GetTask()->RaiseException(EX_TRANSFER_A, "Sofia", "CallTransfer_A");
+	} else
+	{
+	        GetTask()->RaiseException(EX_TRANSFER_B, "Sofia", "CallTransfer_B");
+	}
+    }
+}
+
+void Call::UnAttendReferInd(void)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_UnAttendReferInd);
+#endif
+
+    printf("****** Inside UnAttendReferInd  *********\n");
+
+    if (GetTask())
+    {
+	if (GetDirection() == CD_Incoming) // A transfers to C
+	{
+	        GetTask()->RaiseException(EX_CALLFLIP_A, "Sofia", "CallUnAttendTransfer_A");
+	} else // CD_Outgoing. B transfers to C
+	{
+	        GetTask()->RaiseException(EX_CALLFLIP_B, "Sofia", "CallUnAttendTransfer_B");
+	}
+    }
+}
+
+void Call::CallFlipInd(void)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_CallFlip);
+#endif
+
+    printf("****** Inside CallFlipInd *********\n");
+
+    if (GetTask())
+    {
+        if (GetDirection() == CD_Incoming) // A transfers to C
+        {
+                GetTask()->RaiseException(EX_CALLFLIP_APP_A, "Sofia", "CallFlipApp_A");
+        } else // CD_Outgoing. B transfers to C
+        {
+                GetTask()->RaiseException(EX_CALLFLIP_APP_B, "Sofia", "CallFlipApp_B");
+        }
+    }
+}
+
+
+void Call::CallUnFlipInd(void)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_CallUnFlip);
+#endif
+
+    printf("****** Inside CallUnFlipInd *********\n");
+
+    if (GetTask())
+    {
+        if (GetDirection() == CD_Incoming) // A transfers to C
+        {
+                GetTask()->RaiseException(EX_CALLUNFLIP_APP_A, "Sofia", "CallUnFlipApp_A");
+        } else // CD_Outgoing. B transfers to C
+        {
+                GetTask()->RaiseException(EX_CALLUNFLIP_APP_B, "Sofia", "CallUnFlipApp_B");
+        }
+    }
+}
+
+void Call::CallParkInd(void)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_OnCallPark);
+#endif
+
+    printf("****** Inside OnCallPark *********\n");
+
+	if (GetTask())
+	{
+                if (GetDirection() == CD_Incoming) // A Parks the Call
+                {
+                        GetTask()->RaiseException(EX_CALLPARK_A, "Sofia", "Call_Park_A");
+                } else // B Parks the Call
+                {
+                        GetTask()->RaiseException(EX_CALLPARK_B, "Sofia", "Call_Park_B");
+                }
+	}
+}
+
+void Call::CallHoldInd(int ishold)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_CallHold);
+#endif
+
+    printf("****** Inside CallHoldInd *********\n");
+        if (GetTask())
+        {
+                if (ishold)
+                {
+                        GetTask()->RaiseException(EX_SUSPEND, "Sofia", "APP_Suspend");
+                } else
+                        GetTask()->RaiseException(EX_RESUME, "Sofia", "APP_Resume");
+                {
+                }
+        }
+
+}
+
+void Call::CallRecInd(int isrec)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_CallRec);
+#endif
+
+    printf("****** Inside CallRecInd *********\n");
+        if (GetTask())
+        {
+                if (isrec)
+                {
+                        GetTask()->RaiseException(EX_REC_START, "Sofia", "APP_RecStart");
+                } else
+                        GetTask()->RaiseException(EX_REC_STOP, "Sofia", "APP_RecStop");
+                {
+                }
+        }
+
+}
+
+
+/** Called on receipt of CONNECT_ACK message from the network or in the case 
+    where the network does not provide such facility, after the task is 
+    suspended (to resume the task).
+ */
+void Call::ConnectCnf()
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ConnectCnf);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"CONNECT_ACK",
+		NULL);
+
+    if (GetState() < CS_Connected) {
+	// start call duration timers
+	_hasBeenConnected = true;
+	_tmConnected.start();
+
+	if(GetMedia()) {
+	GetMedia()->NotifyCallState (this, CS_Connected);
+	GetMedia()->GetInterface()->IncTotalCallConnected(GetMedia(), GetDirection());
+	GetMedia()->GetInterface()->IncTotalCallSuccess(GetMedia(), GetDirection());
+	}
+
+	SetState(CS_Connected);
+	SetCause(CC_NormalCallClearing);
+	ResumeTask();
+    } else {
+	CLog::Warning(THISMODULE,"Call %s received spurious ConnectCnf in state %s, ignored", GetName(), StrCallState(GetState()));
+    }
+}
+
+/** Called on receipt of SUSPEND message from the network
+ */
+void Call::SuspendInd()
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_SuspendInd);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"SUSPEND",
+		NULL);
+
+
+    if (GetState() != CS_Connected && GetState() != CS_Clearing) {
+	CLog::Warning( THISMODULE, GetTask(), "Spurious SUSPEND indication received in state %s",
+					      StrCallState(GetState()));
+	return;
+    }
+
+    if (_peerCall && (_peerCall->GetState() == GetState())) {
+	_peerCall->SuspendReq();
+    }
+
+    SetState( CS_Suspended );
+    if(this->GetCallParameter()->suspend_resume_notification) {
+	if (GetTask()) GetTask()->RaiseException(EX_SUSPEND,"Call",GetName());
+    }
+}
+
+/** Called on receipt of RESUME message from the network
+ */
+void Call::ResumeInd()
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ResumeInd);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"RESUME",
+		NULL);
+
+    if (GetState() != CS_Suspended) {
+	CLog::Warning( THISMODULE, GetTask(), "Spurious RESUME indication received in state %s",
+					      StrCallState(GetState()));
+	return;
+    }
+    if (_peerCall && (_peerCall->GetState() == GetState())) {
+	_peerCall->ResumeReq();
+    }
+    SetState( CS_Connected );
+    if(this->GetCallParameter()->suspend_resume_notification) {
+	if (GetTask()) GetTask()->RaiseException(EX_RESUME,"Call",GetName());
+}
+}
+
+/** This indication may be received when call is in the following state:
+    - Outgoing establish call	--> Dial Status
+    - Incoming establish call	--> Remote Hangup
+    - Active			--> Remote Hangup
+    - Disconnected		--> Spurious
+ */
+void Call::DisconnectInd(CallCause cause,CallProgress progress)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_DisconnectInd);
+#endif
+
+        // receive Disconnect after sending DisconnectReq
+    if (GetState() >= CS_Disconnected || GetState() == CS_Null) {
+	CLog::Warning(THISMODULE,"Call %s received spurious DisconnectInd in state %s, ignored",GetName(),StrCallState(GetState()));
+	return;
+    }
+
+
+    if (TraceEnabled()) {
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"DISCONNECT",
+		"%s%s%s%s%s",
+		cause != CC_Unassigned ? "cause:" : "",
+		cause != CC_Unassigned ? CallManager::Instance()->StrCallCause(cause) : "",
+		cause != CC_Unassigned ? " " : "",
+		progress != CP_NoIndication ? "progress:" : "",
+		progress != CP_NoIndication ? StrCallProgress(progress) : "");
+     }
+
+    // orphan calls, disconnect directly
+    if (!GetTask()) {
+	CLog::Detail(THISMODULE,"Disconnecting orphaned call %s",GetName());
+	SetState(CS_Disconnected);
+	DisconnectReq(cause,CP_NoIndication);
+	return;
+    }
+
+    CallState prevState = GetState();
+    SetState(CS_Disconnected);
+
+    SetCause(cause);
+
+    // Notify Kernel of disconnected status.
+    // This indication may come as the result of call establishment
+    // or call clearing when call is not active yet
+    switch (prevState) {
+    case CS_Null:
+	// it shouldn't happen!
+	//assert(false);
+	break;
+
+    // call establishment failure
+    case CS_Initiating:
+	ResumeTask();
+	// fall through
+
+    default:
+	// Notify Kernel of CallSetup status
+	OnDisconnectInd();
+	break;
+    }
+
+    // disconnect signalling path
+//    if (_peerCall) {
+//	_peerCall->_peerCall = NULL;
+//	_peerCall = NULL;
+  //  }
+}
+
+/** This indication may be received when call is in the following state:
+    - Outgoing establish call	--> Dial Status
+    - Incoming establish call	--> Remote Hangup
+    - Active			--> Remote Hangup
+    - Disconnected		--> Change state to Null, close later
+    - Clearing			--> Change state to Null
+ */
+void Call::RelComInd(CallCause cause)
+{
+    if (GetState() == CS_Null) {
+	CLog::Warning(THISMODULE,"Call %s on %s: received RELEASE_COMPLETE in state NULL, ignored",
+				 GetName(), GetInterfaceName());
+	return;
+    }
+
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_RelComInd);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"RELEASE_COMPLETE",
+		"%s%s",
+		cause != CC_Unassigned ? "cause:" : "",
+		cause != CC_Unassigned ? CallManager::Instance()->StrCallCause(cause) : "");
+
+    CallState prevState = GetState();
+    SetState(CS_Null);
+
+    SetCause(cause);
+    _released = true;
+
+    // stop call duration timers
+    Time_Value connected, holding;
+    _tmHolding.stop();
+    _tmHolding.get_elapsed(&holding);
+
+    Media *media = GetMedia();
+
+    if (_hasBeenConnected) {
+	_tmConnected.stop();
+	if(media)
+	GetMedia()->NotifyCallState (this, CS_Releasing);
+	_tmConnected.get_elapsed(&connected);
+
+	if (media && media->GetInterface()->IsValid()) {
+	    media->GetInterface()->IncTotalCallHoldingTime(media, GetDirection(), holding.sec());
+	    media->GetInterface()->IncTotalCallConnectedTime(media, GetDirection(), connected.sec());
+	}
+    } else {
+	if (media) {
+	    media->GetInterface()->IncTotalCallHoldingTime(media, GetDirection(), holding.sec());
+
+	    switch (GetCause()) {
+	    case CC_NoAnswerFromUser:
+	    case CC_UserBusy:
+		media->GetInterface()->IncTotalCallSuccess(media, GetDirection());
+		break;
+
+	    default:
+		media->GetInterface()->IncTotalCallFailed(media, GetDirection());
+		break;
+	    }
+	}
+    }
+
+    // detach media
+    //DetachMedia(holding.sec()+(holding.msec()/500),connected.sec()+(connected.msec()/500));
+    DetachMedia((holding.msec()+500)/1000,(connected.sec()+500)/1000);
+
+    // disconnect signalling path
+//    if (_peerCall) {
+//	_peerCall->_peerCall = NULL;
+//	_peerCall = NULL;
+  //  }
+
+    // This instance will be closed and destroyed 
+    // when call is already detached from task
+    switch (prevState) {
+    case CS_Clearing:
+    case CS_Releasing:
+	break;
+
+    case CS_Initiating:
+	ResumeTask();
+	OnRelComInd();
+	//DetachTask();
+	break;
+
+    default:
+	/*
+	if (GetTask()) {
+	    ResumeTask();
+	    OnRelComInd();
+	    CLog::Warning(THISMODULE,GetTask(),"Call %s got RELEASE_COMPLETE in state %s while still attached to task, detached",GetName(),StrCallState(prevState));
+	    DetachTask();
+	} else {
+	    OnRelComInd();
+	}
+	*/
+	OnRelComInd();
+	break;
+    }
+
+    //delete this;
+ //   if (!GetTask()) CallManager::Instance()->DestroyCall(this);
+}
+
+/** Send additional digits to the network in case of overlap dialling
+ */
+void Call::OverlapReq(const char *additionalDigits,bool complete)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_OverlapReq);
+#endif
+
+    if (GetState() <= CS_Overlap) {
+	if (TraceEnabled())
+	    CallManager::Instance()->
+		TraceCall(
+		    this,false,
+		    "INFORMATION",
+		    "cldNb:%s%s",
+		    additionalDigits,
+		    complete ? "." : "");
+
+	CallParameter *cparam = GetCallParameter();
+	cparam->cnCalled += additionalDigits;
+	if (complete) cparam->complete = true;
+	DeviceOverlapReq(additionalDigits,complete);
+    } else {
+	CLog::Warning(THISMODULE,"Call %s unable to send overlap digits, incompatible state %s",GetName(),StrCallState(GetState()));
+    }
+}
+
+/** Send PROCEEDING message to the network
+ */
+void Call::ProceedingReq(CallProgress progress, CallExtraInfo* exinfo)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ProceedingReq);
+#endif
+
+    if (GetDirection() == CD_Incoming) {
+	switch (GetState()) {
+	case CS_Initiating:
+	case CS_Overlap:
+	    if (TraceEnabled()) {
+		CallManager::Instance()->
+		    TraceCall(
+			this,false,
+			"PROCEEDING",
+			"%s%s",
+			progress != CP_NoIndication ? "progress:" : "",
+			progress != CP_NoIndication ? StrCallProgress(progress) : "");
+	    }
+	    _callParam.complete = true;
+	    SetState(CS_Proceeding);
+	    DeviceProceedingReq(progress, exinfo);
+	    break;
+	case CS_Proceeding:
+	    ProgressReq(progress, exinfo);
+	    break;
+	}
+    }
+}
+
+/** Send PROGRESS message to the network
+ */
+void Call::ProgressReq(CallProgress progress, CallExtraInfo* exinfo)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ProgressReq);
+#endif
+
+    if (GetDirection() == CD_Incoming) {
+	switch (GetState()) {
+	case CS_Overlap:
+	case CS_Proceeding:
+	case CS_Alerting:
+	    if (TraceEnabled())
+		CallManager::Instance()->
+		    TraceCall(
+			this,false,
+			"PROGRESS",
+			"%s%s",
+			progress != CP_NoIndication ? "progress:" : "",
+			progress != CP_NoIndication ? StrCallProgress(progress) : "");
+	    DeviceProgressReq(progress, exinfo);
+	    break;
+	}
+    }
+}
+
+/** Send ALERTING message to the network
+ */
+void Call::AlertingReq(CallProgress progress, CallExtraInfo* exinfo)
+{
+    /** call can go directly to Alerting state for ISUP
+    if ((GetDirection() == CD_Incoming) && (GetState() < CS_Proceeding)) {
+	ProceedingReq(progress);
+	progress = CP_NoIndication;
+    }
+    **/
+
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_AlertingReq);
+#endif
+
+    if (GetDirection() == CD_Incoming) {
+	switch (GetState()) {
+	case CS_Initiating:
+	case CS_Overlap:
+	case CS_Proceeding:
+	    if (TraceEnabled())
+		CallManager::Instance()->
+		    TraceCall(
+			this,false,
+			"ALERTING",
+			"%s%s",
+			progress != CP_NoIndication ? "progress:" : "",
+			progress != CP_NoIndication ? StrCallProgress(progress) : "");
+	    SetState(CS_Alerting);
+	    DeviceAlertingReq(progress, exinfo);
+	    break;
+	}
+    }
+}
+
+/** Send Notify ECT message to the network
+ */
+void Call::NotifyECTReq(tect_indicator indicator)
+{
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,false,
+		"NOTIFY-ECT",
+		"%s%s",
+		"",
+		"");
+    if(GetCause() != CC_ECT) {
+	SetCause(CC_ECT);
+	DeviceNotifyECTReq(indicator);
+    }
+}
+
+bool Call::DeviceNotifyECTReq(tect_indicator indicator) {
+    assert(_peerCall);
+    if(_peerCall)
+	_peerCall->NotifyECTInd(indicator);
+    return true;
+}
+
+void Call::NotifyECTInd(tect_indicator indicator)
+{
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,true,
+		"NOTIFY-ECT",
+		"%s%s",
+		"",
+		"");
+    if (_peerCall && (_peerCall->GetState() <= CS_Suspended)) {
+	_peerCall->NotifyECTReq(indicator);
+    }
+
+    // if it need to notify then it'll raiseException
+    SetCause(CC_ECT);
+    if (GetTask() && this->GetCallParameter()->ect_notification) {
+	GetTask()->RaiseException(EX_NOTIFY_ECT,"Call",GetName());
+    }
+}
+
+void Call::InfoReq(CallExtraInfo* exinfo)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_SendInfo);
+#endif
+        printf("Call::InfoReq]]]]]]]]]]]]]]] \n");
+        CLog::Detail(THISMODULE, "Call::InfoReq \n");
+
+        CallParameter *cparam = GetCallParameter();
+        switch (GetState()) {
+                case CS_Connecting:
+                case CS_Connected:
+                    DeviceSendInfo(exinfo);
+        }
+}
+
+/** Send CONNECT message to the network
+ */
+void Call::ConnectReq(CallExtraInfo* exinfo)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ConnectReq);
+#endif
+
+    if (GetDirection() == CD_Incoming) {
+	CallParameter *cparam = GetCallParameter();
+	switch (GetState()) {
+	case CS_Initiating:
+	case CS_Overlap:
+	case CS_Proceeding:
+	case CS_Alerting:
+	    if (TraceEnabled())
+		CallManager::Instance()->
+		    TraceCall(
+			this,false,
+			"CONNECT",
+			NULL);
+	    SetState(CS_Connecting);
+	    DeviceConnectReq(exinfo);
+	}
+    }
+}
+
+/** Send SUSPEND message to the network
+ */
+void Call::SuspendReq()
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_SuspendReq);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,false,
+		"SUSPEND",
+		NULL);
+
+    if (GetState() == CS_Connected) {
+	if (DeviceSuspendReq())
+	    SetState( CS_Suspended );
+    } else {
+	CLog::Warning( THISMODULE, GetTask(), "Spurious SUSPEND request in state %s",
+					      StrCallState(GetState()));
+    }
+}
+
+/** Send RESUME message to the network
+ */
+void Call::ResumeReq()
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_ResumeReq);
+#endif
+
+    if (TraceEnabled())
+	CallManager::Instance()->
+	    TraceCall(
+		this,false,
+		"RESUME",
+		NULL);
+
+    if (GetState() == CS_Suspended) {
+	if (DeviceResumeReq())
+	    SetState( CS_Connected );
+    } else
+	CLog::Warning( THISMODULE, GetTask(), "Spurious RESUME request in state %s",
+					      StrCallState(GetState()));
+}
+
+/** Send DISCONNECT message to the network
+ */
+void Call::DisconnectReq(CallCause cause,CallProgress progress)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_DisconnectReq);
+#endif
+
+    SetCause(cause);
+    cause = GetCause();
+
+    if (cause == CC_Unassigned) {
+	cause = CC_NormalUnspecified;
+	SetCause(cause);
+    }
+
+    switch (GetState()) {
+    case CS_Null:
+	DetachTask();
+	DetachMedia(0, 0);
+	//delete this;
+	CallManager::Instance()->DestroyCall(this);
+	break;
+
+    case CS_Disconnected:
+	if (TraceEnabled())
+	    CallManager::Instance()->
+		TraceCall(
+		    this,false,
+		    "RELEASE",
+		    NULL);
+
+	// disconnect signalling path
+	if (_peerCall) {
+	    _peerCall->_peerCall = NULL;
+	    _peerCall = NULL;
+	}
+
+	SetState(CS_Releasing);
+	DetachTask();
+	DeviceDisconnectReq(cause,progress);
+	break;
+
+    case CS_Clearing:
+	//assert(false);
+	CLog::Warning(THISMODULE,GetTask(),"Call %s receives DisconnectReq in state Clearing",GetName());
+	DetachTask();
+	DeviceDisconnectReq(cause,progress);
+	break;
+
+    default:
+	if (TraceEnabled())
+	    CallManager::Instance()->
+		TraceCall(
+		    this,false,
+		    "DISCONNECT",
+		    "%s%s%s%s%s",
+		    cause != CC_Unassigned ? "cause:" : "",
+		    cause != CC_Unassigned ? CallManager::Instance()->StrCallCause(cause) : "",
+		    cause != CC_Unassigned ? " " : "",
+		    progress != CP_NoIndication ? "progress:" : "",
+		    progress != CP_NoIndication ? StrCallProgress(progress) : "");
+
+	// disconnect signalling path
+	if (_peerCall) {
+	    _peerCall->_peerCall = NULL;
+	    _peerCall = NULL;
+	}
+
+	SetState(CS_Clearing);
+	DetachTask();
+	DeviceDisconnectReq(cause,progress);
+	break;
+    }
+}
+
+// karthi - testing
+void Call::DisconnectReq_HG(CallCause cause,CallProgress progress, int handle)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_DisconnectReq_HG);
+#endif
+
+    SetCause(cause);
+    cause = GetCause();
+
+    if (cause == CC_Unassigned) {
+    cause = CC_NormalUnspecified;
+    SetCause(cause);
+    }
+
+    SetState(CS_Releasing);
+    DetachTask_HG(handle);
+    DeviceDisconnectReq(cause,progress);
+}
+
+void Call::SetDisconnectMsg(const char *msg)
+{
+    // By default, nothing to do.
+}
+
+int Call::GetAuthorizationHandle()
+{
+    // This only for calls with authorization support (such as SIP).
+    // By default, return zero.
+    return 0;
+}
+
+/** Attach the owner task to this call
+ */
+unsigned Call::AttachTask(CTask *task)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_AttachTask);
+#endif
+
+    if (!GetTask()) {
+	CLog::Detail(THISMODULE,task,"Call %s attached",GetName());
+	unsigned handle = CallManager::Instance()->AttachCallToTask(task,this);
+	_task = task;
+	return handle;
+    } else {
+	assert(false);
+	return -1;
+    }
+}
+
+/** This call is not longer owned by a task
+ */
+void Call::DetachTask()
+{
+    if (GetTask()) {
+#ifdef CALL_LOG_TRANSITION
+	_transition.push_back(CT_DetachTask);
+#endif
+	ResumeTask();
+	CLog::Detail(THISMODULE,_task,"Call %s detached",GetName());
+	CallManager::Instance()->DetachCallFromTask(GetTask(),this);
+	_task = NULL;
+    }
+}
+
+void Call::DetachTask_HG(int handle)
+{
+    if (GetTask()) {
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_DetachTask_HG);
+#endif
+    ResumeTask();
+    CLog::Detail(THISMODULE,_task,"Call %s detached",GetName());
+    CallManager::Instance()->DetachCallFromTask_HG(GetTask(),this, handle);
+    }
+}
+
+/** Decrement a counter and suspend the attached task if the value 
+    of the counter reaches 0
+ */
+void Call::SuspendTask()
+{
+    if (--_taskSuspendCount == 0) {
+	// Suspend attached task
+	CallManager::Instance()->SuspendOwnerTask(this);
+    }
+}
+
+/** Increment a counter and resume the attached task if the value 
+    of the counter reaches 1
+ */
+void Call::ResumeTask()
+{
+    if (++_taskSuspendCount == 1) {
+
+	// Resume suspended task
+	CallManager::Instance()->ResumeOwnerTask(this);
+    }
+}
+
+/** MediaAvailableInd is called to indicate that a media 
+    becomes readily available.
+ */
+void Call::MediaAvailableInd(Media *media)
+{
+#ifdef CALL_LOG_TRANSITION
+    _transition.push_back(CT_AttachMedia);
+#endif
+
+    _media = media;
+    media->AttachCall(this); // commented for multithreaded_ippbx
+    Interface* itf = media->GetInterface();
+    if (itf) {
+	_interfaceName = itf->Name().c_str();
+	_groupName = itf->GetGroupName();
+    }
+}
+
+/** MediaUnavailableInd is called by the associated Media object to 
+    indicate a problem has occurred on the underlying transmission.
+ */
+void Call::MediaUnavailableInd()
+{
+    // do nothing
+}
+
+/** GetMedia: returns the attached Media object
+ */
+Media *Call::GetMedia()
+{
+    return _media;
+}
+
+/** DetachMedia: removes the association between Call and Media.
+    It requests media to detach itself from the Call object and
+    eventually delete itself.
+ */
+void Call::DetachMedia(unsigned holding,unsigned connected)
+{
+    if (_media && _media->GetInterface()->IsValid()) {
+#ifdef CALL_LOG_TRANSITION
+	_transition.push_back(CT_DetachMedia);
+#endif
+	_media->SetDuration(holding,connected);
+	_media->DetachCall(GetDirection(),&_callParam,_cause);
+	_media = NULL;
+    }
+}
+
+float Call::GetQuality(CallQualityParameter param)
+{ 
+    if (_media) return _media->GetQuality(param); return -1.0;
+}

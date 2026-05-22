@@ -1,0 +1,8 @@
+#ifndef XGATE_RAPID_XML
+#define XGATE_RAPID_XML
+class xGateRapidXML{
+public:
+xGateRapidXML();
+~xGateRapidXML();
+};
+#endif

@@ -1,0 +1,4 @@
+until ./srs > srs.out 2> srs.err < /dev/null ; do
+        echo "srs stopped...; restarting it again" >&2
+        sleep 1
+done

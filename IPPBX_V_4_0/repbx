@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "RESTART PBX"
+killall -9 ippbx
+echo "KILLED"
+sleep 2s
+pbx
+sleep 2s
+nohup ./ippbx &
+echo "RESTARTED"

@@ -1,0 +1,3904 @@
+/* $Header: /xGate/kernel.cpp 170   5/03/05 4:27p Bennylp $
+ *   
+ * CTENGINE
+ * (C) 2001 Switchlab, Ltd
+ *
+ * CTENGINE Kernel.
+ *
+ * $Log: /xGate/kernel.cpp $
+ * 
+ * 170   5/03/05 4:27p Bennylp
+ * Added version information in log.
+ * 
+ * 169   3/22/05 7:00p Bennylp
+ * Added log when somebody invoke CrashMePlease
+ * 
+ * 168   2/02/05 5:25p Bennylp
+ * Added sbh-threshold command
+ * 
+ * 167   1/25/05 4:52p Bennylp
+ * Reordering of LicenseManager startup in kernel.
+ * 
+ * 166   7/08/04 6:49p Bennylp
+ * Call Gapping
+ * 
+ * 165   25/06/04 11:28 Sonny
+ * 
+ * 164   3/17/04 3:31p Bennylp
+ * Fix crash when 'show stat' is called when kernel is not started.
+ * 
+ * 163   3/08/04 7:01p Bennylp
+ * Added:
+ * - Registrar API (support spawning task for incoming registration)
+ * - Authentication API
+ * 
+ * 162   1/27/04 10:53a Bennylp
+ * Add MBOX provider.
+ * 
+ * 161   1/09/04 6:19p Bennylp
+ * Fixed bug in CTaskInfo (accessed by telnet when task is deleted)
+ * 
+ * 160   1/09/04 12:09p Sonny
+ * 
+ * 159   10/20/03 3:52p Sonny
+ * added POS api
+ * 
+ * 158   8/11/03 5:06p Sonny
+ * 
+ * 157   5/08/03 11:33a Bennylp
+ * Added option to include/exclude HTTP
+ * 
+ * 156   4/24/03 5:58p Bennylp
+ * Fix name inconsistency: XG_HAS_ changed to XGATE_HAS_
+ * 
+ * 155   4/24/03 2:03p Bennylp
+ * Added modem implementation
+ * 
+ * 154   15/04/03 17:34 Junanto
+ * HTTP client added
+ * 
+ * 153   3/06/03 5:12p Bennylp
+ * Changed BugSlayer output etc.
+ * 
+ * 152   3/03/03 1:47p Bennylp
+ * Added service to periodically check BugSlayer integrity
+ * 
+ * 151   3/03/03 12:48p Bennylp
+ * Add command "show bug-check"
+ * 
+ * 150   3/03/03 11:12a Bennylp
+ * Support for BugSlayer and added additional commands.
+ * 
+* 149   3/01/03 6:34p Bennylp
+* Added bugslayer configuration
+* 
+* 148   1/31/03 2:24p Bennylp
+* Changed 'spawn-taskl' and 'killtask' commands privilege to Normal
+* 
+* 147   10/30/02 6:59p Bennylp
+* Added support for announcement resource.
+* 
+* 146   10/22/02 5:14p Bennylp
+* Keep track of thread creation ("show threads")
+* 
+* 145   9/02/02 4:37p Sonny
+* 
+* 144   8/29/02 8:17p Bennylp
+* Added command "show switching"
+* 
+* 143   8/12/02 7:17p Sonny
+* 
+* 141   7/01/02 5:01p Bennylp
+* Added command 'show pppoe'
+* 
+* 140   27/06/02 19:50 Adham
+* 
+	* 139   6/25/02 8:50p Bennylp
+* Updated to support both CPU load and process load (version 43.0)
+	* 
+	* 138   5/28/02 3:34p Sonny
+	* 
+	* 137   21/05/02 15:30 Iwanj
+	* bugfix check licence, move from SpawnTask to CanSpawnTask
+	* 
+	* 136   5/20/02 11:44a Sonny
+	* changes on show atm informations
+	* 
+	* 135   5/03/02 7:57p Bennylp
+	* Special case for LicenceManager.
+	* 
+	* 134   5/03/02 5:42p Bennylp
+	* Move LM creation after CallManager
+	* 
+	* 133   23/04/02 18:54 Iwanj
+	* 
+	* 132   23/04/02 13:19 Iwanj
+	* 
+	* 131   23/04/02 13:15 Iwanj
+	* add licence manager
+	* 
+	* 130   18/04/02 18:55 Adham
+	* MTN RTP module
+	* 
+	* 129   4/04/02 3:35p Bennylp
+	* Changed High_Res_Timer to highest_Res_Timer, which uses
+	* CPU_Timestamp_Clock_Timer.
+	* 
+	* 128   20/02/02 17:10 Sonny
+	* add echocanceller and poweraccess
+	* 
+	* 127   2/15/02 3:40p Bennylp
+	* Mapletree integration to xGate
+	* 
+	* 126   12/17/01 7:02p Bennylp
+	* Added initial/experimental support for Mapletree modules.
+	* 
+	* 125   11/28/01 12:33p Adham
+	* WinSysProvider
+	* 
+	* 124   24/10/01 18:37 Junanto
+	* Kernel processing time reset to 0 in clear counters  
+	* 
+	* 123   10/17/01 3:00p Adham
+	* 
+	* 122   10/10/01 2:39p Bennylp
+	* Deprecate the use of system lock priority boost
+	* 
+	* 121   10/09/01 6:55p Bennylp
+	* Reset times counters on clear counter command
+	* 
+	* 120   10/08/01 6:47p Bennylp
+	* Added config command to modify main thread priority.
+	* 
+	* 119   10/04/01 2:11p Bennylp
+	* Added automatic date/time/host compile info.
+	* 
+	* 118   25/09/01 20:16 Sonny
+	* show atm-vc only if XGATE_HAS_ATM
+	* 
+	* 117   20/09/01 19:43 Sonny
+	* Show ATM SVC Informations
+	* 
+	* 116   8/28/01 7:57p Bennylp
+	* Option to include/exclide H.323, SIP, and ATM in compilation.
+	* 
+	* 115   8/28/01 7:16p Adham
+	* Option to exclude/include H.323 from compilation
+	* 
+	* 114   8/28/01 2:00p Bennylp
+* Fixed bug when gettimeofday() returns older value (?)
+	* 
+	* 113   8/24/01 4:58p Adham
+	* 
+	* 112   8/21/01 6:26p Adham
+	* Adding H323 Signalling module & Window Messaging
+	* 
+	* 111   8/20/01 6:41p Bennylp
+	* Some dev-usage command improvements/bug fixes.
+	* 
+	* 110   16/08/01 21:11 Junanto
+	* Added show dev-usage command
+	* 
+	* 109   8/13/01 11:38a Bennylp
+	* Added RTCP statistics monitoring.
+	* 
+	* 108   8/09/01 4:08p Bennylp
+	* Don't stop show task/stat if failed to acquire system lock.
+	* 
+	* 107   8/08/01 1:47p Bennylp
+	* Remove old SIP and null rtp interface.
+	* 
+	* 106   8/02/01 6:21p Bennylp
+	* Added access list commands.
+	* 
+	* 105   7/26/01 12:20p Bennylp
+	* Changed name: etc/system.unsaved --> etc/system.shutdown.
+	* 
+	* 104   7/26/01 12:16p Bennylp
+	* Kernel will automatically save configuration when started/shutdown.
+	* 
+	* 103   7/26/01 11:59a Bennylp
+	* Fixed bug in 'exec-quota' command.
+	* 
+	* 102   25/07/01 17:01 Junanto
+	* Moved RTP signalling/interface creation from Kernel to CallManager
+	* 
+	* 101   7/25/01 4:26p Bennylp
+	* Fixed bug in 'boost-priority' command.
+	* 
+	* 100   7/25/01 1:07p Bennylp
+	* Added more statistics, and fixed bug in system lock.
+	* 
+	* 99    7/25/01 10:29a Bennylp
+	* New HandleEvents() scheduling.
+	* 
+	* 98    7/23/01 1:25p Bennylp
+	* Clear counter argument is optional.
+	* 
+	* 97    7/23/01 12:12p Bennylp
+	* Added framework for clearing counters.
+	* 
+	* 96    7/20/01 4:59p Bennylp
+	* Call manager is created late after interfaces have been created.
+	* 
+	* 95    7/17/01 11:53a Bennylp
+	* Fixed GPF bug in 'sys raise' if invalid argument is specified.
+	* 
+	* 94    7/17/01 11:30a Bennylp
+	* Fixed bug in show app.
+	* 
+	* 93    7/17/01 11:29a Bennylp
+	* Added 'show application brief | detail'
+	* 
+	* 92    7/16/01 11:10a Bennylp
+	* New command 'sys raise' and new restart procedure.
+	* 
+	* 91    7/14/01 5:23p Bennylp
+	* Framework for signalling driver configuration in SigDrvManager.
+	* 
+	* 90    7/13/01 8:09p Iwanj
+	* add rapconfigurator
+	* 
+	* 89    7/13/01 5:48p Adham
+	* 
+	* 88    7/13/01 11:38a Bennylp
+	* Added command 'show cir' to display all Call In Routes.
+	* 
+	* 87    7/13/01 10:56a Adham
+	* SNMP Framework integration
+	* 
+	* 86    7/12/01 3:58p Bennylp
+	* Add term command 'show db-handles'
+	* 
+	* 85    10/07/01 19:06 Junanto
+	* Changed interface of Call class constructor
+	* 
+	* 84    4/07/01 17:25 Junanto
+	* Only admin can change user/password of other users
+	* 
+	* 83    3/07/01 17:48 Junanto
+	* Added user command to define users
+	* 
+	* 82    7/03/01 4:41p Adham
+	* Removing SNMP for new structure
+	* 
+	* 81    7/03/01 4:37p Adham
+	* 
+	* 80    7/03/01 1:03p Adham
+	* 
+	* 79    6/30/01 11:37p Bennylp
+	* HandleEvents in 'kill all'.
+	* 
+	* 78    6/29/01 12:31p Bennylp
+	* Added 'show scbus' command, and comments out SNMP.
+	* 
+	* 77    6/25/01 8:05p Adham
+* Adding SNMP Provider in Init()
+	* 
+	* 76    6/25/01 8:02p Adham
+	* 
+	* 75    6/22/01 7:41p Bennylp
+	* Added AudioCodes/RTP signalling.
+	* 
+	* 74    6/14/01 7:43p Bennylp
+	* Show different status during loading config.
+	* 
+	* 73    6/13/01 8:33p Bennylp
+	* Show local time in 'show stat'
+	* 
+	* 72    6/11/01 5:12p Bennylp
+	* Added more timing information in 'show stat'
+	* 
+	* 71    6/07/01 5:49p Bennylp
+	* Added CheckSystemLock() to verify that thread is owning the lock.
+	* 
+	* 70    6/06/01 8:00p Bennylp
+	* Added regex selection to show service/interface command.
+	* 
+	* 69    6/06/01 7:16p Bennylp
+	* Changed syslock timeout, and add second arg in show cmd.
+	* 
+	* 68    6/06/01 15:54 Junanto
+	* OnShutdown has a new parameter which indicates
+	* that a requested shutdown has been cancelled
+	* 
+	* 67    4/06/01 12:49 Junanto
+	* OnShutdown not called during DEINIT
+	* 
+	* 66    3/06/01 21:05 Junanto
+	* During shutdown the configuration file is no
+	* longer saved automatically
+	* Each ServiceProvider is notified by OnShutdown 
+	* during shutdown
+	* 
+	* 65    2/06/01 17:16 Junanto
+	* Kernel no longer uses standard ACQUIRE_LOCK
+	* 
+	* 64    5/30/01 7:52a Sonny
+	* Fixed acquire system lock in show config.
+	* 
+	* 63    5/30/01 6:29p Bennylp
+	* Removed function CheckConfig.
+	* 
+	* 62    5/30/01 6:27p Bennylp
+* More restrictive use of system lock (i.e. recursive is not allowed)
+	* 
+	* 61    5/30/01 4:36p Bennylp
+	* Added some backdoor commands.
+	* 
+	* 60    5/30/01 11:56a Bennylp
+	* Added more states: INIT and UNLOADING for debugging.
+	* 
+	* 59    5/29/01 5:15p Bennylp
+	* Save backup config and lock syslock when unloading.
+	* 
+	* 58    5/28/01 6:11p Bennylp
+	* More info to system locking and handle unreleased recursive lock.
+	* 
+	* 57    5/27/01 11:25p Bennylp
+	* Change system lock from ACE_Token to Win32 mutex.
+	* 
+	* 56    5/27/01 10:49p Bennylp
+	* Print log when ACQUIRE_SYSTEM_LOCK failed.
+	* 
+	* 55    5/26/01 8:04p Bennylp
+	* Record each call to AcquireSystemLock in DEBUG mode.
+	* 
+	* 54    5/26/01 5:48p Bennylp
+	* Added 'show user' and fixed telnet command history.
+	* 
+	* 53    26/05/01 16:10 Junanto
+	* Added CTbus
+	* 
+	* 52    25/05/01 16:28 Junanto
+	* 
+	* 51    5/23/01 8:14p Bennylp
+	* Change ATM signalling from SIP to prioprietary.
+	* 
+	* 50    21/05/01 17:09 Junanto
+	* Added group name in the call-in criteria
+	* 
+	* 49    5/21/01 12:12p Bennylp
+	* Rollback SIP changes to stable version.
+	* 
+	* 48    10/05/01 13:12 Junanto
+	* Replaced "\r\n" with "\n"
+	* 
+	* 47    5/10/01 12:51p Bennylp
+	* Temporary checkin
+	* 
+	* 46    5/09/01 12:14p Bennylp
+	* Splitting SIP signalling into a separate worker thread.
+	* 
+	* 45    7/05/01 20:24 Junanto
+	* Call CommitConfiguration after configuration file 
+	* is loaded
+	* 
+	* 44    4/05/01 20:46 Junanto
+	* Changed welcome message in telnet session
+	* 
+	* 43    4/05/01 20:36 Junanto
+	* The default config file is System.conf. No "configure"
+	* is appended to System.conf
+	* Another file "User.conf" is also loaded at startup.
+	* This file is not overwritten by xGate
+	* 
+	* 42    5/03/01 4:44p Bennylp
+	* Improve show times output.
+	* 
+	* 41    5/03/01 1:09p Bennylp
+	* Changed profiling to 'show times', and more improvements.
+	* 
+	* 40    5/03/01 11:52a Bennylp
+	* Improve profiling calculations and outputs.
+	* 
+	* 39    2/05/01 18:40 Junanto
+	* Added show call-stat command
+	* 
+	* 38    5/02/01 6:16p Bennylp
+	* Improve system info and includes CPU times in show stat.
+	* 
+	* 37    5/02/01 12:02p Bennylp
+	* Added show interface framework.
+	* 
+	* 36    1/05/01 15:44 Junanto
+	* Add source name in RaiseException
+	* for logging purpose
+	* 
+	* 35    5/01/01 3:28a Bennylp
+	* Added command to view log files attributes (show log).
+	* 
+	* 34    1/05/01 15:21 Junanto
+	* reduced and simplified log output
+	* 
+	* 33    5/01/01 1:02a Bennylp
+	* Redirect initial config execution output to log.
+	* 
+	* 32    4/30/01 10:21a Bennylp
+	* Clean unused API profile enabled flag in kernel.
+	* 
+	* 31    4/30/01 9:59a Bennylp
+	* Added API profiling.
+	* 
+	* 30    4/30/01 8:14a Bennylp
+	* File driver integration.
+	* 
+	* 29    4/30/01 7:45a Bennylp
+	* Integrate database service.
+	* 
+	* 28    30/04/01 14:55 Junanto
+	* Fixed bug in CTbus
+	* 
+	* 27    4/28/01 6:33a Bennylp
+* Added service profiling and database driver (testing)
+	* 
+	* 26    27/04/01 13:37 Junanto
+	* added Display support to xGate
+	* 
+	* 25    4/26/01 11:31p Bennylp
+	* Added task-event tracing.
+	* 
+	* 24    4/25/01 10:06a Bennylp
+	* Added host info in stat.
+	* 
+	* 23    4/25/01 5:15p Iwanj
+	* 
+	* 22    4/25/01 5:04a Bennylp
+	* Added Interval2String to convert seconds to formatted str.
+	* 
+	* 21    24/04/01 19:10 Junanto
+	* Added API for SwitchListen/Unlisten
+	* 
+	* 20    4/24/01 4:14p Iwanj
+	* 
+	* 19    4/24/01 1:01a Bennylp
+	* ATM Name Service integration.
+	* 
+	* 18    4/23/01 10:52p Bennylp
+	* 
+	* 17    23/04/01 15:33 Junanto
+	* 
+	* 16    23/04/01 13:45 Junanto
+	* 
+	* 15    23/04/01 12:52 Junanto
+	* 
+	* 14    4/21/01 10:24p Iwanj
+	* 
+	* 13    4/20/01 3:47a Bennylp
+	* Fixed bug in Kill all.
+	* 
+	* 12    4/19/01 6:04p Bennylp
+	* Temporar checkin.
+	* 
+	* 11    4/19/01 12:25p Bennylp
+	* Add routing incoming calls.
+	* 
+	* 10    4/17/01 10:04p Bennylp
+	* Added tracing and SIP/ATM related.
+	* 
+	* 9     4/13/01 11:19p Bennylp
+	* Added System_API_Provider.
+	* 
+	* 8     4/13/01 9:10p Bennylp
+	* Added sleep API.
+	* 
+	* 7     4/12/01 8:59p Bennylp
+	* Integration and some bug fixes.
+	*
+	*/
+#include <stdio.h>
+#include <pthread.h> //Linux Porting
+#include <sched.h>
+#include <stdio.h>   //Linux Porting
+#include <errno.h>
+#include <poll.h>
+#include "stdafx.h" 
+#include "xgconfig.h"
+
+#ifdef XGATE_HAS_HMP
+#include "hostmedia.h"
+#endif
+
+	// Need to define this to avoid conflict with ws2atm.h
+#define _WS2ATM_H_
+
+	//#include "kernel.h"
+	/* In the first phase, ATM modules not needed */
+#include "klog.h"
+#include "api.h"
+#include "interpret.h"
+#include "application.h"
+#include "task.h"
+#include "term.h"
+#include "termsc.h"	// show config
+#include "Switching.h"
+#include "callmanager.h"
+	//#include "dns.h"
+#include "kernel.h"
+#include "types.h"
+#include "xGateSipUtil.h" // added for ippbx
+
+#ifdef XGATE_HAS_VOICE
+#include "voicemanager.h"
+#endif
+
+	//#include "ctbusmgr.h"
+#include "CTbusMgr.h"
+#include "SCbusMgr.h"
+#include "ConsoleMgr.h"
+#include "devusage.h"
+#include "sleepdrv.h"	// Sleep_Service
+#include "systemapi.h"	// System_API_Provider
+
+
+
+#ifdef XGATE_HAS_DB_DRIVER
+#include "dbdriver.h"	// DB_Service
+#endif
+
+#ifdef XGATE_HAS_FILE_DRIVER
+#include "filedrv.h"	// File_Service
+#endif
+
+#ifdef XGATE_HAS_SIP
+#include "siputil.h"	// SipOS: to display host OS info.
+#endif
+
+#ifdef XGATE_HAS_AUDIOCODES
+#include "audiocodes.h"	// AudioCodes_Manager
+#endif //XGATE_HAS_NEW_AUDIOCODES
+
+#include "SignallingDriver.h" // SignallingDriverManager
+	//Linux Porting
+#include "SLSnmpManager.h" // SNMP
+
+#include "accesslist.h"	// ACL_Manager
+	//Linux Porting
+	//#include "winmsgprovider.h"
+
+#ifdef XGATE_HAS_AUDIOCODES
+#include "rtpmedia.h"
+#endif
+
+#include "http_client.h"
+#include "thread_process.h"
+
+#ifdef XGATE_HAS_MODEM
+#include "modem.h"
+#endif
+
+
+#ifdef XGATE_HAS_SIP
+#include "registrar.h"
+#endif
+
+
+#ifdef XGATE_HAS_TRUNK
+#include "trunksig.h"
+#include "trunk.h"
+#endif
+
+
+
+#ifdef XGATE_HAS_PPPOE
+#include "pppoe.h"	// PPPoE_Manager
+#endif
+
+#ifdef XGATE_HAS_EC
+#include "echocanceller.h"	// EC_Manager
+#endif
+
+#ifdef XGATE_HAS_POWERACCESS
+#include "poweraccess.h"	// PowerAccess_Manager
+#endif
+
+#ifdef XGATE_HAS_MTNRTP
+	//    #include "mtnrtp.h"
+#endif
+
+#ifdef XGATE_HAS_LM
+#include "licence.h"	// LicenceManager
+#endif
+
+#ifdef XGATE_HAS_ANNOUNCE_RES
+#include "announce.h"
+#endif
+
+#ifdef XGATE_HAS_ASR
+#include "asrmanager.h"
+#endif
+
+#ifdef XGATE_HAS_POS
+#include "pos.h"
+#endif
+
+
+#include "automation.h"
+
+#include "http_srv.h"
+
+#include "timer.h"
+
+#include "commonutil.h"	//linux porting 
+	//-----------------------------------------------------------------------------
+
+
+#define KERNEL		"SYS"
+#define SYSLOCK_TIMEOUT	2000
+#define __linux__
+
+#define stricmp strcasecmp
+#define strnicmp strncasecmp
+#define strcmpi strcasecmp
+
+void Sleep( unsigned long ms )
+{
+#ifndef __linux__
+	::Sleep(ms);
+#else
+	poll(0,0,ms); // __linux__
+#endif
+};
+
+
+//Linux Porting: Forward declaration of Classes
+class SLSnmpManager;
+//class DNS_Service;
+
+void SpawnXgateRestarter(bool on_off);
+
+Kernel  * Kernel::kernelInstance;
+
+// Task tracing
+extern Log_Trace *taskTracing;
+
+// Version
+extern const char * Xgate_Version;
+
+enum Kernel_Term_Cmd {
+	Kernel_Term_Cmd_System_Conf,
+	Kernel_Term_Cmd_System_Cmd,
+	Kernel_Term_Cmd_SleepTime,
+	Kernel_Term_Cmd_ExecQuota,
+	Kernel_Term_Cmd_BoostThread,
+	Kernel_Term_Cmd_ThreadPriority,
+	Kernel_Term_Cmd_SBH_Threshold,
+	Kernel_Term_Cmd_TiNG_Trace,
+	Kernel_Term_Cmd_SpawnTask,
+	Kernel_Term_Cmd_SpawnTask2,
+	Kernel_Term_Cmd_KillTask,
+	Kernel_Term_Cmd_MemDump,
+	Kernel_Term_Cmd_Show,
+	Kernel_Term_Cmd_API,
+	Kernel_Term_Cmd_User,
+	Kernel_Term_Cmd_Clear,
+	Kernel_Term_Cmd_Sleep,
+	Kernel_Term_Cmd_Foobar,
+};
+
+// TiNG_trace log level
+#ifdef XGATE_HAS_PROSODY
+extern void TiNG_set_loglevel(int);
+extern int TiNG_get_loglevel();
+#endif
+
+//-----------------------------------------------------------------------------
+// Kernel information/statistics
+//
+class CKernelInfo {
+
+	public:
+		// Statistics that need not to be cleared
+		unsigned long   m_TotalTask;	// total tasks spawned
+		unsigned int    m_NConcurrentTask;
+		unsigned int    m_NBlockedTask;
+		unsigned int    m_NReadyTask;
+		unsigned int    m_NBornTask;
+		time_t	    m_Started;
+
+		// Clearable statistics begins here.
+		char	    m_ClearableBegin;
+
+		unsigned long   m_HighTask,			// highest number of concurrent task running
+						m_MSLongTaskUp,		// longest running task
+						m_MSLongTaskExec,		// longest task exec before blocked
+						m_MSLongTaskBlocked,	// longest task blocking time
+						m_MSLongTaskWaiting,	// longest task waiting time
+						m_MSLongTaskTotalExec,	// longest task's total execution time
+						m_TotalTaskInAvg,		// total tasks counted in avg. waiting calculation
+						m_MSAvgTaskWaiting,		// average task waiting time
+						m_MSAvgTaskLongestExec,	// average longest task exec.
+						m_MSAvgTaskTotalExec;	// average total task execution time
+
+		unsigned	    m_KPollPerSec,	// loop per sec
+						m_HighPoll,		// highest LPS
+						m_LowPoll;		// lowest LPS
+
+		unsigned	    m_CtxPerSec,	// context switch per sec
+						m_HighCtx,		// highest ctx/sec
+						m_LowCtx;		// lowest ctx/sec
+
+		char	    m_LongTaskUpName[32],
+					m_LongTaskBlockedName[32],
+					m_LongTaskWaitingName[32],
+					m_LongTaskExecName[32],
+					m_LongTaskTotalExecName[32],
+					m_LongDriverExecName[32];
+
+		time_t	    m_LastReset,
+					m_HighTaskAt;
+
+		time_t	    m_LongTaskWaitingAt,
+					m_HighPollAt,
+					m_LowPollAt,
+					m_HighCtxAt,
+					m_LowCtxAt;
+
+
+		// this MUST be the last variables declared.
+		char	    m_ClearableEnd;
+
+		// Constructor
+		CKernelInfo() 
+		{ 
+			memset(this, 0, sizeof(*this));
+			Reset(); 
+			m_LastReset = 0;
+			time(&m_Started); 
+		}
+
+		void Reset() {
+			memset(&m_ClearableBegin, 0, &m_ClearableEnd - &m_ClearableBegin );
+
+			time( &m_LastReset );
+			m_CtxPerSec = m_KPollPerSec = 500;
+			m_HighCtx = m_HighPoll = 0;
+			m_LowCtx = m_LowPoll = 1000;
+		}
+};
+
+
+//-----------------------------------------------------------------------------
+// This is a simple ServiceProvider, whose sole purpose is to clear kernel
+// statistics.
+//
+class Kernel_Reset_Stat : public ServiceProvider {
+
+	public:
+		Kernel_Reset_Stat()
+			: ServiceProvider("statistics", false, false) {}
+		virtual bool Load() {
+			return true;
+		}
+		virtual bool Unload() {
+			return true;
+		}
+		virtual void OnClearCounter() {
+			Kernel::Instance()->ResetStat();
+		}
+
+};
+
+
+//------------------------------------------------------------------------------
+// This service provider regularly checks the sanity of the system (using a 
+// separate thread)
+//
+class Sanity_Checker : public ServiceProvider
+{
+	public:
+		Sanity_Checker() : ServiceProvider("SanityChecker", false, false)
+	{
+		_quit = false;
+	}
+
+		virtual bool Load()
+		{
+			//SPAWN_THREAD(&thread_proc, this, THR_NEW_LWP|THR_JOINABLE, NULL, &_hThread);
+			return true;
+		}
+
+		virtual bool Unload() 
+		{
+			_quit = true;
+			ACE_Thread::join(_hThread);
+			return true;
+		}
+
+		void MainLoop()
+		{
+			while (!_quit)
+			{
+				// wait 10 seconds
+				for (int i=0; i<10 && !_quit; i++)
+					Sleep(1000); //Linux Porting
+
+				if (_quit)
+					break;
+
+
+				/* Linux Porting */
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+				// try to acquire system lock for 1000msec
+				/* if (::WaitForSingleObject(Kernel::Instance()->m_SystemLock, 1000) == WAIT_TIMEOUT) */
+				if ((pthread_cond_timedwait(&Kernel::Instance()->m_Pcondevent, &Kernel::Instance()->m_SystemLock, &Kernel::Instance()->m_Mutexts)) == ETIMEDOUT) { //Linux Porting
+
+
+				} else {
+					//Linux Porting
+					//::ReleaseMutex (Kernel::Instance()->m_SystemLock);
+					pthread_mutex_unlock (&(Kernel::Instance()->m_SystemLock));
+				}
+#endif
+			}
+		}
+
+		static void* thread_proc(void *this_instance)
+		{
+			Sanity_Checker* self = (Sanity_Checker*)this_instance;
+			self->MainLoop();
+			return NULL;
+		}
+
+	private:
+		bool _quit;
+		ACE_hthread_t _hThread;
+};
+
+
+#ifdef XGATE_HAS_BUGSLAYER
+class Kernel_BugSlayer_Checker : public ServiceProvider {
+	public:
+		enum
+		{
+			CHECK_PERIOD = 3600*24*2,	/* Perform checkpoint every this second */
+		};
+
+		Kernel_BugSlayer_Checker()
+			: ServiceProvider("bug-check", false, true, Lowest_Priority) 
+		{
+			last_checkpoint_ = time(NULL);
+			instance_ = this;
+		}
+
+		~Kernel_BugSlayer_Checker()
+		{
+			instance_ = NULL;
+		}
+
+		static Kernel_BugSlayer_Checker *Instance()
+		{
+			return instance_;
+		}
+
+		void Checkpoint(bool print_if_ok)
+		{
+			int status=bs_checkpoint(0);
+
+			last_checkpoint_ = time(NULL);
+
+			switch (status) {
+				case BS_CHECK_OK:
+					if (print_if_ok) {
+						CLog::Info( KERNEL, "BugSlayer integrity checked OK.");
+					} else {
+						CLog::Debug( KERNEL, "BugSlayer integrity checked OK.");
+					}
+					break;
+				case BS_CHECK_WARNING:
+					CLog::Info(KERNEL, "BugSlayer integrity OK, but some node(s) have errors."
+							"The nodes have been successfully repaired. See bugslayer.log "
+							"for detailed information.");
+					break;
+				case BS_CHECK_ERROR:
+					CLog::Info(KERNEL, "FATAL: BugSlayer integrity FAILED! See bugslayer.log for "
+							"detailed information.");
+					break;
+
+			}
+		}
+
+		virtual bool Load() {
+			return true;
+		}
+		virtual bool Unload() {
+			return true;
+		}
+		virtual void HandleEvents() {
+			if (time(NULL) - last_checkpoint_ >= CHECK_PERIOD) {
+				Checkpoint(false);
+			}
+		}
+		virtual bool OnShowStatus(String &output)
+		{
+			char temp[80];
+			String interval;
+
+			interval = ConvertInterval2String( time(NULL) - last_checkpoint_);
+			sprintf(temp, SHOW_INTERFACE_INDENT "Last checkpoint: %s ago\n", 
+					interval.c_str());
+			output += temp;
+			return true;
+		}
+
+	private:
+		time_t last_checkpoint_;
+		static Kernel_BugSlayer_Checker *instance_;
+};
+
+Kernel_BugSlayer_Checker *Kernel_BugSlayer_Checker::instance_;
+
+#endif
+
+//-----------------------------------------------------------------------------
+// Singleton manipulation
+//
+Kernel * Kernel::Create()
+{
+	//assert(kernelInstance == NULL);
+	if (kernelInstance == NULL)
+		kernelInstance = new Kernel;
+	return kernelInstance;
+}
+
+void Kernel::Destroy()
+{
+	delete kernelInstance;
+	kernelInstance = NULL;
+}
+
+//-----------------------------------------------------------------------------
+// Constructor
+//
+Kernel::Kernel()
+{
+	m_State = KS_DEAD;
+	m_InitLevel = LVL_NULL;
+	m_MaintenanceInitInterval = 10;
+	m_RestartAfterMaintenance = true;
+	m_MaxWaitMaintenance = 30;
+
+	m_CurrentTask = NULL;
+	m_MaxTask = 12500;
+	//Linux Porting
+	//m_BaseDir = "C:/Switchlab/";
+	//m_BaseDir = "/etc/xgate/";
+	m_BaseDir = BASE_DIR;
+
+	m_RootConfigTree = NULL;
+	m_SystemConfigTree = NULL;
+	m_Version = Xgate_Version;
+	m_SleepTime = 1;
+	kernelBusyTime.set(0, 0);
+
+	//Linux Porting
+	//m_SystemLock = NULL; 
+	/* Initialize pthread condition variable */
+	pthread_cond_init(&m_Pcondevent,NULL);
+
+	/* Initialize mutext as a recursive type */
+	pthread_mutexattr_init(&m_Pattr);
+	pthread_mutexattr_settype(&m_Pattr, PTHREAD_MUTEX_RECURSIVE);
+	pthread_mutex_init(&m_SystemLock,&m_Pattr);
+
+	/* Convert from timeval to timespec */
+	m_Mutexts.tv_sec  = 0;
+	m_Mutexts.tv_nsec = 1000;
+
+	m_MainThreadId = -1;
+	m_BoostSystemLockOwner = THREAD_PRIORITY_ABOVE_NORMAL;
+
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+	m_LongestLockSrcFile = m_CurrentLockSrcFile = "";
+	//m_LongestLockSrcLine = m_CurrentLockSrcLine = 0;
+	m_SystemLockTimer.init();
+	currentService = "";
+	m_SystemLockOwner = NULL;
+	m_SystemLockPriority = THREAD_PRIORITY_ERROR_RETURN;
+#endif
+
+	m_KernelInfo = new CKernelInfo;
+
+	for (int i=0; i<MAX_TLS+2; ++i) {
+		m_TLS.push_back(0);
+		m_TLS[i] = 0;
+	}
+
+	// Get SBH settings.
+	//Linux Porting
+	/*m_SbhDefaultThreshold = _get_sbh_threshold(); */
+	m_SbhThreshold = -1;
+
+	// Load new configuration
+	m_RootConfigTree = new Cfg_Tree_Group ("root", "Root configuration", NULL);
+
+	//	InitializeCriticalSection(&crit_sect_general);
+}
+
+
+//-----------------------------------------------------------------------------
+// Destructor
+//
+Kernel::~Kernel()
+{
+	delete m_RootConfigTree;
+	delete m_KernelInfo;
+	m_KernelInfo = NULL;
+	m_RootConfigTree = NULL;
+	//	DeleteCriticalSection(&crit_sect_general);
+}
+
+
+int Kernel::AllocTLS()
+{
+	for (int i=0; i<MAX_TLS; ++i)
+		if (m_TLS[i]==0) {
+			m_TLS[i] = 1;
+			return i;
+		}
+	assert(false);
+	CLog::Fatal (KERNEL, "Kernel is running out of TLS");
+	return MAX_TLS+1;
+}
+
+
+STATUS Kernel::FreeTLS(int i)
+{
+	m_TLS[i] = 0;
+	return OK;
+}
+
+
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+bool Kernel::AcquireSystemLock(const char *file, unsigned linenum) 
+{
+	//
+	// Must not hold the lock before.
+	// In the future, system lock might be changed to use non-recursive
+	// mutex for better performance.
+	//
+	DWORD status;
+	status=pthread_mutex_lock(&m_SystemLock);
+#ifndef __linux__
+#ifndef DEBUG_AW
+	//assert (ACE_Thread::self() != m_SystemLockOwner);
+#endif
+	DWORD status;
+
+	//Linux Porting
+	//if ((status=::WaitForSingleObject(m_SystemLock, 0)) == WAIT_TIMEOUT)
+	unsigned i;
+	enum {
+		MAX_WAIT_COUNT = 10
+	};
+	for (i=0; i<MAX_WAIT_COUNT; ++i) {
+		/* if ((status=pthread_cond_timedwait(&m_Pcondevent, &m_SystemLock, SYSLOCK_TIMEOUT)) != ETIMEDOUT)
+		*/
+		//status=pthread_mutex_lock(&m_SystemLock);
+		break;
+		/* Linux Porting
+		*/
+	}
+	if (i==MAX_WAIT_COUNT) {
+		/* Linux Porting
+		*/
+		// Must return here
+		return false;
+	}
+
+	//m_SystemLockOwner = ACE_Thread::self();
+	m_SystemLockOwner =  pthread_self();
+	if (m_SystemLockOwner != GetMainThreadId() && m_BoostSystemLockOwner!=THREAD_PRIORITY_ERROR_RETURN) {
+		//HANDLE current_thread = ::GetCurrentThread();
+		pthread_t current_thread = pthread_self(); 
+		//assert (current_thread != NULL);
+		struct sched_param params;
+		pthread_attr_t attr;
+		int s,policy=0,ret;
+		ret = pthread_getschedparam(current_thread, &policy, &params); 
+		if (ret != 0) {
+			//Log the data
+		}
+		ret = pthread_setschedparam(current_thread, SCHED_FIFO, &params); 
+		m_SystemLockPriority = pthread_getschedparam(current_thread, &policy, &params);
+
+		//Set the Priority
+		//m_SystemLockPriority = GetThreadPriority(current_thread);
+		//::SetThreadPriority(current_thread, m_BoostSystemLockOwner);
+
+	}
+
+	//Linux Porting
+	//atomic_set ((long*)&m_CurrentLockSrcFile, (long)file);
+	//atomic_set (&m_CurrentLockSrcLine, linenum);
+	m_SystemLockTimer.start();
+#endif
+	return true;
+}
+
+void Kernel::ReleaseSystemLock(const char *file, unsigned linenum) 
+{
+	//
+	// Must hold the lock before.
+	//
+#ifndef __linux__
+#ifndef DO_DEBUGGING
+	//assert (ACE_Thread::self() == m_SystemLockOwner);
+	assert (pthread_self() == m_SystemLockOwner);
+#endif
+
+
+	//
+	// Update lock time statistics.
+	//
+	m_SystemLockTimer.stop();
+	Time_Value how_long = m_SystemLockTimer.get_elapsed();
+	if (how_long > m_LongestLockTime) {
+		m_LongestLockTime = how_long;
+	}
+
+
+
+	// Release the lock.
+	/*
+	   while (::ReleaseMutex (m_SystemLock))
+	   ;
+	   */
+	//if (ACE_Thread::self() == m_SystemLockOwner)
+	if ( pthread_self() ==  m_SystemLockOwner) {
+		/* Put back the original thread priority, only if it was previously set.
+		*/
+		if ( pthread_self() != GetMainThreadId() && m_SystemLockPriority!=THREAD_PRIORITY_ERROR_RETURN) {
+			//::SetThreadPriority(::GetCurrentThread(), m_SystemLockPriority);
+			struct sched_param params;
+			pthread_attr_t attr;
+			int s,policy=0,ret;
+			ret = pthread_getschedparam(pthread_self(), &policy, &params);
+			if (ret != 0) {
+				//Log the data
+			}
+			ret = pthread_setschedparam(pthread_self(), &m_SystemLockPriority, &params);
+			m_SystemLockPriority = pthread_getschedparam(pthread_self(), &policy, &params);
+
+			m_SystemLockPriority = THREAD_PRIORITY_ERROR_RETURN;
+		}
+		m_SystemLockOwner = NULL;
+	}
+#endif
+	//Linux Porting
+	//::ReleaseMutex (m_SystemLock);
+	pthread_mutex_unlock (&m_SystemLock);
+}
+
+#endif
+
+//-----------------------------------------------------------------------------
+// Statistics update. Called with parameter 0 after a creation of a new task,
+// and called with parameter non zero before killing the task
+//
+void Kernel::UpdateStat(CTask *task)
+{
+	if (m_KernelInfo->m_NConcurrentTask > m_KernelInfo->m_HighTask) {
+		m_KernelInfo->m_HighTask = m_KernelInfo->m_NConcurrentTask;
+		time(&m_KernelInfo->m_HighTaskAt);
+	}
+
+	if (task==0) {
+		return;
+	}
+
+	++m_KernelInfo->m_TotalTask;
+
+	const CTaskInfo *t = task->GetTaskInfo();
+
+	// Must be incremented here (div by zero problem)
+	++m_KernelInfo->m_TotalTaskInAvg;
+
+	// Calculate average task waiting
+	double total_wait = m_KernelInfo->m_MSAvgTaskWaiting;
+	total_wait *= (m_KernelInfo->m_TotalTaskInAvg-1);
+	total_wait += t->m_MSLongWaiting;
+	m_KernelInfo->m_MSAvgTaskWaiting = total_wait / m_KernelInfo->m_TotalTaskInAvg;
+
+	// Calculate average task longest execution
+	double total_longest = m_KernelInfo->m_MSAvgTaskLongestExec;
+	total_longest *= (m_KernelInfo->m_TotalTaskInAvg-1);
+	total_longest += t->m_MSLongExec;
+	m_KernelInfo->m_MSAvgTaskLongestExec = total_longest / m_KernelInfo->m_TotalTaskInAvg;
+
+	// Calculate average tasks total execution
+	double total_total = m_KernelInfo->m_MSAvgTaskTotalExec;
+	total_total *= (m_KernelInfo->m_TotalTaskInAvg-1);
+	total_total += t->m_MSExecTime;
+	m_KernelInfo->m_MSAvgTaskTotalExec = total_total / m_KernelInfo->m_TotalTaskInAvg;
+
+	// If the number of total tasks in average grows very large,
+	// truncate it.
+	enum {
+		MAX_TOTAL_TASK_IN_AVG = 2000000,
+		SET_TOTAL_TASK_IN_AVG = 1000000
+	};
+	if (m_KernelInfo->m_TotalTaskInAvg > MAX_TOTAL_TASK_IN_AVG)
+		m_KernelInfo->m_TotalTaskInAvg = SET_TOTAL_TASK_IN_AVG;
+
+
+	if (t->m_Uptime > m_KernelInfo->m_MSLongTaskUp/1000) {
+		m_KernelInfo->m_MSLongTaskUp = t->m_Uptime*1000;
+		strncpy( m_KernelInfo->m_LongTaskUpName, t->m_Name, sizeof(m_KernelInfo->m_LongTaskUpName)-1);
+	}
+
+	if (t->m_MSExecTime > m_KernelInfo->m_MSLongTaskTotalExec) {
+		m_KernelInfo->m_MSLongTaskTotalExec = t->m_MSExecTime;
+		strncpy( m_KernelInfo->m_LongTaskTotalExecName, t->m_Name, sizeof(m_KernelInfo->m_LongTaskUpName)-1);
+	}
+
+	if (t->m_MSLongExec > m_KernelInfo->m_MSLongTaskExec) {
+		m_KernelInfo->m_MSLongTaskExec = t->m_MSLongExec;
+		strncpy( m_KernelInfo->m_LongTaskExecName, t->m_Name, sizeof(m_KernelInfo->m_LongTaskExecName)-1);
+	}
+
+	if (t->m_MSLongBlocked > m_KernelInfo->m_MSLongTaskBlocked) {
+		m_KernelInfo->m_MSLongTaskBlocked = t->m_MSLongBlocked;
+		strncpy( m_KernelInfo->m_LongTaskBlockedName, t->m_Name, sizeof(m_KernelInfo->m_LongTaskBlockedName)-1);
+	}
+
+	if (t->m_MSLongWaiting > m_KernelInfo->m_MSLongTaskWaiting) {
+		m_KernelInfo->m_MSLongTaskWaiting = t->m_MSLongWaiting;
+		strncpy( m_KernelInfo->m_LongTaskWaitingName, t->m_Name, sizeof(m_KernelInfo->m_LongTaskWaitingName)-1);
+		time(&m_KernelInfo->m_LongTaskWaitingAt);
+	}
+}
+
+
+//-----------------------------------------------------------------------------
+// Tools function to save configuration to a file.
+// (This should belong to Kernel class actually, but I don't want to change
+//  kernel.h)
+//
+void SaveConfig(Cfg_Tree_Group *config, const char *filename)
+{
+	Term_Cfg_Writer writer ( config, false);
+	//printf("file name =%s\n",filename);
+	//printf("Getresul =%s\n",writer.GetResult().c_str());
+	FILE *fhnd = fopen(filename, "rw");
+	if (fhnd) {
+		fwrite(writer.GetResult().c_str(), writer.GetResult().size(), 1, fhnd);
+		fclose(fhnd);
+	}
+}
+
+
+//-----------------------------------------------------------------------------
+void Kernel::InitConfig()
+{
+	//
+	// Create kernel commands
+	//
+	// Add system command
+	Term_Cmd *cmd_shutdown = new Term_Cmd (this,
+			Kernel_Term_Cmd_System_Cmd,
+			"system",
+			"System commands",
+			PrivilegeLevelAdmin,
+			TermModeNormal,
+			false);
+	CVariantChoiceValidator sysVdtor("shutdown", "Shutdown the system");
+	sysVdtor.Add ("restart", "Restart the system");
+	sysVdtor.Add ("raise", "Raise EX_HANGUP exception for all tasks" );
+#ifdef XGATE_HAS_BUGSLAYER
+	sysVdtor.Add ("bug-check", "Perform BugSlayer integrity checking" );
+#endif
+	cmd_shutdown->Add ( new Term_Cmd_Arg("cmd", CVariant(""), sysVdtor) );
+
+	CVariantChoiceValidator shVdtor ("hangup", "Raise exceptions for all tasks, and shutdown the system");
+	shVdtor.Add ( "abort", "Force the system to shutdown immediately" );
+	shVdtor.Add ( "cancel", "Cancel shutdown in progress" );
+
+	cmd_shutdown->AddDynamic ( 1, 0, "shutdown", new Term_Cmd_Arg ("@1", CVariant(""), shVdtor, TermArgOptional) );
+	cmd_shutdown->AddDynamic ( 1, 0, "restart", new Term_Cmd_Arg ("@1", CVariant(""), shVdtor, TermArgOptional) );
+
+	cmd_shutdown->AddDynamic ( 1, 0, "raise", new Term_Cmd_Arg ("@1", 
+				CVariant(""), 
+				CVariantValidator("", "PID number or 'all' for all tasks")));
+
+	RegisterTermCmd (cmd_shutdown, RootConfig());
+
+	// Add command 'spawntask <appname> [cmdline_param1] [cmdline_param2] ...'
+	Term_Cmd *cmd_spawntask = new Term_Cmd (this,
+			Kernel_Term_Cmd_SpawnTask,
+			"spawntask",
+			"Create a new task",
+			PrivilegeLevelUser,
+			TermModeNormal,
+			false);
+	cmd_spawntask->Add (new Term_Cmd_Arg ( "appname", CVariant(""), CVariantValidator("", "Application name")));
+	cmd_spawntask->Add (new Term_Cmd_Arg ( "cmdline_arg1", CVariant(""), CVariantValidator("", "Command line argument 1"), TermArgOptional));
+	cmd_spawntask->Add (new Term_Cmd_Arg ( "cmdline_arg2", CVariant(""), CVariantValidator("", "Command line argument 2"), TermArgOptional));
+	cmd_spawntask->Add (new Term_Cmd_Arg ( "cmdline_arg3", CVariant(""), CVariantValidator("", "Command line argument 3"), TermArgOptional));
+	cmd_spawntask->Add (new Term_Cmd_Arg ( "cmdline_arg4", CVariant(""), CVariantValidator("", "Command line argument 4"), TermArgOptional));
+
+	RegisterTermCmd (cmd_spawntask, RootConfig());
+
+	// Add command 'spawntask2 <appname> [cmdline_param1] [cmdline_param2] ...'
+	Term_Cmd *cmd_spawntask2 = new Term_Cmd (this,
+			Kernel_Term_Cmd_SpawnTask2,
+			"multi-spawntask",
+			"Create multi task",
+			PrivilegeLevelUser,
+			TermModeNormal,
+			false);
+	CVariantRangeValidator howManyVdtor(1, 1000, "How many task spawned? ");
+	cmd_spawntask2->Add (new Term_Cmd_Arg("task 2 spawn", CVariant(1), howManyVdtor));
+	cmd_spawntask2->Add (new Term_Cmd_Arg ( "appname", CVariant(""), CVariantValidator("", "Application name")));
+	cmd_spawntask2->Add (new Term_Cmd_Arg ( "cmdline_arg1", CVariant(""), CVariantValidator("", "Command line argument 1"), TermArgOptional));
+	cmd_spawntask2->Add (new Term_Cmd_Arg ( "cmdline_arg2", CVariant(""), CVariantValidator("", "Command line argument 2"), TermArgOptional));
+	cmd_spawntask2->Add (new Term_Cmd_Arg ( "cmdline_arg3", CVariant(""), CVariantValidator("", "Command line argument 3"), TermArgOptional));
+	cmd_spawntask2->Add (new Term_Cmd_Arg ( "cmdline_arg4", CVariant(""), CVariantValidator("", "Command line argument 4"), TermArgOptional));
+
+	RegisterTermCmd (cmd_spawntask2, RootConfig());
+
+	Term_Cmd *cmd_killtask = new Term_Cmd ( this,
+			Kernel_Term_Cmd_KillTask,
+			"killtask",
+			"Terminate task(s)",
+			PrivilegeLevelUser,
+			TermModeNormal,
+			false);
+	cmd_killtask->Add (new Term_Cmd_Arg ( "arg", CVariant(""), CVariantValidator("", "Task PID, or application name, or \"all\" ")));
+	RegisterTermCmd (cmd_killtask, RootConfig());
+
+#ifdef TRACE_ALLOC
+	Term_Cmd *cmd_memdump = new Term_Cmd ( this,
+			Kernel_Term_Cmd_MemDump,
+			"memdump",
+			"Dump allocated memory to a file",
+			PrivilegeLevelUser,
+			TermModeNormal,
+			false);
+	RegisterTermCmd (cmd_memdump, RootConfig());
+#endif
+
+	/**
+	  Term_Cmd *cmd_foobar = new Term_Cmd ( this,
+	  Kernel_Term_Cmd_Foobar,
+	  "foobar",
+	  "Foo bar",
+	  PrivilegeLevelUser,
+	  TermModeNormal,
+	  false);
+	  RegisterTermCmd (cmd_foobar, RootConfig());
+	 **/
+
+	// Add 'show' command
+	Term_Cmd *cmd_show = new Term_Cmd (	  this,
+			Kernel_Term_Cmd_Show,
+			"show",
+			"Show system status and configuration",
+			PrivilegeLevelUser,
+			TermModeNormal,
+			false);
+	CVariantChoiceValidator liVdtor("application", "Show loaded applications");
+	liVdtor.Add ("running-config",  "Show running configuration");
+	liVdtor.Add ("statistic",	    "Show system statistics");
+	liVdtor.Add ("task",	    "Show current tasks");
+	liVdtor.Add ("trace",	    "Show currently enabled tracing");
+	liVdtor.Add ("log-files",	    "Show log files attributes");
+	liVdtor.Add ("interface",	    "Show interface status");
+	liVdtor.Add ("call-stat",	    "Show call statistics");
+	liVdtor.Add ("ctbus",	    "Show CTBUS usage");
+	liVdtor.Add ("scbus",	    "Show SCBUS usage");
+	liVdtor.Add ("times",	    "Show system components times");
+	liVdtor.Add ("users",	    "Show currently logged in users");
+	liVdtor.Add ("service",	    "Show service/system components status");
+	liVdtor.Add ("database",	    "Show database components status");
+	liVdtor.Add ("http",	    "Show HTTP components status");
+	liVdtor.Add ("signalling",	    "Show signalling components status");
+	liVdtor.Add ("version",	    "Show software version");
+	liVdtor.Add ("db-handles",	    "Show currently opened database handles");
+	liVdtor.Add ("cir",		    "Show Call In Routes (routing for incoming calls)");
+	liVdtor.Add ("access-list",	    "Show access list entry/entries");
+	liVdtor.Add ("rtcp",	    "Show configured RTCP statistics");
+	liVdtor.Add ("dev-usage",	    "Show device usage statistics");
+	liVdtor.Add ("atm",		    "Show atm informations");
+	liVdtor.Add ("threads",	    "Show threads status");
+#ifdef XGATE_HAS_PPPOE
+	liVdtor.Add ("pppoe",	    "Show PPPoE channels usage information");
+#endif
+#ifdef SWITCH_MANAGE_DEVICES
+	liVdtor.Add ("switching",	    "Show TDM switching connections");
+#endif
+#ifdef XGATE_HAS_BUGSLAYER
+	liVdtor.Add ("bug-slayer",	    "Show BUG-SLAYER statistics");
+#endif
+
+	cmd_show->Add ( new Term_Cmd_Arg ("type", CVariant(""), liVdtor) );
+
+
+	/*
+	   cmd_show->Add ( new Term_Cmd_Arg ("selector", 
+	   CVariant(""), 
+	   CVariantValidator(CVariant(""), "Target selection name, or other value (cmd specific)"), 
+	   TermArgOptional));
+	   */
+
+	cmd_show->AddDynamic (1, 0, CVariant("interface"),
+			new Term_Cmd_Arg("ifacename", 
+				CVariant("brief"), 
+				CVariantValidator(CVariant(""), "'brief', or interface name specification (regexp)"),
+				TermArgOptional));
+	cmd_show->AddDynamic (1, 0, CVariant("service"),
+			new Term_Cmd_Arg("svcname", 
+				CVariant(""), 
+				ServiceProvider_DynamicValidator(),
+				TermArgOptional));
+	cmd_show->AddDynamic (1, 0, CVariant("db-handles"),
+			new Term_Cmd_Arg("@1", 1,
+				CVariantValidator(1, "Task ID")));
+	cmd_show->AddDynamic (1, 0, CVariant("application"),
+			new Term_Cmd_Arg("@1", "detail", CVariantSingleValueValidator("detail", ""), TermArgOptional));
+
+	cmd_show->AddDynamic (1, 0, CVariant("access-list"),
+			new Term_Cmd_Arg("@1", "", ACL_Validator(), TermArgOptional));
+
+	cmd_show->AddDynamic (1, 0, CVariant("dev-usage"),
+			new Term_Cmd_Arg("@1", "", CVariantValidator("", "Device name (regular expression)"), TermArgOptional));
+
+
+#if defined XGATE_NEW_ATM_LIB
+	CVariantChoiceValidator atmVdtor("control", "control vc");
+	atmVdtor.Add("user", "user vc");
+	atmVdtor.Add("oam", "oam vc");
+#else
+	CVariantChoiceValidator atmVdtor("vc", "signalling and user vc");
+#endif
+	atmVdtor.Add("sync", "synchronization vc");
+	cmd_show->AddDynamic (1, 0, "atm",   new Term_Cmd_Arg("@1", "", atmVdtor));
+
+
+
+	RegisterTermCmd (cmd_show, RootConfig());
+
+	// Add 'clear' command
+	Term_Cmd *cmd_clear = new Term_Cmd(this,
+			Kernel_Term_Cmd_Clear,
+			"clear",
+			"Clear counters",
+			PrivilegeLevelAdmin,
+			TermModeNormal, false);
+	CVariantChoiceValidator clrVdtor("counter", "Clear various counters");
+	cmd_clear->Add(new Term_Cmd_Arg("@0", "", clrVdtor));
+
+	cmd_clear->AddDynamic(1, 0, "counter", 
+			new Term_Cmd_Arg("@1", "", ServiceProvider_DynamicValidator(), TermArgOptional));
+	RegisterTermCmd(cmd_clear, RootConfig());
+
+	// Add sleep command
+	Term_Cmd *cmd_sleep = new Term_Cmd(this,
+			Kernel_Term_Cmd_Sleep,
+			"sleep",
+			"Suspend execution of terminal",
+			PrivilegeLevelUser,
+			TermModeNormal, false);
+	cmd_sleep->Add(new Term_Cmd_Arg("@0", CVariant(1), CVariantRangeValidator(1, 5000, "duration in msec")) );
+	RegisterTermCmd(cmd_sleep, RootConfig());
+
+	// Add 'exportapi' command
+	Term_Cmd *cmd_api = new Term_Cmd (this,
+			Kernel_Term_Cmd_API,
+			"api",
+			"Show or export API definitions",
+			PrivilegeLevelUser,
+			TermModeNormal,
+			false);
+	CVariantChoiceValidator apiVdtor("show", "Show API definitions");
+	apiVdtor.Add ( "export", "Export/save API definitions");
+	cmd_api->Add ( new Term_Cmd_Arg( "cmd", CVariant(""), apiVdtor) );
+	cmd_api->Add ( new Term_Cmd_Arg( "exportcmd", 
+				CVariant(""), 
+				CVariantSingleValueValidator("file", "Export API to file"), 
+				TermArgOptional));
+	cmd_api->Add (new Term_Cmd_Arg( "fname", 
+				CVariant(""), 
+				CVariantValidator(CVariant(""), "Filename"),
+				TermArgOptional));
+	RegisterTermCmd (cmd_api, RootConfig());
+
+
+	// Add 'user' command to define users
+	Term_Cmd *cmd_user = new Term_Cmd (this,
+			Kernel_Term_Cmd_User,
+			"user",
+			"Define new users or modify users",
+			PrivilegeLevelAdmin,
+			TermModeConfig,
+			true);
+	cmd_user->Add (new Term_Cmd_Arg ("@0", CVariant(""), CVariantValidator("", "username")));
+	CVariantChoiceValidator uv1("password", "Set password");
+	cmd_user->Add( new Term_Cmd_Arg( "@1", CVariant(""), uv1) );
+	cmd_user->Add(new Term_Cmd_Arg ("@2", CVariant(0), CVariantValidator(CVariant(0), "0=clear text, 1=encrypted")));
+	cmd_user->Add(new Term_Cmd_Arg ("@3", CVariant(""), CVariantValidator("", "password")));
+	CVariantChoiceValidator uv2("privilege", "Set privilege");
+	cmd_user->Add( new Term_Cmd_Arg( "@4", CVariant(""), uv2) );
+	CVariantChoiceValidator uv3("normal-user", "Normal user (read only)");
+	uv3.Add("admin", "Administrator (read/write)");
+	cmd_user->Add( new Term_Cmd_Arg( "@5", CVariant(""), uv3) );
+	RegisterTermCmd (cmd_user, RootConfig());
+
+	//
+	// Create commands for manipulating system parameters
+	//
+
+	// Create the 'system' tree (below RootConfig()) as place holders for
+	// kernel parameters
+	m_SystemConfigTree = new Cfg_Tree_Group ( "system",
+			"System config tree",
+			RootConfig());
+
+	// Add command 'system' to enter system tree when in config mode.
+	Term_Cmd *cmd_system = new Term_Cmd (this,
+			Kernel_Term_Cmd_System_Conf,
+			"system",
+			"Configure system parameters",
+			PrivilegeLevelAdmin,
+			TermModeConfig,
+			false);
+	RegisterTermCmd (cmd_system, RootConfig());
+
+
+	CVariantChoiceValidator profVdtor (0, "Disable profiling");
+	profVdtor.Add (1, "Enable profiling");
+
+	// Add 'sleeptime' command below the 'system' tree entry.
+	Term_Cmd *cmd_sleeptime = new Term_Cmd (this,
+			Kernel_Term_Cmd_SleepTime,
+			"sleeptime",
+			"Set how long kernel will block/sleep (in msec) when idle",
+			PrivilegeLevelAdmin,
+			TermModeConfig,
+			false);
+	cmd_sleeptime->Add (new Term_Cmd_Arg ("val", CVariant(1), CVariantRangeValidator(0, 10, "Value (in msec)")) );
+	RegisterTermCmd (cmd_sleeptime, m_SystemConfigTree);
+
+	// Add task's 'exec-quota' command below the 'system' tree.
+	Term_Cmd *cmd_quota = new Term_Cmd (this,
+			Kernel_Term_Cmd_ExecQuota,
+			"exec-quota",
+			"Task's exec quota before context switch is forced",
+			PrivilegeLevelAdmin,
+			TermModeConfig,
+			true);
+	cmd_quota->Add (new Term_Cmd_Arg("@0", 50, CVariantRangeValidator(20, 2000, "Execution quota (in msec)"), TermArgOptional));
+	RegisterTermCmd (cmd_quota, m_SystemConfigTree);
+
+	// Add system lock booster command
+	Term_Cmd *cmd_boost = new Term_Cmd (this,
+			Kernel_Term_Cmd_BoostThread,
+			"boost-priority",
+			"Temporarily boost priority of certain threads",
+			PrivilegeLevelAdmin,
+			TermModeConfig,
+			true);
+	CVariantChoiceValidator boostVdtor("system-lock", "Boost thread that holds system lock");
+	cmd_boost->Add (new Term_Cmd_Arg("@0", "", boostVdtor));
+	RegisterTermCmd (cmd_boost, m_SystemConfigTree);
+
+	// Main thread priority
+	Term_Cmd *cmd_thread = new Term_Cmd(this,
+			Kernel_Term_Cmd_ThreadPriority,
+			"thread-priority",
+			"Priority of the main thread",
+			PrivilegeLevelAdmin,
+			TermModeConfig,
+			false);
+	CVariantChoiceValidator prioVdtor("normal", "Normal priority");
+	prioVdtor.Add("above-normal", "One point above normal priority");
+	prioVdtor.Add("highest", "Two points above normal priority");
+	cmd_thread->Add(new Term_Cmd_Arg("@0", "", prioVdtor));
+	RegisterTermCmd(cmd_thread, m_SystemConfigTree);
+
+	// SBH threshold
+	Term_Cmd *cmd_sbh_threshold = new Term_Cmd(this,
+			Kernel_Term_Cmd_SBH_Threshold,
+			"sbh-threshold",
+			"Set Windows Small Memory Block Allocator threshold",
+			PrivilegeLevelAdmin,
+			TermModeConfig,
+			true);
+	CVariantValidator sbhVdtor( CVariant(0), "Value in bytes, or -1 to use default");
+	cmd_sbh_threshold->Add( new Term_Cmd_Arg("@0", 0, sbhVdtor) );
+	RegisterTermCmd(cmd_sbh_threshold, m_SystemConfigTree);
+
+	// set TiNG_trace level
+	Term_Cmd *cmd_ting_trace = new Term_Cmd(this,
+			Kernel_Term_Cmd_TiNG_Trace,
+			"ting-trace",
+			"Set TiNG_trace logging level",
+			PrivilegeLevelAdmin,
+			TermModeConfig,
+			true);
+	cmd_ting_trace->Add(new Term_Cmd_Arg("@0", CVariant(0), CVariantRangeValidator(0, 4, "log level")) );
+	RegisterTermCmd(cmd_ting_trace, m_SystemConfigTree);
+
+	//
+	// Register a ShowHandler.
+	//
+	RootConfig()->RegisterShowHandler (this);
+	m_SystemConfigTree->RegisterShowHandler (this);
+}
+
+
+//-----------------------------------------------------------------------------
+// Check whether configuration has changed and ask user to
+// save
+void Kernel::CheckConfigChanged(Term_Session *session)
+{
+	assert (session == NULL);
+
+}
+
+#ifdef XGATE_HAS_PROSODY
+extern int *a_zero();
+#else
+int *a_zero()
+{
+	// user by CrashMePlease
+	return (int*)0;
+}
+#endif
+
+//-----------------------------------------------------------------------------
+// Show Bug-Slayer statistics
+//
+#ifdef XGATE_HAS_BUGSLAYER
+void ShowBugSlayer(Term_Session *session)
+{
+	bs_stat bstat;
+
+	session->Sendf("Bug-Slayer memory statistics:\n");
+	if (bs_get_stat(&bstat)) {
+		session->SendErrorf("Error getting Bug-Slayer statistic!\n");
+	} else {
+		unsigned i;
+
+		session->Sendf("  Total memory acquired: %u bytes\n", bstat.memsize);
+		session->Sendf("  Warnings: %u, errors: %u\n", bstat.tot_warn, bstat.tot_err);
+		session->Sendf("\n");
+		session->Sendf("      Size  NodeSize      Total   #Nodes    Used Pct%%    Peak Pct%%     #Request\n"
+				"  -----------------------------------------------------------------------------\n");
+		for (i=0; i<bstat.arcount; ++i) {
+			session->Sendf("  % 8u  % 8u  % 9u % 8u % 7u %3d%% % 7u %3d%%   % 10u\n",
+					bstat.arstat[i].size,
+					bstat.arstat[i].nodesize,
+					bstat.arstat[i].nodesize * bstat.arstat[i].count,
+					bstat.arstat[i].count,
+					bstat.arstat[i].used,
+					(bstat.arstat[i].count ? bstat.arstat[i].used*100/bstat.arstat[i].count : 0),
+					bstat.arstat[i].peak,
+					(bstat.arstat[i].count ? bstat.arstat[i].peak*100/bstat.arstat[i].count : 0),
+					bstat.arstat[i].totalloc);
+		}
+	}
+}
+#endif
+
+//-----------------------------------------------------------------------------
+// Dump allocated memory to a file
+//
+#ifdef TRACE_ALLOC
+static FILE* dump_file = 0;
+static int line_num = 0;
+static void dump_memory(void* arg, time_t t, const char* fname, int linenum, unsigned size)
+{
+	struct tm *tm = localtime(&t);
+	fprintf(dump_file, "%05d> %02d-%02d %02d:%02d:%02d, %s(%d), %db\n", ++line_num, tm->tm_mon+1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, fname, linenum, size);
+}
+
+#endif
+
+//-----------------------------------------------------------------------------
+// Called whenever there are actions to our subscribed entry.
+//
+void Kernel::DoTermCmd(Term_Session *session, bool no, Term_Cmd *cmd)
+{
+	CVariant param1, param2;
+	KShutdown::How shutdown_type;
+	IString s;
+
+	switch (cmd->GetId()){
+
+		case Kernel_Term_Cmd_System_Conf:
+			session->SetRoot (m_SystemConfigTree);
+			break;
+
+		case Kernel_Term_Cmd_System_Cmd:
+			cmd->GetArg((size_t)0)->GetValue(param1);
+			s = param1.ToString();
+			if (s == "restart" || s == "shutdown") {
+				if (s == "restart") {
+					// Spawn new Xgate process, but let that xgate process waits
+					// for _this_ process to complete.
+					SpawnXgateRestarter(true);
+				} else {
+					// Abort the other Xgate process that was previously spawned, if any.
+					SpawnXgateRestarter(false);
+				}
+
+				if ( cmd->GetArg ((size_t)1)->HasValue() == false ) {
+					// argument is not specified, refert to default.
+					shutdown_type = KShutdown::GRACEFULLY;
+				} else {
+					cmd->GetArg ((size_t)1)->GetValue (param2);
+					String sparam = Tolower(param2.ToString());
+					if (sparam == "hangup")
+						shutdown_type = KShutdown::HANGUP;
+					else if (sparam == "abort")
+						shutdown_type = KShutdown::ABORT;
+					else if (sparam == "cancel") {
+						session->SendError ("Sorry, this command is not implemented yet.\n");
+						return;
+					} else {
+						session->SendErrorf ("Invalid shutdown/restart command: '%s'\n", sparam.c_str());
+						return;
+					}
+				}
+
+				if (!ACQUIRE_SYSTEM_LOCK())
+					return;
+
+				// Shutdown
+				CLog::Info ( KERNEL, "Processing shutdown request from %s", 
+						session->GetSourceAddress().c_str());
+				Shutdown (shutdown_type);
+				CLog::Info ( KERNEL, "Finished processing shutdown request from %s", 
+						session->GetSourceAddress().c_str());
+				RELEASE_SYSTEM_LOCK();
+
+			}else if (s == "raise") {
+				char *err;
+				unsigned pid;
+
+				cmd->GetArg((size_t)1)->GetValue(param1);
+				s = param1.ToString();
+				pid = strtoul (s.c_str(), &err, 10);
+				if (*err == '\0') {
+					if (!ACQUIRE_SYSTEM_LOCK())
+						return;
+
+					CTask *task = FindTask(pid);
+					if (task && task->GetState() != CTask::BORN && task->GetState() != CTask::DEAD)
+						task->RaiseException (EX_HANGUP, "kernel", "raise");
+					RELEASE_SYSTEM_LOCK();
+
+					if (!task)
+						session->SendErrorf ("Unable to find task %u\n", pid);
+
+				} else if (s == "all") {
+					if (!ACQUIRE_SYSTEM_LOCK())
+						return;
+
+					List<CTask*>::iterator it, end;
+
+					end = Q_AllTask.end();
+					for (it=Q_AllTask.begin(); it!=end; ++it) {
+						CTask *task = *it;
+						if (task && task->GetState() != CTask::BORN && task->GetState() != CTask::DEAD)
+							task->RaiseException (EX_HANGUP, "kernel", "raise");
+					}
+					RELEASE_SYSTEM_LOCK();
+
+				} else {
+					session->SendErrorf ("Invalid argument '%s'\n", s.c_str());
+				}
+			}
+
+			break;
+
+		case Kernel_Term_Cmd_SleepTime:
+
+			cmd->GetArg((size_t)0)->GetValue(param1);
+			if (!ACQUIRE_SYSTEM_LOCK())
+				return;
+
+			if (no) 
+				m_SleepTime = 1;
+			else
+				m_SleepTime = param1.AsInt();
+			RELEASE_SYSTEM_LOCK();
+			break;
+
+		case Kernel_Term_Cmd_ExecQuota:
+
+			if (!ACQUIRE_SYSTEM_LOCK())
+				return;
+
+			if (no)
+				Code_Interpreter::Instance()->SetExecQuota(5000);
+			else {
+				if (!cmd->GetArg((size_t)0)->HasValue()) {
+					RELEASE_SYSTEM_LOCK();
+					session->SendErrorf("Argument is required\n");
+					return;
+				} 
+				cmd->GetArg((size_t)0)->GetValue(param1);
+				Code_Interpreter::Instance()->SetExecQuota(param1.AsInt());
+			}
+			RELEASE_SYSTEM_LOCK();
+			break;
+
+		case Kernel_Term_Cmd_BoostThread:
+			session->SendErrorf("This command is obsolete\n");
+			return;
+
+			cmd->GetArg((size_t)0)->GetValue(param1);
+			s = param1.AsString();
+
+			if (!ACQUIRE_SYSTEM_LOCK())
+				return;
+
+			if (no) {
+				if (s == "system-lock")
+					m_BoostSystemLockOwner = THREAD_PRIORITY_ERROR_RETURN;
+			} else {
+				if (s == "system-lock")
+					m_BoostSystemLockOwner = THREAD_PRIORITY_ABOVE_NORMAL;
+			}
+			RELEASE_SYSTEM_LOCK();
+			break;
+
+		case Kernel_Term_Cmd_ThreadPriority:
+
+			do {
+				cmd->GetArg((size_t)0)->GetValue(param1);
+				s = param1.AsString();
+
+				DWORD priority;
+				if (s == "normal")
+					priority = THREAD_PRIORITY_NORMAL;
+				else if (s == "above-normal")
+					priority = THREAD_PRIORITY_ABOVE_NORMAL;
+				else if (s == "highest")
+					priority = THREAD_PRIORITY_HIGHEST;
+				else {
+					session->SendErrorf("Invalid priority: %s\n", s.c_str());
+					return;
+				}
+
+				if (priority!=THREAD_PRIORITY_NORMAL && session->GetStream().IsInteractive()) {
+					if (session->PromptYesNo(false, "Setting main thread priority higher than normal "
+								"might cause starvation in other threads. Do you want to continue? [Y/N]")==false)
+						return;
+				}
+
+#ifndef __linux__
+				struct sched_param params;
+				pthread_attr_t attr;
+				int s,policy=0,ret;
+				ret = pthread_getschedparam(pthread_self(), &policy, &params);
+				if (ret != 0) {
+					//Log the data
+				}
+				if (ret = pthread_setschedparam(m_hMainThread, &priority, &params)) {
+					session->SendErrorf("Error in setting main thread priority\n");
+					return;
+				}
+#endif
+
+			}while (0);
+			break;
+
+		case Kernel_Term_Cmd_SBH_Threshold:
+			do {
+				cmd->GetArg((size_t)0)->GetValue(param1);
+				int threshold = param1.AsInt();
+
+				if (threshold == -1) {
+					threshold = m_SbhDefaultThreshold;
+				} else if (threshold < -1) {
+					session->SendErrorf("Invalid value %d\n", threshold);
+					return;
+				}
+
+				session->Sendf("Threshold successfully set to %d\n", threshold);
+				m_SbhThreshold = param1.AsInt();
+
+
+			} while (0);
+			break;
+
+		case Kernel_Term_Cmd_TiNG_Trace:
+			{
+#ifdef XGATE_HAS_PROSODY
+				cmd->GetArg((size_t)0)->GetValue(param1);
+				TiNG_set_loglevel(param1.AsInt());
+#endif
+			}
+			break;
+
+		case Kernel_Term_Cmd_SpawnTask:
+			{
+				List <String> cmdline;
+				for (unsigned i=1; i< cmd->GetArgCount(); ++i) {
+
+
+					Term_Cmd_Arg *arg = cmd->GetArg(i);
+					if (arg->HasValue()) {
+						arg->GetValue(param1);
+						cmdline.push_back(param1.ToString());
+					}
+				}
+
+				if (!ACQUIRE_SYSTEM_LOCK())
+					return;
+
+				cmd->GetArg((size_t)0)->GetValue(param1);
+				if (SpawnTask(param1.ToString(), cmdline, TASK_STARTUP_TELNET) == NULL) {
+					RELEASE_SYSTEM_LOCK();
+					session->SendErrorf ("Unable to create task '%s'\n", param1.ToString().c_str());
+				} else
+					RELEASE_SYSTEM_LOCK();
+			}
+			break;
+
+		case Kernel_Term_Cmd_SpawnTask2:
+			{
+				List <String> cmdline;
+				unsigned i = 0;
+				for (i=2; i< cmd->GetArgCount(); ++i) {						
+					Term_Cmd_Arg *arg = cmd->GetArg(i);
+					if (arg->HasValue()) {
+						arg->GetValue(param1);
+						cmdline.push_back(param1.ToString());
+					}
+				}
+
+				if (!ACQUIRE_SYSTEM_LOCK())
+					return;
+
+				cmd->GetArg((size_t)0)->GetValue(param1);
+				cmd->GetArg((size_t)1)->GetValue(param2);
+				for(i=0; i < param1.AsInt(); i++){
+					if (SpawnTask(param2.ToString(), cmdline, TASK_STARTUP_TELNET) == NULL) {
+						RELEASE_SYSTEM_LOCK();
+						session->SendErrorf ("[Process - %04d] Unable to create task '%s'\n", i+1, param2.ToString().c_str());
+						break;
+					} else{
+						RELEASE_SYSTEM_LOCK();
+					}
+				}
+			}
+			break;
+
+		case Kernel_Term_Cmd_KillTask:
+			{
+				IString s;
+				char *err;
+				unsigned pid;
+
+				cmd->GetArg((size_t)0)->GetValue(param1);
+				s = param1.ToString();
+				pid = strtoul (s.c_str(), &err, 10);
+				if (*err == '\0') {
+					if (!ACQUIRE_SYSTEM_LOCK())
+						return;
+
+					STATUS status = KillTask(pid);
+					RELEASE_SYSTEM_LOCK();
+					if (status == OK)
+						session->Sendf ("Task %u killed\n", pid);
+					else
+						session->SendErrorf ("Unable to kill task %u\n", pid);
+				} else if (s == "all") {
+					if (!ACQUIRE_SYSTEM_LOCK())
+						return;
+
+					while (Q_AllTask.size()) {
+						KillTask(Q_AllTask.back());
+
+						// Give some time for main thread to do HandleEvents and other things.
+						// This is useful, for example, for AudioCodes, which will
+						// cause buffer command overrun if too many commands are
+						// executed without calling HandleEvents.
+						RELEASE_SYSTEM_LOCK();
+						Sleep(10); //Linux porting
+						if (!ACQUIRE_SYSTEM_LOCK())
+							return;
+					}
+					RELEASE_SYSTEM_LOCK();
+
+				} else if (s == "DirectlyGoToExitProcess") {
+
+					//Linux Porting
+					//ExitProcess(1);
+					//exit(1);
+
+				} else if (s == "CrashMePlease") {
+
+					/* WARNING WARNING WARNING
+					   This is undocumented, and strickly for testing ONLY!!!!
+					   The purpose is to crash the program so that a crashdump/DrWatson
+					   can be obtained
+					   */
+					CLog::Fatal(KERNEL, "Kernel crash was triggered by %s", session->GetSourceAddress().c_str());
+					Sleep(1000); //Linux porting
+
+					*a_zero() = 1;
+
+				} else {
+					session->SendErrorf ("Command 'killtask <appname>' is not implemented yet\n");
+				}
+			}
+			break;
+
+#ifdef TRACE_ALLOC
+		case Kernel_Term_Cmd_MemDump:
+			dump_file = fopen("/var/memory.txt", "wt");
+			if (dump_file) {
+				line_num = 0;
+				enum_allocated_mem(0, dump_memory);
+				fclose(dump_file);
+			}
+			break;
+#endif
+
+		case Kernel_Term_Cmd_Foobar:
+			break;
+
+		case Kernel_Term_Cmd_Show:
+			{
+				IString arg;
+				String arg2;
+
+				if (cmd->GetArg((size_t)0)->HasValue() == false)
+					arg = "running-config";
+				else {
+					cmd->GetArg((size_t)0)->GetValue(param1);
+					arg = param1.ToString();
+				}
+				if (cmd->GetArg(1)->HasValue()) {
+					CVariant v;
+					cmd->GetArg(1)->GetValue(v);
+					arg2 = v.ToString();
+				}
+
+				if (arg == "application") {
+					if (cmd->GetArg(1)->HasValue())
+						CT_App_Manager::Instance()->ShowApp(session);
+					else
+						CT_App_Manager::Instance()->ShowApp_Brief(session);
+				} else if (arg == "running-config")
+					ShowConfig(session);
+				else if (arg == "statistic")
+					ShowStatistic(session);
+				else if (arg == "task")
+					ShowTask (session);
+				else if (arg == "times")
+					ShowTimes(session);
+				else if (arg == "trace")
+					KLog::Instance()->Trace_Show (session);
+				else if (arg == "log-files")
+					KLog::Instance()->Cmd_LogFile (session);
+				else if (arg == "interface")
+					MediaManager::GetInstance()->ShowInterface (session, arg2);
+				else if (arg == "call-stat")
+					CallManager::Instance()->ShowCallStats(session);
+				else if (arg == "ctbus")
+					CTbusManager::Instance()->ShowUsage(session);
+				else if (arg == "scbus")
+					SCbusManager::Instance()->ShowUsage(session);
+				else if (arg == "service")
+					ServiceProviderManager::Instance()->ShowStatus (session, arg2);
+				else if (arg == "database") {
+					String s = "*database*";
+					ServiceProviderManager::Instance()->ShowStatus (session, s);
+				} else if (arg == "http") {
+					String s = "*http*";
+					ServiceProviderManager::Instance()->ShowStatus (session, s);
+				} else if (arg == "signalling") {
+					String s = "*signalling*";
+					ServiceProviderManager::Instance()->ShowStatus (session, s);
+				} else if (arg == "users")
+					Config_Controller::Instance()->ShowLoggedOnUsers (session);
+				else if (arg == "cir")
+					CT_App_Manager::Instance()->ShowCallInRoute(session);
+				else if (arg == "db-handles") {
+					unsigned pid = atoi(arg2.c_str());
+
+					if (!ACQUIRE_SYSTEM_LOCK())
+						return;
+
+					CTask *task = FindTask(pid);
+					if (task == NULL) {
+						RELEASE_SYSTEM_LOCK();
+						return;
+					}
+
+					String output;
+#ifdef XGATE_HAS_DB_DRIVER
+					DB_Service::Instance()->ShowDbHandles_NoLock(output, task);
+#endif
+					RELEASE_SYSTEM_LOCK();
+					session->Send(output);
+				}
+				else if (arg == "version") {
+					session->Send (GetVersion());
+					//session->Sendf("\nSoftware features:\n%s", Xgate_Get_Feature_Info());
+				} else if (arg == "access-list") {
+					if (cmd->GetArg(1)->HasValue()) {
+						cmd->GetArg(1)->GetValue(param1);
+						arg = param1.AsString();
+						ACL_Manager::Instance()->ShowAccessList(arg, session);
+					} else {
+						String output;
+						String indent(4, ' ');
+						ACL_Manager::Instance()->OnShowConfig(NULL, output, indent, 2);
+						session->Send(output);
+					}
+				} else if (arg == "rtcp") {
+
+#ifdef XGATE_HAS_RTP_INTERFACE
+					if (Rtcp_Monitor::Instance())
+						Rtcp_Monitor::Instance()->Show(session);
+					else
+#endif
+
+						session->Sendf("RTP interface manager does not exist\n");
+				} else if (arg == "dev-usage") {
+					if (cmd->GetArg(1)->HasValue()) {
+						cmd->GetArg(1)->GetValue(param1);
+						DeviceUsageManager::Instance()->ShowDeviceUsage(session, param1.AsString());
+					} else
+						DeviceUsageManager::Instance()->ShowDeviceUsage(session, ".*");
+				} 
+#ifdef XGATE_HAS_ATM
+				else if (arg == "atm") {
+
+					cmd->GetArg(1)->GetValue(param1);
+					arg = param1.ToString();
+
+
+					IML_ATM_Manager::Instance()->ShowSvcInfo(session, arg);
+
+				} 
+#endif
+
+#ifdef XGATE_HAS_PPPOE
+				else if (arg == "pppoe") {
+					PPPoE_Manager::Instance()->ShowChannelStatus(session);
+				} 
+#endif
+
+#ifdef SWITCH_MANAGE_DEVICES
+				else if (arg == "switching") {
+					SwitchManager::Instance()->ShowSwitching(session);
+				} 
+#endif
+
+#ifdef XGATE_HAS_BUGSLAYER
+				else if (arg == "bug-slayer") {
+					ShowBugSlayer(session);
+				} 
+#endif
+				else if (arg == "threads") {
+					Thread_Manager::Instance()->ShowThreadsStatus(session);
+				} else {
+					assert(false);
+				}
+			}
+			break;
+
+		case Kernel_Term_Cmd_API:
+			{
+
+				IString s0, s1, s2;
+				CVariant param2;
+
+				cmd->GetArg ((size_t)0)->GetValue(param1);
+				s0 = param1.ToString();
+
+				if (s0 == "export") {
+					if (!cmd->GetArg(1)->HasValue()){	//linux porting
+						session->SendErrorf ("Keyword 'file' is required after 'export'\n");
+						return;
+					}else{
+						cmd->GetArg(1)->GetValue(param1);
+						s1 = param1.ToString();
+						if (!(s1 == "file")) {
+							session->SendErrorf ("Keyword 'file' is required after 'export'\n");
+							return;
+						}
+					}
+
+					if (!cmd->GetArg(2)->HasValue()) {
+						session->SendErrorf ("filename is required.\n");
+						return;
+					}
+					cmd->GetArg(2)->GetValue(param2);
+					s2 = param2.ToString();
+				}
+
+				String output;
+				if (API_Provider_Manager::Instance()->ExportAPI(output) != OK) {
+					session->SendErrorf ("Internal error when generating API definitions.\n");
+					return;
+				}
+
+				if (s0 == "export"){
+
+					FILE *fhnd = fopen(s2.c_str(), "wb");
+
+					if (fhnd == NULL) {
+						session->Sendf("Unable to open file '%s'\n", s2.c_str());
+						return;
+					}
+
+					session->Sendf("Saving API to file '%s'...", s2.c_str());
+					if (fwrite(output.c_str(), output.size(), 1, fhnd) != 1) {
+						session->Sendf("error!\n");
+					}else{
+						session->Sendf("done.\n");
+					}
+
+					fclose(fhnd);
+
+				}else{
+					session->Send(output);
+				}
+			}
+			break;
+
+		case Kernel_Term_Cmd_User:
+			{
+				CVariant uname;
+				CVariant enc;
+				CVariant passwd;
+				CVariant priv;
+				cmd->GetArg((size_t)0)->GetValue(uname);
+				cmd->GetArg((size_t)2)->GetValue(enc);
+				cmd->GetArg((size_t)3)->GetValue(passwd);
+				cmd->GetArg((size_t)5)->GetValue(priv);
+
+				const char* curuser = session->GetUserName();
+				if (strcmp(curuser,"admin") != 0 && strcmp(curuser,uname.AsString()) != 0) {
+					session->SendError("Only admin is authorized to add/change/delete other users\n");
+					//			break;
+				}
+				if (no) {
+					CSecurityProvider::Instance()->DeleteUser(uname.AsString());
+				} else {
+					PrivilegeLevel plevel = 
+						(strcmpi(priv.AsString(),"admin") == 0) ? PrivilegeLevelAdmin : PrivilegeLevelUser;
+					CSecurityProvider::Instance()->SetUser(
+							uname.AsString(),
+							(EncryptionMethod)enc.AsInt(),
+							passwd.AsString(),
+							plevel);
+				}
+
+
+			}
+			break;
+
+		case Kernel_Term_Cmd_Clear:
+			{
+				CVariant arg0, arg1;
+				cmd->GetArg((size_t)0)->GetValue(arg0);
+				s = arg0.AsString();
+				if (s == "counter") {
+					if (cmd->GetArg(1)->HasValue()) {
+						cmd->GetArg((size_t)1)->GetValue(arg1);	
+						s = arg1.AsString();
+					} else
+						s.erase();
+					ServiceProviderManager::Instance()->ClearCounter(session, s);
+				}
+			}
+			break;
+
+		case Kernel_Term_Cmd_Sleep:
+			{
+				CVariant duration;
+				cmd->GetArg((size_t)0)->GetValue(duration);
+				Sleep(duration.AsInt()); //Linux porting
+
+			}
+			break;
+	}
+}
+
+
+//-----------------------------------------------------------------------------
+// Called whenever there are actions to our subscribed entry.
+//
+bool Kernel::OnShowConfig(const Cfg_Tree_Entry *e, 
+		String & output, 
+		const String & indent, 
+		int indent_size) const
+{
+	size_t sleep_time, exec_quota;
+
+	// TODO:
+	// copy kernel running parameters while acquiring system-wide mutex lock.
+	//#ifndef __linux__
+	if (!ACQUIRE_SYSTEM_LOCK())
+		return NOT_OK;
+	/*#else
+	  pthread_mutex_lock(&m_SystemLock);
+#endif */
+
+	sleep_time = m_SleepTime;
+	exec_quota = Code_Interpreter::Instance()->GetExecQuota();
+	//#ifndef __linux__
+	RELEASE_SYSTEM_LOCK();
+	/*#else
+	  pthread_mutex_unlock(&m_SystemLock);
+#endif*/
+
+	char tmp[256];
+
+	TerminalUser* user = CSecurityProvider::Instance()->GetFirstUser();
+	while (user) {
+		sprintf(tmp,"%suser %s password %d %s privilege %s\n",
+				indent.c_str(),
+				user->userName.c_str(),
+				user->encMethod,
+				user->password.c_str(),
+				GetPrivilegeLevelStr(user->privilege).c_str());
+		output += tmp;
+		user = CSecurityProvider::Instance()->GetNextUser();
+	}
+
+	output += "\n";
+
+	String new_indent = indent;
+	if (e == Kernel::Instance()->RootConfig()) {
+		sprintf (tmp, "%ssystem\n", indent.c_str());
+		output += tmp;
+		new_indent.append ((size_t)indent_size, ' ');
+	}
+
+
+	if (exec_quota >= 2000)
+		sprintf (tmp, "%sno exec-quota\n", new_indent.c_str(), exec_quota);
+	else
+		sprintf (tmp, "%sexec-quota %u\n", new_indent.c_str(), exec_quota);
+	output += tmp;
+
+	if (m_SbhThreshold != -1) {
+		sprintf(tmp, "%ssbh-threshold %d\n", new_indent.c_str(), m_SbhThreshold);
+		output += tmp;
+	}
+
+#ifdef XGATE_HAS_PROSODY
+	if (TiNG_get_loglevel()) {
+		sprintf(tmp, "%sting-trace %d\n", new_indent.c_str(), TiNG_get_loglevel());
+		output += tmp;
+	}
+#endif
+
+	sprintf (tmp, "%ssleeptime %u\n", new_indent.c_str(), sleep_time);
+	output += tmp;
+
+	const char *prio_str;
+	//switch (::GetThreadPriority(m_hMainThread))
+	//Linux Porting
+	struct sched_param params;
+	pthread_attr_t attr;
+	int s,policy=0,ret;
+	ret = pthread_getschedparam(pthread_self(), &policy, &params);
+
+	switch (ret) {
+		case THREAD_PRIORITY_NORMAL:
+			prio_str = "normal";
+			break;
+		case THREAD_PRIORITY_ABOVE_NORMAL:
+			prio_str = "above-normal";
+			break;
+		case THREAD_PRIORITY_HIGHEST:
+			prio_str = "highest";
+			break;
+		default:
+			prio_str = "normal";
+			CLog::Warning(KERNEL, "Unable to resolve main thread priority");
+			break;
+	}
+	output += new_indent + "thread-priority " + prio_str + "\n";
+
+	if (e == Kernel::Instance()->RootConfig()) {
+		sprintf (tmp, "%stop\n", new_indent.c_str());
+		output += tmp;
+	}
+
+	output += "\n";
+	return OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Separate thread to load user configuration (etc/User.conf)
+//
+static void* user_configuration_thread(void* base_dir)
+{
+	Sleep(1000);
+
+	// load user bacth file
+	char user_file[512];
+	sprintf(user_file, "%s%s", base_dir, USER_CFG);
+	//printf("User configuration =%s%s\n",base_dir, USER_CFG);
+	Term_Generic_Session sessionUser(new Term_IO_Stream(new Term_File_I_Stream(user_file),
+				new Term_Log_O_Stream(LOG_DEBUG, "CFG")));
+	sessionUser.Run();
+
+	return 0;
+}
+
+//-----------------------------------------------------------------------------
+// Initialize kernel
+//
+STATUS Kernel::Init()
+{
+	//m_MainThreadId = ACE_Thread::self();
+	//Linux Porting
+	m_MainThreadId = pthread_self();
+
+	/* Linux Porting: Identify Duplicate process in Linux and replace below */
+
+	int rc;
+	//m_SystemLock = ::CreateMutex (NULL, FALSE, NULL);
+	pthread_mutex_init (&m_SystemLock, NULL);
+	//if (m_SystemLock == 0)
+
+	CPU_Timestamp_Clock_Timer::init();
+
+	//
+	// KS_INIT:
+	//	Loading SPM, configs and starting log
+	//
+	m_InitLevel = LVL_NULL;
+
+	// Create service provider manager.
+	ServiceProviderManager::Create();
+
+	// Create Log
+	KLog *log = new KLog;
+
+	//  This part of the code is crashing and needs re-enable later 
+#if 0
+	if (!log->Load()) {
+		delete log;
+		log = NULL;
+		ServiceProviderManager::Destroy();
+		return NOT_OK;
+	}
+#endif
+
+
+	m_InitLevel = LVL_LOG_STARTED; 
+
+	// Init system's configuration
+	InitConfig();
+
+	SetState (KS_INIT);
+
+	// Create Config_Controller
+
+	Config_Controller::Create();
+	if (!Config_Controller::Instance()->Load())
+	{
+		//printf("Error due to Config_Controller::Instance()->Load() \n");
+		goto on_error;
+	} 
+
+	//
+	// KS_INIT:
+	//	Creating service providers
+	//
+	new Kernel_Reset_Stat;
+	new Sanity_Checker;
+
+
+	// SNMP should be created before interfaces.
+	SLSnmpManager::Create();
+	// Must be created before interfaces and voice devices
+	DeviceUsageManager::Instance();
+
+	ACL_Manager::Create();
+	SignallingDriverManager::Create();
+
+
+	CT_App_Manager::Create();
+	API_Provider_Manager::Create();
+	Code_Interpreter::Create();
+	SwitchManager::Create();
+	CTbusManager::Create();
+	SCbusManager::Create();
+
+
+
+#ifdef XGATE_HAS_DIAMETER
+	DiameterServiceManager::Create();
+#endif
+
+#ifdef XGATE_HAS_VOICE
+	VoiceManager::Create();
+#endif
+
+	Sleep_Service::Create();
+	System_API_Provider::Create();
+	ConsoleManager::Create();
+
+
+#ifdef XGATE_HAS_DB_DRIVER
+	DB_Service::Create();
+#endif
+
+#ifdef XGATE_HAS_FILE_DRIVER
+	File_Service::Create();
+#endif
+
+	CPU_Load_Monitor::Create();
+	Process_Load_Monitor::Create();
+
+#ifdef XGATE_HAS_AUDIOCODES
+	AudioCodes_Manager::Create();
+#endif
+
+
+#ifdef XGATE_HAS_SIP
+	Registrar_Manager::Create();
+#endif
+
+	TimerManager::Create();
+
+#ifdef XGATE_HAS_TRUNK
+	Trunk_Signalling::Create();
+	Trunk_Interface_Manager::create();
+#endif
+
+#ifdef XGATE_HAS_HTTP_API
+	CreateHttpClientManager();
+#endif
+
+#ifdef XGATE_HAS_MODEM
+	Modem_Pool_Manager::Create();
+#endif
+
+#ifdef XGATE_HAS_PPPOE
+	PPPoE_Manager::Create();
+#endif
+
+#ifdef XGATE_HAS_EC
+	EC_Manager::Create();
+#endif	
+
+#ifdef XGATE_HAS_POWERACCESS
+	PowerAccess_Manager::Create();
+#endif	
+
+#ifdef XGATE_HAS_ANNOUNCE_RES
+	Announce_Mgr::Create();
+#endif
+
+#ifdef XGATE_HAS_ASR
+	ASR_Manager::Create();
+#endif
+
+#ifdef XGATE_HAS_POS
+	POS_Manager::Create();
+#endif
+
+#ifdef XGATE_HAS_HTTP_SERVER
+	HTTP_Service_Manager::Create();
+#endif
+
+#ifdef XGATE_HAS_BUGSLAYER
+	new Kernel_BugSlayer_Checker;
+#endif
+
+	// Call manager should be created later after interfaces.
+	CallManager::Create();
+
+	// License Manager after all are loaded!
+#ifdef XGATE_HAS_LM
+	LicenceManager::Create();
+#endif
+
+#ifdef XGATE_HAS_HMP
+	HostMediaProcessingDriver::Create();
+#endif
+
+	cout << "**** After loading HostMediaProcessing Driver *****" << endl;
+
+	//
+	// KS_INIT:
+	//	Initialize all service providers
+	//
+	if (!ServiceProviderManager::Instance()->Load())
+	{
+		//printf("Error due to ServiceProviderManager::Instance()->Load \n");
+		goto on_error;
+	}
+
+
+	//
+	// KS_INIT:
+	//  Load and run system configuration.
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+	atomic_set (&Kernel::Instance()->currentService, "Loading config");
+#endif
+	{
+		Term_Generic_Session sessionSystem(new Term_IO_Stream(new Term_File_I_Stream(this->m_BaseDir + KERNEL_CFG),
+					new Term_Log_O_Stream(LOG_DEBUG, "CFG")));
+		//printf("Calling sessionSystem.RunConfigure\n");
+		sessionSystem.RunConfigure();
+	}
+
+	//	Inform all service providers that the configuration file has
+	//  been fully read
+	//
+	if (!ServiceProviderManager::Instance()->CommitConfiguration())
+	{
+		//printf("Error due to ServiceProviderManager::Instance()->CommitConfiguration \n");
+		goto on_error;
+	}
+
+	//printf("After CommitConfiguration\n");
+#ifdef XGATE_HAS_LM
+	//printf("Inside XGATE_HAS_LM \n");
+#  ifdef KERNEL_RECORD_ACQUIRE_LOCK
+	atomic_set (&Kernel::Instance()->currentService, "Validating license");
+#  endif
+	// LicenseManager has special commit configuration
+	LicenceManager::Instance()->KernelCommitConfiguration();
+#endif
+
+	m_KernelInfo->m_NConcurrentTask = Q_AllTask.size();
+	UpdateStat(0);
+	taskTracing = KLog::Instance()->CreateTrace ( "TASK", "task-events", "Trace task events");
+
+	//printf("After CreateTrace BaseDir=%s\n",m_BaseDir.c_str());
+	//
+	// Save startup configuration to file "etc/system.started"
+	//
+	do {
+		String filename = m_BaseDir;
+		//filename += "etc/system.started";
+		filename += "System.conf";
+		//printf("Inside do while 0 file name=%s\n",filename.c_str());
+		SaveConfig (RootConfig(), filename.c_str());
+		//printf("Inside do while 0 file name=%s\n",filename.c_str());
+
+      //Yadav this helps in SofiaSiphandler object to get fle path
+      SetSystemconfigPath(filename);
+      string proxyfilename  = m_BaseDir;
+      proxyfilename += "Proxy.conf";
+     printf("Kernel Inside do while 0 file name=%s\n",proxyfilename.c_str());
+
+      //Yadav this helps in SofiaSiphandler object to get fle path
+      SetSystemconfigPath(proxyfilename);
+
+	} while (0);
+	//printf("after do while 0 file name\n");
+
+	//
+	// Reset lock record statistics
+	//
+#ifndef __linux__
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+	//::WaitForSingleObject (m_SystemLock, INFINITE);
+	//pthread_cond_timedwait(&m_Pcondevent, &m_SystemLock,INFINITE);
+	pthread_mutex_lock(&m_SystemLock);
+	m_LongestLockTime.set(0, 0);
+	m_LongestLockSrcFile = "";
+	m_LongestLockSrcLine = 0;
+	//Linux Porting
+	//while (::ReleaseMutex(m_SystemLock))
+	while (pthread_mutex_unlock( &m_SystemLock))
+		;
+#endif
+
+#ifdef XGATE_HAS_BUGSLAYER
+	// Checkpoint in bugslayer to get rough estimation of 
+	// memory usage on IDLE.
+	const char *bs_msg;
+	bs_msg = "\r\nxGate initialized, checkpoint to get memory usage\r\n";
+	bs_file_write( bs_get_logfile(), bs_msg, strlen(bs_msg));
+	bs_checkpoint(0);
+#endif
+#endif
+
+	// KS_INIT:
+	//  We're running
+	SetState( KS_RUNNING );
+	m_InitLevel = LVL_RUNNING;
+	//printf("Load and run user configuration\n");
+
+	//  Load and run user configuration.
+#ifndef __linux__
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+	atomic_set (&Kernel::Instance()->currentService, "Loading user config");
+#endif
+#endif
+
+	pthread_t thread_user_conf;
+
+	rc = pthread_create(&thread_user_conf,NULL,&user_configuration_thread,(void *) this->m_BaseDir.c_str());
+	if ( rc != 0) {
+		//printf("thread_user_conf creation failed \n");
+	}
+	(void) pthread_join(thread_user_conf,NULL);
+
+	//printf("**** After user_configuration_thread *****  \n");
+	return OK;
+
+
+	//------------------------------------------------------------------
+	// Shutdown initialialized objects on Kernel initialization failure
+on_error:
+	Deinit();
+	return NOT_OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Deinitialize kernel
+//
+STATUS Kernel::Deinit()
+{
+	//printf("Entered Deinit() - danger \n");
+	switch (m_InitLevel) {
+		case LVL_RUNNING: 
+			CLog::Debug( KERNEL, "Aborting remaining task, if any");
+			CTask *task;
+
+			while (! Q_AllTask.empty()) {
+				task = Q_AllTask.front();
+				Q_AllTask.pop_front();
+
+				KillTask( task );
+			}
+
+		case LVL_STARTED:
+		case LVL_LOADED:
+		case LVL_LOG_STARTED:
+			//
+			// Unregister task tracing.
+			//
+			KLog::Instance()->DestroyTrace (taskTracing);
+
+			// Check whether configuration has changed and ask user
+			// to save.
+			CheckConfigChanged (NULL);
+			SetState (KS_UNLOADING);
+#ifndef __linux__
+			ACQUIRE_SYSTEM_LOCK();
+			atomic_set (&currentService, "deinit");
+#endif
+
+			// Unload all service providers
+			ServiceProviderManager::Instance()->Unload();
+
+			// Delete all service providers
+			ServiceProviderManager::Instance()->Unregister();
+
+			// Destroy the service provider manager itself.
+			ServiceProviderManager::Destroy();
+
+#ifndef __linux__
+			RELEASE_SYSTEM_LOCK();
+#endif
+
+			// Don't do anything past here (including writing to the log).
+			// Because everything has been destroyed!!!!
+	}
+
+	//if (m_SystemLock != 0) 
+	pthread_mutex_destroy (&m_SystemLock);
+
+	m_InitLevel = LVL_NULL;
+	return OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Shutdown the kernel. See description of 'how' parameter in kernel.h
+//
+STATUS Kernel::Shutdown(KShutdown::How how)
+{
+	static int shutdown_count;
+
+	if (how != KShutdown::DEINIT) {
+
+		if (shutdown_count == 0) {
+			// Automatically save currently running configuration to
+			// file 'etc/system.shutdown'
+			// This is only applied when shutdown_count is equal to zero,
+			// because if not, then some interfaces might have been disabled.
+			String filename(m_BaseDir);
+			filename += "etc/system.shutdown";
+
+			RELEASE_SYSTEM_LOCK();
+			SaveConfig (RootConfig(), filename.c_str());
+			Term_Cfg_Writer writer ( RootConfig(), false);
+			ACQUIRE_SYSTEM_LOCK();
+		}
+
+		++shutdown_count;
+		ServiceProviderManager::Instance()->OnShutdown(false);
+	}
+
+	if (how == KShutdown::GRACEFULLY) {
+		switch (GetState()) {
+			case KS_RUNNING:
+				CLog::Info( KERNEL, "Kernel shutdown gracefully. Incoming calls "
+						"will be rejected");
+
+				// Return and wait tasks to be completed, after that then we
+				// really shutdown.
+				SetState( KS_BLOCKED );
+				break;
+			case KS_BLOCKED:
+				// Do nothing.
+				break;
+			default:
+				CLog::Error (KERNEL, "Invalid shutdown request for current state (%d)", GetState());
+				break;
+		}
+
+	} else if (how == KShutdown::HANGUP || how == KShutdown::HANGUP_MAINTENANCE) {
+
+		List <CTask*>::iterator it;
+
+		switch (GetState()) {
+			case KS_RUNNING:
+			case KS_BLOCKED:
+				CLog::Info( KERNEL, "Kernel received hangup signal. Incoming calls "
+						"will be rejected");
+
+				// Broadcast shutdown to all tasks
+				for (it = Q_AllTask.begin(); it != Q_AllTask.end(); it++) {
+					(*it)->RaiseException( EX_HANGUP,"System" );
+				}
+
+				// Return and wait tasks to be completed, after that then we
+				// really shutdown.
+				if (how == KShutdown::HANGUP)
+					SetState( KS_BLOCKED );
+				else
+					SetState( KS_MAINTENANCE );
+				break;
+
+			default:
+				CLog::Error (KERNEL, "Invalid shutdown request for current state (%d)", GetState());
+				break;
+		}
+
+	} else if (how == KShutdown::DEINIT) {
+
+		Deinit();
+
+		// We're out
+		SetState( KS_DEAD );
+
+	} else if (how == KShutdown::ABORT) {
+
+		// We're out
+		SetState( KS_DEAD );
+
+	}
+	return OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Poll events from drivers
+//
+void Kernel::HandleEvents()
+{
+	ServiceProviderManager::Instance()->HandleEvents();
+}
+
+
+//-----------------------------------------------------------------------------
+// Put the task in correct queue (depends on its state)
+//
+STATUS Kernel::QueueTask( CTask *task )
+{
+	assert(task);
+
+	switch (task->GetState()) {
+		case CTask::DEAD:
+			CLog::Fatal( KERNEL, "Task %u is KS_DEAD but put into queue", task->GetPID());
+			return KillTask(task);
+
+		case CTask::READY:
+			Q_Ready.push_back( task );
+			break;
+
+		case CTask::BORN:
+			Q_Born.push_back( task );
+			break;
+
+		default:
+			break;
+	}
+
+	return OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Pick up next ready task to be executed
+//
+CTask *Kernel::GetReadyTask()
+{
+	if (Q_Ready.empty()) {
+		if (Q_Born.empty())
+			return 0;
+
+		CTask *p_task =  Q_Born.front();
+		Q_Born.pop_front();
+
+		p_task->SetState( CTask::READY );
+
+		return p_task;
+	}
+
+	CTask *p_task =  Q_Ready.front();
+	Q_Ready.pop_front();
+
+	return p_task;
+}
+
+
+//-----------------------------------------------------------------------------
+void Kernel::EnterMaintenanceMode( ServiceProvider * driver, int interval, bool restart )
+{
+	/*
+	*/
+}
+
+
+//-----------------------------------------------------------------------------
+// Main kernel loop
+STATUS Kernel::MainLoopProc()
+{
+
+	for (;;) {
+		if (GetState() == KS_RUNNING)
+			RunningLoopProc();
+		else if (GetState() == KS_MAINTENANCE)
+			MaintenanceLoopProc();
+		/* CPU Load optimizations */
+		else {
+			//break;
+			//Linux porting
+			SetState(KS_RUNNING);
+		}
+	}
+
+	Shutdown( KShutdown::DEINIT );
+	return OK;
+}
+
+#ifdef XGATE_HAS_HMP
+//GMainContext * HostMediaProcessingDriver::context;
+GMainLoop * HostMediaProcessingDriver::loop;
+//std::queue<HostBusPair*> HostMediaProcessingDriver::busToBeRegistered;
+//HostGSTCnBin * HostMediaProcessingDriver::cnGeneratorBin;
+#endif
+
+//-----------------------------------------------------------------------------
+// Kernel's main loop
+//
+STATUS Kernel::RunningLoopProc()
+{
+
+#ifdef XGATE_HAS_HMP
+	//      HostMediaProcessingDriver::context=g_main_context_new();
+	CLog::Detail("hostmedia", "multithreaded-ippbx : Initialize GST..");
+	gst_init (0, NULL);
+	HostMediaProcessingDriver::loop=g_main_loop_new (/*HostMediaProcessingDriver::context*/ NULL, FALSE);
+	//HostMediaProcessingDriver::cnGeneratorBin=new HostGSTCnBin("master_cn_generator");
+	HostMediaProcessingDriver::cnGeneratorBin=NULL;
+
+	//HostGSTVoiceBin *bin;
+	//for(int i=0;i<300;i++)bin=new HostGSTVoiceBin("test");
+
+#endif
+
+	time_t t_start_maintenance = 0;
+	unsigned loop_per_sec = 0, ctx_per_sec = 0;
+	m_KernelInfo->m_KPollPerSec = 0;
+	int sleep_counter = 0;
+	ACE_Time_Value acquire_timeout;
+
+	printf("\n************************ Kernel is ready: All modules are loaded  ************************\n\n");
+	CLog::Info( KERNEL, "Info - Kernel is ready...");
+	CLog::Error( KERNEL, "Error - Kernel is ready...");
+	CLog::Warning( KERNEL, "Warning - Kernel is ready...");
+
+	startTime = Time_Value::get();
+
+	Highest_Res_Timer busy_timer, busy_plus_overhead_timer;
+	if (busy_timer.init() != true || busy_plus_overhead_timer.init() != true) {
+		SetState( KS_BLOCKED );
+		CLog::Error ( KERNEL, "Unable to initialize high resolution timer");
+		return NOT_OK;
+	}
+
+	bool system_still_locked = false;
+
+	// This function must be called by main thread.
+	// Otherwise bad things will happen
+	//if (ACE_Thread::self() != GetMainThreadId())
+	if (pthread_self() != GetMainThreadId()) {
+		assert(false);
+		SetState( KS_BLOCKED );
+		CLog::Error ( KERNEL, "Unable to initialize high resolution timer");
+		return NOT_OK;
+	}
+
+	//
+	// Timer and time variables to controll how many HandleEvents is called per seconds
+	//
+	Time_Value tick_last_poll, tick_now;
+	Time_Value::get(&tick_last_poll);
+	Time_Value tick_next_loop_tick = tick_last_poll;
+	Time_Value tick_one_second(1, 0);
+
+	enum {
+		// Interval between two HandleEvents(), in msec.
+		MSEC_INTERVAL = 1,
+
+		// In case the actual interval after the last HandleEvents() is
+		// large, then use this interval.
+		MSEC_LARGE_INTERVAL = 40   /* rkv*/
+	};
+
+	time(&m_KernelInfo->m_Started);
+	while ( IsRunning() ) {
+
+
+		++ctx_per_sec;
+
+		// Start busy+overhead timer before getting system lock.
+		busy_plus_overhead_timer.start();
+
+		//
+		// Don't call AcquireSystemLock(), but instead call the operation
+		// directly, because AcquireSystemLock() will record the hold time,
+		// and this kernel loop will always be the longest lock holder.
+		//
+
+		pthread_mutex_lock(&m_SystemLock);
+
+		// Start busy timer after getting system lock.
+		busy_timer.start();
+
+		//
+		// Control the rate of HandleEvents().
+		//
+		Time_Value::get(&tick_now);
+		Time_Value elapsed(0,0);
+		if (tick_now >= tick_last_poll)
+			elapsed = tick_now - tick_last_poll;
+		else
+			assert(false);
+		DWORD elapsed_msec = elapsed.to_msec();
+		if (elapsed_msec >= MSEC_INTERVAL) {
+			do {
+				++loop_per_sec;
+				HandleEvents();
+				if (elapsed_msec >= MSEC_LARGE_INTERVAL)
+					elapsed_msec -= MSEC_LARGE_INTERVAL;
+				else
+					elapsed_msec -= MSEC_INTERVAL;
+			} while (elapsed_msec >= MSEC_INTERVAL);
+
+			// Better use this than {tick_last_poll += elapsed}.
+			// {tick_last_poll += elapsed} will unnecessarily recover for lost
+			// HandleEvents() in the case when the system stuck somewhere for
+			// a long time.
+			Time_Value::get(&tick_last_poll);
+		}
+
+		//
+		// Break from main loop when the system is shutdown and no tasks remaining.
+		//
+		if ((GetState()==KS_BLOCKED || GetState()==KS_MAINTENANCE) &&  Q_AllTask.size() == 0) {
+			system_still_locked = true;
+			break;
+		}
+
+		/*
+		 * Update the value of polls/sec and loop/sec
+		 */
+		if (tick_now - tick_next_loop_tick >= tick_one_second) {
+			Time_Value elapsed = tick_now - tick_next_loop_tick;
+			m_KernelInfo->m_KPollPerSec = loop_per_sec * 1000 / elapsed.to_msec();
+			m_KernelInfo->m_CtxPerSec = ctx_per_sec * 1000 / elapsed.to_msec();
+			if (m_KernelInfo->m_KPollPerSec > m_KernelInfo->m_HighPoll) {
+				m_KernelInfo->m_HighPoll = m_KernelInfo->m_KPollPerSec;
+				m_KernelInfo->m_HighPollAt = time(NULL);
+			} 
+			if (m_KernelInfo->m_KPollPerSec < m_KernelInfo->m_LowPoll) {
+				m_KernelInfo->m_LowPoll = m_KernelInfo->m_KPollPerSec;
+				m_KernelInfo->m_LowPollAt = time(NULL);
+			}
+			if (m_KernelInfo->m_CtxPerSec > m_KernelInfo->m_HighCtx) {
+				m_KernelInfo->m_HighCtx = m_KernelInfo->m_CtxPerSec;
+				m_KernelInfo->m_HighCtxAt = time(NULL);
+			} 
+			if (m_KernelInfo->m_CtxPerSec < m_KernelInfo->m_LowCtx) {
+				m_KernelInfo->m_LowCtx = m_KernelInfo->m_CtxPerSec;
+				m_KernelInfo->m_LowCtxAt = time(NULL);
+			}
+
+			tick_next_loop_tick = tick_now;
+			loop_per_sec = ctx_per_sec = 1;
+		}
+
+		//
+		// Pick up the first ready task from the ready queue.
+		//
+		CTask *p_task = 0;
+		for (int i=0; i<8; i++) {	//rkv
+			p_task = GetReadyTask( );
+			if (p_task) {
+
+				m_CurrentTask = p_task;
+				if (p_task->m_Quitting) {
+					KillTask( p_task );
+				} else {
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+					atomic_set (&currentService, "Interpreter");
+#endif
+					p_task->Execute();
+
+					QueueTask( p_task );
+				}
+
+			} else {
+				m_CurrentTask = NULL;
+				break;
+			}
+		}
+
+		busy_timer.stop();
+
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+		atomic_set (&currentService, "");
+#endif
+
+		// Don't call RELEASE_SYSTEM_LOCK, but call the operation
+		// directly, since RELEASE_SYSTEM_LOCK is only for caller that's not 
+		// kernel MainLoopProc()
+		m_SystemLockOwner = NULL;
+		//::ReleaseMutex (m_SystemLock);
+		pthread_mutex_unlock (&m_SystemLock);
+
+		//
+		// Update timers
+		//
+		busy_plus_overhead_timer.stop();
+
+		kernelBusyTime += busy_timer.get_elapsed();
+		kernelTotal += busy_plus_overhead_timer.get_elapsed();
+
+		//
+		// Yield CPU resource to other process/thread, only if there's no tasks
+		// executed for the last several polls.
+		//
+		if (p_task == NULL) {
+			if (++sleep_counter == 10) {
+				sleep_counter = 0;
+				//Sleep(m_SleepTime);
+				//usleep(m_SleepTime*500000);
+				usleep(m_SleepTime*5000);
+			}
+		} else
+			sleep_counter = 0;
+//		printf("*** NO of contextx per second is %d ******\n", ctx_per_sec);
+	}
+
+	// release system lock, but don't call ReleaseSystemLock().
+	if (system_still_locked) {
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+		atomic_set (&currentService, "");
+#endif
+		m_SystemLockOwner = NULL;
+		pthread_mutex_unlock (&m_SystemLock);
+	}
+
+	return OK;
+}
+
+
+
+//-----------------------------------------------------------------------------
+// Loop procedure in KS_MAINTENANCE state.
+STATUS Kernel::MaintenanceLoopProc()
+{
+	cout << "*********************************************** Inside MaintenanceLoopProc ************** " << endl;
+	CLog::Info ( KERNEL, "Entering KS_MAINTENANCE state");
+	assert (Q_AllTask.empty());
+
+	return OK;
+}
+
+
+// Determine whether kernel current state can spawn a new task,
+bool Kernel::CanSpawnTask()
+{
+	//	printf("Inside CanSpawnTask::GetState() %d \n ",GetState());
+	// check if shutdown or KS_MAINTENANCE is in progress
+	if (GetState() == KS_BLOCKED) {
+
+		CLog::Info( KERNEL,  "Can not create task because shutdown is in progress");
+		printf ("CanSpawnTask() : return false;.....1\n");
+		return false;
+	}
+
+	if (GetState() == KS_MAINTENANCE) {
+		CLog::Info( KERNEL,  "Can not create task because system is in KS_MAINTENANCE state");
+		printf ("CanSpawnTask() : return false;.....2\n");
+		return false;
+	}
+
+	// check maximum task license
+#ifndef __linux__
+	if (m_MaxTask!=-1 && (int)Q_AllTask.size()>=m_MaxTask) {
+		CLog::Warning ( KERNEL,  "Can not create a new task (maximum tasks: %u)", m_MaxTask);
+		printf ("CanSpawnTask() : return false;.....3\n");
+		return false;
+	}
+
+#ifdef XGATE_HAS_LM
+	/*
+	   disable task creation if we running without licence
+	   */
+	if (LicenceManager::Instance()->GetCurrentLicenceMode()==Lm_Evaluation) {
+		CLog::Warning(KERNEL,"Cannot //create task because valid licence file hasn't been configured");
+		printf ("CanSpawnTask() : return false;.....4\n");
+		return false;
+	}
+#endif
+#endif //Endif ifndef __linux__
+
+	//    printf ("CanSpawnTask() : return true;\n");
+	return true;
+}
+
+
+// Add a new task in the kernel's queues.
+void Kernel::AddTask(CTask *p_task)
+{
+	m_CurrentTask = p_task;
+	Q_AllTask.push_back( p_task );		
+	QueueTask(p_task);	
+
+	++m_KernelInfo->m_NConcurrentTask;
+	UpdateStat(0);
+}
+
+
+//-----------------------------------------------------------------------------
+// Called by line driver to notify kernel of incoming call
+//
+STATUS Kernel::RouteIncomingCall( ServiceProvider *sender, Call *call, CallCause &cause)
+{
+	if (!CanSpawnTask())
+		return NOT_OK;
+
+	const char *port_in = call->GetInterfaceName();
+	const char *group_name = call->GetGroupName();
+	CTask *task = CT_App_Manager::Instance()->RouteIncomingCall (*call->GetCallParameter(), port_in, group_name, cause);
+	if (task == NULL)
+		return NOT_OK;
+
+	AddTask (task);
+	return OK;
+}
+
+//-----------------------------------------------------------------------------
+// Spawn task to serve incoming registration request.
+//
+CTask* Kernel::RouteIncomingRegistration( const Reg_Info *info )
+{
+	if (!CanSpawnTask()) {
+		printf("CanSpawnTask is returning NULL\n");
+		return NULL;
+	}
+
+	CTask *task = CT_App_Manager::Instance()->RouteIncomingRegistration(info);
+	if (task != NULL) {
+		printf("Task is added to kernel\n");
+		AddTask(task);
+	}
+
+	return task;
+}
+
+//-----------------------------------------------------------------------------
+// Spawn task to serve incoming diameter request.
+//
+#ifdef XGATE_HAS_DIAMETER
+CTask* Kernel::RouteIncomingDiameter(Diameter_msg msg, const string & linkName, const char* peerRealm)
+{
+	if (!CanSpawnTask())
+		return NULL;
+
+	CTask *task = CT_App_Manager::Instance()->RouteIncomingDiameter(msg, linkName, peerRealm);
+	if (task != NULL)
+		AddTask(task);
+
+	return task;
+}
+#endif
+
+//-----------------------------------------------------------------------------
+// Spawn a new task
+//
+CTask* Kernel::SpawnTask(const String & app_name, const List<String> & cmdline_param,
+		int startup_type)
+{
+	if (!CanSpawnTask())
+		return NULL;
+
+	CTask *p_task = CT_App_Manager::Instance()->SpawnTask (app_name, cmdline_param,
+			(Task_Startup_Type)startup_type);
+	if (p_task == NULL) {
+		m_CurrentTask = NULL;
+		return NULL;
+	}
+
+
+	AddTask (p_task);
+	return p_task;
+}
+
+
+
+//-----------------------------------------------------------------------------
+// Kill a task
+//
+STATUS Kernel::KillTask( CTask *task )
+{
+	assert(task);
+
+	printf("-------------------- Killing task : %d --------------------\n",task);
+	// save pid for later use
+	int pid = task->GetPID();
+
+	// Shutdown the task
+	task->Shutdown();
+
+	// update statistics
+	UpdateStat(task);
+
+	// remove from our queue
+	Q_Born.remove( task );
+	Q_Ready.remove( task );
+	Q_AllTask.remove( task );
+	--m_KernelInfo->m_NConcurrentTask;
+
+	// Delete the task
+	m_CurrentTask = NULL;
+	CLog::Detail( KERNEL, task, "Task killed");
+
+	delete task;
+	task = NULL; // Added by aw make sure task is NULL now avoid dangling pointer
+	return OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Find a task based on its PID
+//
+CTask* Kernel::FindTask(unsigned int pid)
+{
+	List<CTask*>::iterator i;
+
+	for ( i=Q_AllTask.begin(); i!=Q_AllTask.end(); i++) {
+		if ((*i)->GetPID() == pid) {
+			return *i;
+		}
+	}
+
+	return 0;
+}
+
+
+//-----------------------------------------------------------------------------
+// Find a task based on its name
+//
+CTask* Kernel::FindTaskByName(const char *task_name)
+{
+	List<CTask*>::iterator i;
+
+	for ( i=Q_AllTask.begin(); i!=Q_AllTask.end(); i++) {
+		if (strcmpi((*i)->GetTaskName(), task_name) == 0) {
+			return *i;
+		}
+	}
+
+	return 0;
+}
+
+
+//-----------------------------------------------------------------------------
+// Find a task based on its name
+//
+int Kernel::CountTaskByAppName(const char *app_name)
+{
+	List<CTask*>::iterator i;
+	int nb_task_app = 0;
+
+	for ( i=Q_AllTask.begin(); i!=Q_AllTask.end(); i++) {
+		/* Linux Porting */
+		if (strcmpi((*i)->GetApplication()->Name().c_str(), app_name) == 0) {
+			++nb_task_app;
+		}
+	}
+
+	return nb_task_app;
+}
+
+
+//-----------------------------------------------------------------------------
+// Kill a task by its PID
+//
+STATUS Kernel::KillTask( int pid )
+{
+	CTask* task = FindTask(pid);
+
+	if (task) {
+		return KillTask(task);
+	};
+
+	CLog::Error( KERNEL, "KillTask(): pid %d not found", pid);
+	return NOT_OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Get tasks information. Return array of constant pointer to CTaskInfo. The 
+// caller is responsible to delete the returned object. The task information
+// must be used immediately, because the task may be deleted then.
+//
+CTaskInfo *  Kernel::GetTaskInfo( int *ntask )
+{
+
+	*ntask = Q_AllTask.size();
+
+	CTaskInfo *pTaskInfo = new CTaskInfo[*ntask];
+
+	int i=0;
+	for ( List<CTask*>::const_iterator it=Q_AllTask.begin(); it!=Q_AllTask.end(); ++it) {
+		const CTaskInfo *src = (*it)->GetTaskInfo();
+		CTaskInfo *dst = &pTaskInfo[i++];
+
+		memcpy(dst, src, sizeof(CTaskInfo));
+		if (src->m_LastAPI) {
+			strncpy(dst->m_LastAPIName, src->m_LastAPI->m_Name.c_str(), MAX_TASK_INFO_API_NAME);
+			dst->m_LastAPIName[MAX_TASK_INFO_API_NAME-1] = '\0';
+		}
+	}
+
+	return pTaskInfo;
+}
+
+
+//-----------------------------------------------------------------------------
+// Reset engine statistics
+//
+void Kernel::ResetStat()
+{
+	m_KernelInfo->Reset();
+	m_KernelInfo->m_NConcurrentTask = Q_AllTask.size();
+	API_Provider_Manager::Instance()->ResetStat();
+
+	m_LongestLockTime.set(0,0);
+	m_LongestLockSrcFile = "";
+	m_LongestLockSrcLine = 0;
+
+	ServiceProviderManager::Instance()->GetServiceTime().set(0,0);
+	kernelBusyTime.set(0,0);
+	kernelTotal.set(0,0);
+
+}
+
+
+//-----------------------------------------------------------------------------
+/* Show list of loaded applications.
+*/ 
+void Kernel::ShowApp (Term_Session *session)
+{
+	// Not used!
+}
+
+
+//-----------------------------------------------------------------------------
+/* Show all configurations.
+*/
+void Kernel::ShowConfig (Term_Session *session)
+{
+	/* No need to acquire system lock.
+	   Each entry->OnShowConfig() should acquire the lock.
+	   */
+	Term_Cfg_Writer writer ( RootConfig(), false);
+	session->Send (writer.GetResult());
+}
+
+
+	static
+void cpuid( unsigned cmd,
+		unsigned *r_eax,
+		unsigned *r_ebx,
+		unsigned *r_ecx,
+		unsigned *r_edx )
+{
+	unsigned i_eax, i_ecx, i_edx, i_ebx;
+
+	//Linux porting: Replace the code with either C or ASM
+	/*
+	   __asm {
+	   MOV EAX, cmd
+	   CPUID
+	   MOV i_eax, EAX
+	   MOV EAX, ECX
+	   MOV i_ecx, EAX
+	   MOV EAX, EDX
+	   MOV i_edx, EAX
+	   MOV EAX, EBX
+	   MOV i_ebx, EAX  
+	   };
+	   */
+
+	if (r_eax) *r_eax = i_eax;
+	if (r_ecx) *r_ecx = i_ecx;
+	if (r_edx) *r_edx = i_edx;
+	if (r_ebx) *r_ebx = i_ebx;
+}
+
+	static const char *
+GetCpuInfoStr()
+{
+	static char info[13];
+
+	if (!info[0]) {
+		unsigned dummy;
+		cpuid( 0, &dummy, (unsigned*)&info[0], (unsigned*)&info[8], (unsigned*)&info[4] );
+		info[12] = '\0';
+	}
+	return info;
+}
+
+//-----------------------------------------------------------------------------
+/* Show system statistics.
+*/
+void Kernel::ShowStatistic (Term_Session *session)
+{
+	unsigned int i;
+
+	// Copy system variables to temporary while holding the lock.
+	ACQUIRE_SYSTEM_LOCK();
+
+	m_KernelInfo->m_NReadyTask = Q_Ready.size();
+	m_KernelInfo->m_NBornTask = Q_Born.size();
+	m_KernelInfo->m_NBlockedTask = Q_AllTask.size()-(m_KernelInfo->m_NReadyTask+m_KernelInfo->m_NBornTask);
+
+	unsigned n_task = Q_AllTask.size();
+	KState  k_state = GetState();
+
+	CKernelInfo info = *m_KernelInfo;
+	String cpu_time;
+	String process_time;
+
+	if (CPU_Load_Monitor::Instance() && Process_Load_Monitor::Instance()) {
+		cpu_time = CPU_Load_Monitor::Instance()->Print();
+		process_time = Process_Load_Monitor::Instance()->Print();
+	}
+
+	unsigned task_exec_quota = 0;
+
+	if (Code_Interpreter::Instance()) 
+		Code_Interpreter::Instance()->GetExecQuota();
+
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+	Time_Value  syslock_time = m_LongestLockTime;
+	const char *syslock_src = m_LongestLockSrcFile;
+	unsigned syslock_line = m_LongestLockSrcLine;
+	const char *current_service = currentService;
+#endif
+	RELEASE_SYSTEM_LOCK();
+
+
+	// Mode
+	session->Sendf( " Kernel status           : ");
+	switch (k_state) {
+		case KS_INIT:	  
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+			session->Sendf("Initializing services ("); 
+			session->Sendf(current_service);
+			session->Sendf(")...\n");
+#else
+			session->Sendf("Initializing services...\n");
+#endif
+			break;
+		case KS_DEAD:	  session->Sendf("Deactivated\n"); break;
+		case KS_RUNNING: session->Sendf("Running\n"); break;
+		case KS_BLOCKED: session->Sendf("Shutdown in progress...\n"); break;
+		case KS_UNLOADING: 
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+						 session->Sendf("Shutdown in progress (unloading "); 
+						 session->Sendf(current_service);
+						 session->Sendf(")...\n");
+#else
+						 session->Sendf("Shutdown in progress (unloading services)...\n");
+#endif
+						 break;
+		case KS_MAINTENANCE: 
+						 session->Sendf("Maintenance\n"); 
+						 break;
+	}
+
+	time_t now = time(0);
+	// Local time.
+	const char *s = ctime(&now);
+	String temp = s;
+	temp.erase( temp.size()-1, 1 );
+	session->Sendf( " Local time now is       : %s\n", temp.c_str());
+
+	// System started at
+	temp = ctime(&info.m_Started);
+	if (temp.size())
+		temp.erase( temp.size()-1, 1 );
+	session->Sendf( " System started at       : %s\n", temp.c_str());
+
+	// System up time
+	i = now - info.m_Started;
+	session->Sendf( " System up time          : %s\n",
+			ConvertInterval2String(i).c_str());
+
+	// Host info
+#ifdef XGATE_HAS_SIP
+	String sysinfo = SipOS::GetSysInfo();
+	session->Sendf( " Host system information : %s\n", sysinfo.c_str());
+#endif
+
+	// Processor
+	float mhz = CPU_Timestamp_Clock_Timer::get_clocks_per_usec();
+	session->Sendf( " CPU info                : %s %3.2f Mhz\n", 
+			GetCpuInfoStr(),
+			mhz);
+
+	// Number of current tasks
+	session->Sendf( " Concur. tasks (N,R,B)   : %u (%u, %u, %u)\n",
+			n_task, info.m_NBornTask, info.m_NReadyTask, info.m_NBlockedTask);
+
+	// Total tasks completed
+	session->Sendf( " Total task completed    : %u\n", 
+			info.m_TotalTask);
+
+	// Last clear counter
+	if (info.m_LastReset) {
+		s = ctime(&info.m_LastReset);
+		temp = s ? s : "";
+		if (temp.size()) {
+			temp.erase( temp.size()-1, 1 );
+			temp += " [" + ConvertInterval2String(now-info.m_LastReset) + " ago]";
+		}
+	} else
+		temp = "never";
+
+	session->Sendf( " Last clear counter at   : %s\n", 
+			temp.c_str());
+
+	// Peak concurrent tasks
+	session->Sendf( " Peak concurrent tasks   : %u\n", info.m_HighTask);
+
+	// When did peak concurrent tasks happen
+	if (info.m_HighTaskAt) {
+		s = ctime(&info.m_HighTaskAt);
+		temp = s ? s : "";
+		if (temp.size())
+			temp.erase( temp.size()-1, 1 );
+	} else
+		temp = "never";
+	session->Sendf( " At                      : %s\n", temp.c_str());
+
+	// Task exec quota
+	session->Sendf( " Task execution quota    : %u ms (approximation)\n", task_exec_quota);
+
+	// Longest task uptime
+	i = info.m_MSLongTaskUp/1000;
+	session->Sendf( " Longest task uptime     : %s [%s]\n", 
+			ConvertInterval2String(i).c_str(),
+			info.m_LongTaskUpName);
+
+	// task execution time
+	session->Sendf( " Longest task executing  : %u ms [%s]\n", 
+			info.m_MSLongTaskExec, info.m_LongTaskExecName);
+	session->Sendf( " Average longest exec    : %u ms\n", 
+			info.m_MSAvgTaskLongestExec);
+
+	// Longest task blocked
+	session->Sendf( " Longest task blocked    : %s [%s]\n", 
+			ConvertInterval2String(info.m_MSLongTaskBlocked/1000).c_str(), 
+			info.m_LongTaskBlockedName);
+
+	// Longest task waiting time
+	if (info.m_LongTaskWaitingAt == 0)
+		temp = "never";
+	else {
+		temp = ctime(&info.m_LongTaskWaitingAt);
+		temp.erase( temp.size()-1, 1 );
+	}
+	session->Sendf( " Longest task waiting    : %u ms [%s] at %s\n", 
+			info.m_MSLongTaskWaiting, info.m_LongTaskWaitingName,
+			temp.c_str());
+	session->Sendf( " Average longest waiting : %u ms\n", 
+			info.m_MSAvgTaskWaiting);
+
+	session->Sendf( " Longest task total exec : %u ms [%s]\n", 
+			info.m_MSLongTaskTotalExec, info.m_LongTaskTotalExecName);
+	session->Sendf( " Average task total exec : %u ms\n", 
+			info.m_MSAvgTaskTotalExec);
+
+	// Kernel polls per seconds.
+	session->Sendf( " Kernel polls/sec        : %u \n", info.m_KPollPerSec);
+	if (info.m_HighPollAt==0)
+		temp = "never";
+	else {
+		temp = ctime(&info.m_HighPollAt);
+		temp.erase( temp.size()-1, 1 );
+	}
+	session->Sendf( " Highest polls/second    : %u at %s\n", info.m_HighPoll, temp.c_str());
+	if (info.m_LowPollAt == 0)
+		temp = "never";
+	else {
+		temp = ctime(&info.m_LowPollAt);
+		temp.erase( temp.size()-1, 1 );
+	}
+	session->Sendf( " Lowest polls/second     : %u at %s\n", info.m_LowPoll, temp.c_str());
+
+
+	// Kernel context switch/loop per seconds.
+	session->Sendf( " Kernel loops/sec        : %u \n", info.m_CtxPerSec);
+	if (info.m_HighCtxAt==0)
+		temp = "never";
+	else {
+		temp = ctime(&info.m_HighCtxAt);
+		temp.erase( temp.size()-1, 1 );
+	}
+	session->Sendf( " Highest loops/sec       : %u at %s\n", info.m_HighCtx, temp.c_str());
+	if (info.m_LowCtxAt == 0)
+		temp = "never";
+	else {
+		temp = ctime(&info.m_LowCtxAt);
+		temp.erase( temp.size()-1, 1 );
+	}
+	session->Sendf( " Lowest loops/sec        : %u at %s\n", info.m_LowCtx, temp.c_str());
+
+
+	// System lock statistics.
+#ifdef KERNEL_RECORD_ACQUIRE_LOCK
+	session->Sendf( " Longest system lock     : %.0f ms (%s:%u)\n", 
+			syslock_time.to_msec(), syslock_src, syslock_line);
+#endif
+	// Average CPU usage for process and global
+	session->Sendf( " Average xGate CPU load  : %s\n", process_time.c_str());
+	session->Sendf( " Average global CPU load : %s\n", cpu_time.c_str());
+
+	session->Send ("\n", 1);
+}
+
+
+//-----------------------------------------------------------------------------
+/* Show task list.
+*/
+void Kernel::ShowTask (Term_Session *session)
+{
+	int ntask;
+
+	// Copy task info structure to a temporary variable while holding the
+	// system lock
+	ACQUIRE_SYSTEM_LOCK();
+
+	CTaskInfo *pTaskInfo = GetTaskInfo(&ntask);
+	RELEASE_SYSTEM_LOCK();
+
+	// Send header.
+	// No   PID	    Name    Prio    Status  Up	BlkDrv  Path
+	session->Sendf ("No\tPID\tName\tStatus\tUp\tBlkDrv\tBlkAPI\n");
+
+	// Send each line.
+	for (int i=0; i<ntask; ++i) {
+		CTaskInfo *p = &pTaskInfo[i];
+		session->Sendf( "%d\t%d\t%.7s\t%.7s\t%d\t%.7s\t%.20s\n",
+				i+1,
+				p->m_PID,
+				p->m_Name,
+				CTask::StrState((CTask::TState)p->m_Status),
+				p->m_Uptime,
+				p->m_BlockedDrv,
+				p->m_LastAPIName);
+	}
+	delete [] pTaskInfo;
+}
+
+//-----------------------------------------------------------------------------
+/* Show the result of API profiling.
+*/
+/*
+   void Kernel::ShowAPIProfile (Term_Session *session)
+   {
+   API_Provider_Manager::Instance()->ShowProfile (session);
+   }
+   */
+
+//-----------------------------------------------------------------------------
+/* Show the result of service profiling.
+*/
+/*
+   void Kernel::ShowSVCProfile (Term_Session *session)
+   {
+   ServiceProviderManager::Instance()->ShowProfile (session);
+   }
+   */
+
+/** Show system components times.
+*/
+void Kernel::ShowTimes (Term_Session *session)
+{
+	ACQUIRE_SYSTEM_LOCK();
+
+	// Total time spent in kernel loop, including time required to lock and
+	// unlock mutex.
+	Time_Value processing_time = kernelTotal;
+
+	// Total time spent in kernel loop _excluding_ lock/unlock time.
+	Time_Value servicing_time = kernelBusyTime;
+
+	// Uptime, in seconds.
+	unsigned uptime = time(NULL) - m_KernelInfo->m_Started;
+
+	// Total time spent so far to execute application codes and to poll
+	// all service provider
+	Time_Value exec_svc_time = Code_Interpreter::Instance()->GetExecutionTime() + 
+		ServiceProviderManager::Instance()->GetServiceTime();
+	RELEASE_SYSTEM_LOCK();
+
+	const String crlf("\n");
+
+	// Service efficiency is the percentage of service time relative to processing time.
+	// The time differences describes the time required to lock/unlock mutex.
+	double svc_efficiency = servicing_time.to_msec() / processing_time.to_msec() * 100;
+
+	// Application and service efficiency is the percentage of total app. codes 
+	// execution time and service polls, relative to total servicing time.
+	// The time difference describes the efficiency of the service framework and
+	// kernel's internal management.
+	double app_efficiency = exec_svc_time.to_msec() * 100 / servicing_time.to_msec();
+
+	// Total kernel loop time minus kernel Sleep() time.
+	session->Sendf( "Total system uptime          : %s\n", ConvertInterval2String(uptime).c_str());
+	session->Sendf( "Kernel processing time       : %s:%06u usec\n", ConvertInterval2String(processing_time.sec()).c_str(),
+			processing_time.usec());
+	session->Sendf( "Kernel servicing time        : %s:%06u usec\n", ConvertInterval2String(servicing_time.sec()).c_str(),
+			servicing_time.usec());
+	session->Sendf( "Kernel processing efficiency : %5.2f %%\n",     svc_efficiency);
+	session->Sendf( "App. exec and service time   : %s:%06u usec\n", ConvertInterval2String(exec_svc_time.sec()).c_str(),
+			exec_svc_time.usec());
+	session->Sendf( "App. and service efficiency  : %5.2f %%\n",     app_efficiency);
+	session->Send(crlf);
+
+	ServiceProviderManager::Instance()->ShowProfile (session);
+	session->Send (crlf);
+	Code_Interpreter::Instance()->ShowProfile (session);
+	session->Send (crlf);
+	API_Provider_Manager::Instance()->ShowProfile (session);
+	session->Send (crlf);
+}
+

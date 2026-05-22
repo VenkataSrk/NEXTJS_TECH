@@ -1,0 +1,4 @@
+until ./xgate > xgate.out 2> xgate.err < /dev/null ; do
+	echo "xgate stopped...; restarting it again" >&2
+	sleep 1
+done

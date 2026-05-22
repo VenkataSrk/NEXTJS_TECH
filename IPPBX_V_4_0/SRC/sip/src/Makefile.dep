@@ -1,0 +1,2 @@
+SipHandler.o: SipHandler.cpp ../include/SipHandler.h \
+ ../../common/include/SipLogger.h

@@ -1,0 +1,984 @@
+/*----------------------------------------------------------------* 
+ * $Archive: /xGate/call.h $
+ * $Date: 3/16/04 10:45a $
+ * $Revision: 36 $
+ *
+ * $History: call.h $
+ * 
+ * *****************  Version 37  *****************
+ * User: okY          Date: 11/7/13    Time: 10:45a
+ * Updated in $/xGate
+ * Added CallCredential structure and member in Call
+ *
+ * *****************  Version 36  *****************
+ * User: Bennylp      Date: 3/16/04    Time: 10:45a
+ * Updated in $/xGate
+ * Added API CallGetAuthorization
+ * 
+ * *****************  Version 35  *****************
+ * User: Bennylp      Date: 3/01/04    Time: 7:28p
+ * Updated in $/xGate
+ * Added extra parameter info
+ * 
+ * *****************  Version 34  *****************
+ * User: Sonny        Date: 12/18/03   Time: 12:54p
+ * Updated in $/xGate
+ * Resolve conflict on SetCharging
+ * 
+ * *****************  Version 33  *****************
+ * User: Sonny        Date: 12/18/03   Time: 11:20a
+ * Updated in $/xGate
+ * Changed SetCharging to virtual
+ * 
+ * *****************  Version 32  *****************
+ * User: Bennylp      Date: 10/31/03   Time: 2:35p
+ * Updated in $/xGate
+ * 
+ * *****************  Version 31  *****************
+ * User: Bennylp      Date: 3/06/03    Time: 5:11p
+ * Updated in $/xGate
+ * Changed trace format to support per-user trace
+ * 
+ * *****************  Version 30  *****************
+ * User: Junanto      Date: 6/06/02    Time: 13:25
+ * Updated in $/xGate
+ * Corrected behaviour of SignallingConnect to pass
+ * the last progress indication IE
+ * 
+ * *****************  Version 29  *****************
+ * User: Junanto      Date: 27/05/02   Time: 10:05
+ * Updated in $/xGate
+ * Added CallGetMoreDigitsEx which adds max. number of digits.
+ * This function will block until either one of this condition occurs:
+ *   - max. number of digits collected
+ *   - "number complete" received
+ *   - interdigit time out
+ * 
+ * *****************  Version 28  *****************
+ * User: Junanto      Date: 26/05/02   Time: 17:23
+ * Updated in $/xGate
+ * Implemented CallGetMoreDigits
+ * 
+ * *****************  Version 27  *****************
+ * User: Sonny        Date: 6/02/02    Time: 19:01
+ * Updated in $/xGate
+ * optimizations for quality monitoring
+ * 
+ * *****************  Version 26  *****************
+ * User: Sonny        Date: 4/02/02    Time: 12:33
+ * Updated in $/xGate
+ * calls get quality from media
+ * 
+ * *****************  Version 25  *****************
+ * User: Sonny        Date: 31/01/02   Time: 13:12
+ * Updated in $/xGate
+ * add call quality monitoring
+ * 
+ * *****************  Version 24  *****************
+ * User: Sonny        Date: 24/01/02   Time: 20:58
+ * Updated in $/xGate
+ * Quality monitoring support
+ * 
+ * *****************  Version 23  *****************
+ * User: Sonny        Date: 15/01/02   Time: 9:59
+ * Updated in $/xGate
+ * add functions to get call quality parameters
+ * 
+ * *****************  Version 22  *****************
+ * User: Junanto      Date: 9/01/02    Time: 12:09
+ * Updated in $/xGate
+ * remove dependency to class Timer
+ * 
+ * *****************  Version 21  *****************
+ * User: Bennylp      Date: 11/15/01   Time: 11:56a
+ * Updated in $/xGate
+ * Implement API CallExSetDisconnectMsg
+ * 
+ * *****************  Version 20  *****************
+ * User: Junanto      Date: 17/10/01   Time: 14:46
+ * Updated in $/xGate
+ * Added conditional compilation to include/exclude
+ * call transition logging
+ * 
+ * *****************  Version 19  *****************
+ * User: Bennylp      Date: 7/31/01    Time: 12:11p
+ * Updated in $/xGate
+ * Added more cause codes.
+ * 
+ * *****************  Version 18  *****************
+ * User: Junanto      Date: 23/07/01   Time: 22:13
+ * Updated in $/xGate
+ * Present call disconnected to the application for early RelComInd
+ * 
+ * *****************  Version 17  *****************
+ * User: Junanto      Date: 15/07/01   Time: 16:26
+ * Updated in $/xGate
+ * 
+ * *****************  Version 16  *****************
+ * User: Bennylp      Date: 7/13/01    Time: 3:11p
+ * Updated in $/xGate
+ * Reorganization of call statistic counters.
+ * 
+ * *****************  Version 15  *****************
+ * User: Junanto      Date: 10/07/01   Time: 19:06
+ * Updated in $/xGate
+ * Changed interface of Call class constructor
+ * 
+ * *****************  Version 14  *****************
+ * User: Junanto      Date: 29/06/01   Time: 13:02
+ * Updated in $/xGate
+ * Added PrivateInfo (cpinfo) field in the call parameter
+ * 
+ * *****************  Version 13  *****************
+ * User: Junanto      Date: 25/06/01   Time: 16:40
+ * Updated in $/xGate
+ * Centralized SETUP tracing
+ * 
+ * *****************  Version 12  *****************
+ * User: Junanto      Date: 7/06/01    Time: 17:00
+ * Updated in $/xGate
+ * Added selective call trace
+ * 
+ * *****************  Version 11  *****************
+ * User: Junanto      Date: 21/05/01   Time: 15:54
+ * Updated in $/xGate
+ * Added call holding and connected duration (in secs)
+ * 
+ * *****************  Version 10  *****************
+ * User: Junanto      Date: 3/05/01    Time: 11:14
+ * Updated in $/xGate
+ * 
+ * *****************  Version 9  *****************
+ * User: Junanto      Date: 2/05/01    Time: 15:17
+ * Updated in $/xGate
+ * Add new state CS_Releasing
+ * 
+ * *****************  Version 8  *****************
+ * User: Junanto      Date: 18/04/01   Time: 15:30
+ * Updated in $/ct15
+ * 
+ * *****************  Version 7  *****************
+ * User: Bennylp      Date: 4/18/01    Time: 3:29p
+ * Updated in $/ct15
+ * Resolve conflicting member names in Call.
+ * 
+ * *****************  Version 6  *****************
+ * User: Junanto      Date: 14/04/01   Time: 20:00
+ * Updated in $/ct15
+ * Add more APIs
+ * 
+ * *****************  Version 5  *****************
+ * User: Junanto      Date: 13/04/01   Time: 22:37
+ * Updated in $/ct15
+ * 
+ * *****************  Version 4  *****************
+ * User: Junanto      Date: 13/04/01   Time: 21:03
+ * Updated in $/ct15
+ * 1st version of integration with call manager
+ * 
+ * *****************  Version 3  *****************
+ * User: Junanto      Date: 12/04/01   Time: 19:54
+ * Updated in $/ct15
+ * 
+ * *****************  Version 2  *****************
+ * User: Junanto      Date: 11/04/01   Time: 11:37
+ * Updated in $/ct15
+ * 
+ *----------------------------------------------------------------*/
+
+/*----------------------------------------------------------------* 
+ * Description:
+ *  
+ *----------------------------------------------------------------*/
+
+#if !defined(CT2_CALL_H__INCLUDED_)
+#define CT2_CALL_H__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+//#include "ServiceProvider.h"
+#include "serviceprovider.h"	//linux porting
+#include "hrtimer.h"
+
+#define CALL_TRANSFER //If Call Transfer needed
+
+// define this constant to enable call transition logging
+//#define CALL_LOG_TRANSITION
+
+/** Forward declaration
+ */
+class Media;
+class Interface;
+
+#ifdef CALL_TRANSFER
+   unsigned char calltransferflag = 0;
+#endif
+
+#define MAX_HUNT_GROUP_USERS 10
+
+/** CallDirection: It indicates the direction of current call or
+    CD_Null if the call is inactive.
+
+    Note: don't change the enum values or declaration order.
+ */
+enum CallDirection 
+{
+    CD_Null = 0,	/* inactive */
+    CD_Incoming = 1,	/* Incoming call */
+    CD_Outgoing = 2,	/* Outgoing call */
+    CD_Both = 3,	/* Only used in interface statistics gathering (see mediamanager.h) */
+};
+
+
+/** CallState: It indicates the current state of call or
+    CS_Null if the call is inactive
+ */
+enum CallState
+{
+    CS_Null,
+    CS_Initiating,
+    CS_Overlap,
+    CS_Proceeding,
+    CS_Alerting,
+    CS_Connecting,
+    CS_Connected,
+    CS_Suspended,
+    CS_Disconnected,
+    CS_Clearing,
+    CS_Releasing,
+};
+
+
+/** CallProgress: It indicates the progress of a call in the event of 
+    interworking or in relation with the provision of in-band 
+    information/patterns. This indicator may be embedded in PROGRESS,
+    PROCEEDING, ALERTING or DISCONNECT message
+ */
+enum CallProgress
+{
+    CP_NoIndication,
+    CP_NotEndToEndISDN = 1,
+    CP_DestinationNonISDN = 2,
+    CP_OriginationNonISDN = 3,
+    CP_ReturnedToISDN = 4,
+    CP_InBandInfoAvailable = 8,
+};
+
+
+/** CallCause: It indicates the cause of call clearing.This indicator may 
+    be embedded in DISCONNECT or RELEASE COMPLETE message.
+ */
+enum CallCause
+{
+    CC_ECT = -126,
+    CC_HO = -16,
+    CC_Unassigned = 0x00,
+
+    /** Mostly used cause codes as per ITU-T Q.850
+     */
+    CC_UnallocatedNumber = 1,		// 0x01,
+    CC_NoRouteToTransitNetwork = 2,	// 0x02,	
+    CC_NoRouteToDestination = 3,	// 0x03,
+    CC_ChannelUnacceptable = 6,		// 0x06,
+    CC_NormalCallClearing = 16,		// 0x10,
+    CC_UserBusy = 17,			// 0x11,
+    CC_NoUserResponding = 18,		// 0x12,
+    CC_NoAnswerFromUser = 19,		// 0x13,
+    CC_CallRejected = 21,		// 0x15,
+    CC_NumberChanged = 22,		// 0x16,
+    CC_ExchangeRoutingError = 25,	// ** Hop Counter procedure **
+    CC_DestinationOutOfOrder = 27,	// 0x1B,
+    CC_InvalidNumberFormat = 28,	// 0x1C,
+    CC_FacilityRejected = 29,		// ** NEW!! **
+    CC_NormalUnspecified = 31,		// 0x1F,
+    CC_NoCircuitAvailable = 34,		// 0x22,
+    CC_NetworkOutOfOrder = 38,		// 0x26,
+    CC_TemporaryFailure = 41,		// 0x29,
+    CC_SwitchingEquipmentCongestion = 42,   // 0x2A,
+    CC_RequestedCircuitUnavailable = 44,    // 0x2C,
+    CC_ResourceUnavailable = 47,	    // 0x2F,
+    CC_QOSUnavailable = 49,		    // 0x31,
+    CC_RequestedFacilityUnsubscribed = 50,  // 0x32,
+    CC_BearerCapabilityUnauthorized = 57,   // 0x39,
+    CC_BearerCapabilityUnavailable = 58,    // 0x3A,
+    CC_OptionUnavailable = 63,		    // 0x3F,
+    CC_BearerCapabilityUnimplemented = 65,  // 0x41,
+    CC_ChannelTypeNotImplemented = 66,	    // ** NEW!! **
+    CC_RequestedFacilityUnimplemented = 69, // 0x45,
+    CC_ServiceOrOptionNotImplementedUnspecified = 79,  // ** NEW!! **
+    CC_InvalidCallReference = 81,	    // ** NEW!! **
+    CC_ChannelNonExistent = 82,		    // 0x52,
+    CC_CallIdentityInUse = 84,		    // ** NEW!! **
+    CC_NoCallSuspended = 85,		    // 0x55,
+    CC_CallHasBeenCleared = 86,		    // 0x56,
+    CC_IncompatibleDestination = 88,	    // 0x58,
+    CC_InvalidTransitNetworkSelection = 91, // ** NEW!! **
+    CC_InvalidMessageUnspecified = 95,	    // ** NEW!! **
+    CC_MissingParameter = 96,		    // 0x60,	    /* Mandatory information element is missing */
+    CC_MessageTypeNonExistent = 97,	    // ** NEW!! **
+    CC_MessageNotCompatibleWithState = 98,  // ** NEW!! **
+    CC_MissingInformation = 99,		    // ** NEW!! **  /* Information element non-existent or not implemented */
+    CC_InvalidParameter = 100,		    // 0x64,
+    CC_RecoveryOnTimeout = 102,		    // 0x66,
+    CC_ProtocolError = 111,		    // 0x6F,
+    CC_Interworking = 127,		    // 0x7F,
+
+    /** Extended cause codes, may be used in indications
+	only and never in requests.
+     */
+    CC_CallFailed = 0x101,
+};
+
+
+/** CallConnectionType: It indicates the minimum requirement of media channel 
+    capability. In Q.931, this is also known as bearer capability.
+ */
+enum CallConnectionType
+{
+    CCT_Speech,
+    CCT_3K1Audio,
+    CCT_64KUnrestrictred,
+};
+
+
+/** CallCompandingLaw: It indicates the type of companding law requested for 
+    speech or 3.1 kHz audio connection type
+ */
+enum CallCompandingLaw
+{
+    CCL_NoIndication,
+    CCL_ALaw,
+    CCL_MuLaw,
+};
+
+
+// identity type (24.008 section 10.5.1.4 page 339)
+enum CallMobileIdentityType {
+    CMIT_No_Identity = 0,
+    CMIT_IMSI = 1,
+    CMIT_IMEI = 2,
+    CMIT_IMEISV = 3,
+    CMIT_TMSI_PTMSI  = 4, 
+    CMIT_TMGI_optional_MBMS_Session_Identity = 5
+};
+
+enum CallType {
+    CT_Normal = 0,
+    CT_Emergency = 1
+};
+
+
+/** CallNumberPlan: It is a plan that establishes the format of codes 
+    and subscriber numbers for a telephone system or other communications 
+    system such as Telex. A numbering plan is under control of an authority 
+    body in each country
+ */
+enum CallNumberPlan
+{
+    CNP_Unknown = 0,
+    CNP_ISDN = 1,
+    CNP_Data = 3,
+    CNP_Telex = 4,
+    CNP_NationalStandard = 8,
+    CNP_Private = 9,
+    CNP_NSAP = 10,
+    CNP_H323,
+    CNP_SIP,
+    CNP_TransportIdentifier,
+};
+
+
+/** CallNumberType: Given a numbering plan, the numbering type gives a method of 
+    interpreting the number. In the case of ISDN for example, on a local level, 
+    subscriber numbers can have a certain number of digits (in some cases, the 
+    number of digits varies according to the exchange centre or digit sequence used). 
+    The local plan would allow for codes used to reach operators, directory 
+    assistance, repair, test numbers, etc. On a regional or even national level, 
+    there need to be area codes or number prefixes established in order to route 
+    calls to the appropriate cities and central offices
+ */
+enum CallNumberType
+{
+    CNT_Unknown = 0,
+    CNT_International = 1,
+    CNT_National = 2,
+    CNT_NetworkSpecific = 3,
+    CNT_SubscriberNumber = 4,
+    CNT_Abbreviated = 6,
+};
+
+
+/** CallPartyCategory: It indicates the type of the caller or called party
+ */
+enum CallPartyCategory
+{
+    CPC_Unknown = 0,
+    CPC_Ordinary = 10,
+    CPC_Payphone = 15,
+    CPC_Data = 12,
+    CPC_Test = 13,
+};
+
+
+/** CallEchoControl: It indicates the requirement for echo control device for
+    a speech or 3.1 kHz audio connection type.
+ */
+enum CallEchoControl
+{
+    CEC_NoIndication,
+    CEC_IHCDRequired,
+    CEC_OHCDRequired,
+    CEC_IHCDIncluded,
+    CEC_OHCDIncluded,
+    CEC_IHCDNotIncluded,
+    CEC_OHCDNotIncluded,
+};
+
+
+/** CallCallingPresentation: It indicates whether the calling party number may be 
+    presented or not to the called user.
+ */
+enum CallCallingPresentation
+{
+    CCP_Allowed = 0,
+    CCP_Restricted = 1,
+    CCP_NotAvailable = 2,
+};
+
+
+/** CallCallingScreening: It indicates who provide and verify the calling party number 
+    parameter and eventually, the outcome of the verification
+ */
+enum CallCallingScreening
+{
+    CCS_UserNotScreened = 0,
+    CCS_UserVerifiedPassed = 1,
+    CCS_UserVerifiedFailed = 2,
+    CCS_Network = 3,
+};
+
+/** This is used for ECT purpose
+ */
+typedef enum {
+    ECT_CALLSTATE_ALERTING = 0,
+    ECT_CALLSTATE_ACTIVE = 1
+} ECT_CALLSTATE_enum;
+
+typedef enum {
+    RDN_TYPE_PRESENTATION_ALLOWED_ADDRESS = 0,
+    RDN_TYPE_PRESENTATION_RESTRICTED = 1,
+    RDN_TYPE_NUMBER_NOT_AVAILABLE_DUE_TO_INTERWORKING = 2,
+    RDN_TYPE_PRESENTATION_RESTRICTED_ADDRESS = 3
+} RDN_TYPE_enum;
+
+typedef struct {
+    RDN_TYPE_enum rdn_type;
+    char cnRdn[16];
+    CallNumberPlan cnpRdn;
+    CallNumberType cntRdn;
+} trdn;
+
+typedef struct {
+    ECT_CALLSTATE_enum ect_callstate;
+    int exist_rdn;
+    trdn rdn;
+} tect_indicator;
+
+typedef String CallSessionId;
+typedef String CallNumber;
+typedef String ProxyUserName; //TODO: Yoga, added for stateful sbc proxy to terminate deskphone calls
+typedef String DomainName; //TODO: Yoga, added for stateful sbc proxy to terminate deskphone calls
+typedef String CallSubaddress;
+typedef String CallSignalAddress;
+typedef String CallUserInfo;
+typedef String CallTransferType;
+
+typedef struct _CallCredential
+{
+	String crUserName;
+	String crPassword;
+}CallCredential;
+
+/** User-defined information, never sent to public network.
+    It may be used for call tracing
+ */
+typedef String CallPrivateInfo;
+
+/** Call extra info, signaling specific information can can be
+ *  carried in call parameter and optionally transmitted to
+ *  remote endpoint, if the signaling between nodes supports.
+ */
+struct CallExtraInfo
+{
+#ifndef __linux__
+    typedef Vector<unsigned char> Buffer;
+#else
+    typedef Vector<int> Buffer;
+#endif
+
+    String	owner;
+    Buffer	data;
+    bool	sendable;
+
+    CallExtraInfo(): sendable(false) {}
+    CallExtraInfo(const CallExtraInfo &rhs)
+	: owner(rhs.owner), data(rhs.data), sendable(rhs.sendable)
+    {}
+    CallExtraInfo & operator=(const CallExtraInfo &rhs)
+    {
+	owner = rhs.owner;
+	data = rhs.data;
+	sendable = rhs.sendable;
+	return *this;
+    }
+};
+
+// HuntGroup Feature, includes Mapped Mobile cases
+struct huntGroupInfo
+{
+  char *HuntGroupRegisteredUser[100];
+  char *h_key[100];
+};
+
+
+/** CallParameter: elements that are used in order to establish a call
+ */
+struct CallParameter
+{
+    CallSessionId csi;
+
+    CallConnectionType cct;
+    CallCompandingLaw ccl;
+    
+    CallPartyCategory cpcCalled;
+    CallNumber cnCalled;
+    ProxyUserName proxyUserName; //TODO: Yoga, added for stateful sbc proxy to terminate deskphone calls 
+    //DomainName domainName; //TODO: Yoga, added for stateful sbc proxy to terminate deskphone calls 
+    //CallNumber		cnConnectedCalled;
+    CallNumberPlan cnpCalled;
+    CallNumberType cntCalled;
+    CallSubaddress csCalled;
+    //CallSubaddress		csConnectedCalled;
+    CallSignalAddress csaCalled;
+
+    bool complete;
+    bool _isHuntGroupCaller;
+    bool _isSwitchBoardCall;
+    bool confFlag;
+
+    CallUserInfo cui;
+    CallSignalAddress routeAddr;
+
+    CallPartyCategory cpcCalling;
+    CallNumber cnCalling;
+    CallNumber cnCallingOrig;
+    CallNumberPlan cnpCalling;
+    CallNumberType cntCalling;
+    CallSubaddress csCalling;
+    CallSignalAddress csaCalling;
+    CallCallingPresentation ccp;
+    CallCallingScreening ccs;
+
+    // Original Callled Number
+    CallNumber cnOriginalCalledNumber;
+    CallNumberPlan cnpOriginalCalledNumber;
+    CallNumberType cntOriginalCalledNumber;
+    CallCallingPresentation ccpOriginalCalledNumber;
+
+    // Redirecting Number
+    CallNumber cnRedirectingNumber;
+    CallNumberPlan cnpRedirectingNumber;
+    CallNumberType cntRedirectingNumber;
+    CallCallingPresentation ccpRedirectingNumber;
+    #ifdef CALL_TRANSFER
+//        CallSignalAddress csaRedirected;
+    #endif
+
+    // Location Number
+    CallNumber cnLocationNumber;
+    CallNumberPlan cnpLocationNumber;
+    CallNumberType cntLocationNumber;
+    CallCallingPresentation ccpLocationNumber;
+
+    CallTransferType transferType;
+
+    // Redirection Information related
+    /** Redirection Indicator:
+     *  0 0 0 no redirection (national use)
+     *  0 0 1 call rerouted (national use)
+     *  0 1 0 call rerouted, all redirection information presentation restricted (national use)
+     *  0 1 1 call diverted
+     *  1 0 0 call diverted, all redirection information presentation restricted
+     *  1 0 1 call rerouted, redirection number presentation restricted (national use)
+     *  1 1 0 call diversion, redirection number presentation restricted (national use)
+     *  1 1 1 spare
+     **/
+    int redirectionIndicator;
+    /** Original Redirection Reason:
+     *  0 0 0 0 unknown/not available
+     *  0 0 0 1 user busy (national use)
+     *  0 0 1 0 no reply (national use)
+     *  0 0 1 1 unconditional (national use)
+     **/
+    int redirectionOrigReason;
+    /** Redirection Counter: 1-5
+     **/
+    int redirectionCounter;
+    /** Redirection Reason:
+     *  0 0 0 0 unknown/not available
+     *  0 0 0 1 user busy
+     *  0 0 1 0 no reply
+     *  0 0 1 1 unconditional
+     *  0 1 0 0 deflection during alerting
+     *  0 1 0 1 deflection immediate response
+     *  0 1 1 0 mobile subscriber not reachable
+     **/
+    int redirectionReason;
+    #ifdef CALL_TRANSFER
+//        int replaces_flag;
+    #endif
+
+    CallPrivateInfo cpinfo;
+
+    CallExtraInfo extraInfo;
+
+    // added by MIM
+    CallMobileIdentityType cmitCalling;
+    CallType ct;
+    int bssapDHVal;
+    bool suspend_resume_notification;
+    bool cw;
+    bool ect_notification;
+
+	// added by Oky
+	// credential for outgoing call that might
+	// be required by signalling driver(sofia)
+	CallCredential credential;
+
+    /** default constructor
+     */
+    CallParameter();
+
+    /** override default copy constructor
+     */
+    CallParameter(const CallParameter &rhs);
+
+    /** override default copy operator
+     */
+    CallParameter &operator=(const CallParameter &rhs);
+
+    bool IsValid();
+   
+
+private:
+    enum { DEADCODE = 0xDEADC0DE };
+    unsigned _signature;
+};
+
+
+/** Forward declaration
+ */
+class CTask;
+
+/** CallTransition: used to track what has happenned to a call
+    during its lifetime
+ */
+enum CallTransition
+{
+    CT_SetupReq = 0x01,
+    CT_OverlapReq = 0x03,
+    CT_ProceedingReq,
+    CT_ProgressReq,
+    CT_AlertingReq,
+    CT_ConnectReq,
+    CT_SuspendReq = 0x09,
+    CT_ResumeReq,
+    CT_DisconnectReq,
+
+    CT_SetupInd = 0x11,
+    CT_SetupCnf,
+    CT_OverlapInd,
+    CT_ProceedingInd,
+    CT_ProgressInd,
+    CT_AlertingInd,
+    CT_ConnectInd,
+    CT_ConnectCnf,
+    CT_SuspendInd,
+    CT_ResumeInd,
+    CT_DisconnectInd,
+    CT_RelComInd,
+
+    CT_AttachMedia = 0x21,
+    CT_DetachMedia,
+
+    CT_AttachTask = 0x31,
+    CT_DetachTask,
+    CT_DetachTask_HG,
+    CT_DisconnectReq_HG,
+    CT_ReferInd,
+    CT_UnAttendReferInd,
+    CT_OnCallPark,
+    CT_CallFlip,
+    CT_CallUnFlip,
+    CT_CallHold,
+    CT_CallRec,
+};
+
+typedef enum {
+    CQ_ALL = 0,
+    CQ_PAYLOAD,
+
+    CQ_RX_PACKETS = 100, 
+    CQ_RX_BYTES, 
+    CQ_RX_RTT, 
+    CQ_RX_JITTER, 
+    CQ_RX_FRACLOSS, 
+    CQ_RX_LOSS, 
+    CQ_RX_IS, 
+    CQ_RX_ID, 
+    CQ_RX_IE, 
+    CQ_RX_ITOT, 
+
+    CQ_TX_PACKETS = 200, 
+    CQ_TX_BYTES, 
+    CQ_TX_RTT, 
+    CQ_TX_JITTER, 
+    CQ_TX_FRACLOSS, 
+    CQ_TX_LOSS, 
+    CQ_TX_IS, 
+    CQ_TX_ID, 
+    CQ_TX_IE, 
+    CQ_TX_ITOT, 
+    
+} CallQualityParameter;
+
+
+/** Call: This is the base class of Call. Signalling Driver needs to derive
+    from this class and implement all request methods to adapt to the
+    signalling protocol needs. Call Manager implement the rest of methods.
+ */
+class Call
+{
+public:
+    /** Default constructor and destructor
+     */
+    Call(CallDirection dir,const char* defInterfaceName);
+    virtual ~Call();
+
+    /** It returns call parameter
+     */
+    CallParameter* GetCallParameter();
+
+    /** Call trace related
+     */
+    void EnableTrace();
+    void DisableTrace();
+    bool TraceEnabled();
+    void TraceSetup();
+    unsigned GetTraceId() const;
+
+    /** Tasks
+     */
+    unsigned AttachTask(CTask* task);
+    void DetachTask();
+    void DetachTask_HG(int handle);
+    void SuspendTask();
+    void ResumeTask();
+
+    void Close();
+    const char* GetAdditionalDigits(bool& complete);
+
+	/**************
+    bool isHuntGroupCaller() {return _callParam._isHuntGroupCaller;}
+    void setIsHuntGroupCaller() {_callParam._isHuntGroupCaller = true;}
+    void resetIsHuntGroupCaller() {_callParam._isHuntGroupCaller = false;}
+	***********/
+    bool isSwitchBoardCall() {return _callParam._isSwitchBoardCall;}
+    void setIsSwitchBoardCall() {_callParam._isSwitchBoardCall = true;}
+    void resetIsSwitchBoardCall() {_callParam._isSwitchBoardCall = false;}
+
+    /** Called by CallGetMoreDigits of Call Manager
+     */
+    void GetMoreDigits(char* additionalDigits,int timeout,bool* complete);
+
+    /** Requests: these methods are called by Call Manager on behalf of 
+	user applications and will call in turn DeviceXXX counterparts
+     */
+
+    /** Send additional digits to the network in case of overlap dialling
+     */
+    virtual void OverlapReq(const char* additionalDigits,bool complete);
+    virtual void ProceedingReq(CallProgress progress, CallExtraInfo* exinfo);
+    virtual void ProgressReq(CallProgress progress, CallExtraInfo* exinfo);
+    virtual void AlertingReq(CallProgress progress, CallExtraInfo* exinfo);
+    virtual void ConnectReq(CallExtraInfo* exinfo);
+    virtual void InfoReq(CallExtraInfo* exinfo);
+    virtual void SuspendReq();
+    virtual void ResumeReq();
+    virtual void DisconnectReq(CallCause cause,CallProgress progress);
+    virtual void DisconnectReq_HG(CallCause cause,CallProgress progress, int handle);
+    virtual void NotifyECTReq(tect_indicator indicator);
+
+    virtual void SetDisconnectMsg(const char *msg);
+
+    /** Requests: these methods need to be overridden by each Signalling 
+	Driver to implement specific behaviour of signalling protocol
+     */
+    virtual bool DeviceOverlapReq(const char* additionalDigits,bool complete) = 0;
+    virtual bool DeviceProceedingReq(CallProgress progress, CallExtraInfo* exinfo) = 0;
+    virtual bool DeviceProgressReq(CallProgress progress, CallExtraInfo* exinfo) = 0;
+    virtual bool DeviceAlertingReq(CallProgress progress, CallExtraInfo* exinfo) = 0;
+    virtual bool DeviceConnectReq(CallExtraInfo* exinfo) = 0;
+    virtual bool DeviceSendInfo(CallExtraInfo* exinfo) = 0;
+    virtual bool DeviceSuspendReq() = 0;
+    virtual bool DeviceResumeReq() = 0;
+    virtual bool DeviceDisconnectReq(CallCause cause,CallProgress progress) = 0;
+    virtual bool DeviceNotifyECTReq(tect_indicator indicator);
+
+    /** Get authorization handle, which only applies to SIP calls
+        at the moment. Other calls which doesn't support authorization
+	should return zero (which is the default implementation).
+     */
+    virtual int  GetAuthorizationHandle();
+
+    //* Media management
+    /** MediaAvailableInd is called to indicate that a media 
+	becomes readily available.
+     */
+    virtual void MediaAvailableInd(Media* media);
+
+    /** MediaUnavailableInd is called by the associated Media object to 
+	indicate a problem has occurred on the underlying transmission.
+     */
+    virtual void MediaUnavailableInd();
+
+    /** GetMedia: returns the attached Media object
+     */
+    virtual Media* GetMedia();
+
+    /** DetachMedia: removes the association between Call and Media.
+     */
+    virtual void DetachMedia(unsigned holding=0,unsigned connected=0);
+
+    /** Indications: these methods are called by Signalling Driver and
+	implemented by Call Manager. They may be overridden by Signalling
+	Driver as long as the original method is called
+     */
+    virtual void SetupInd(CallParameter &parameter);
+    virtual void SetupCnf();
+    virtual void OverlapInd(const char* additionalDigits,bool complete);
+    virtual void ProceedingInd(CallProgress progress, CallExtraInfo* exinfo);
+    virtual void ProgressInd(CallProgress progress, CallExtraInfo* exinfo);
+    virtual void AlertingInd(CallProgress progress, CallExtraInfo* exinfo);
+    virtual void ConnectInd(CallExtraInfo* exinfo);
+    virtual void ConnectCnf();
+    virtual void SuspendInd();
+    virtual void ResumeInd();
+    virtual void DisconnectInd(CallCause cause,CallProgress progress);
+    virtual void NotifyECTInd(tect_indicator indicator);
+    virtual void ReferInd(void);
+    virtual void UnAttendReferInd(void);
+    virtual void CallParkInd(void);
+    virtual void CallFlipInd(void);
+    virtual void CallUnFlipInd(void);
+    virtual void CallHoldInd(int ishold);
+    virtual void CallRecInd(int isrec);
+
+    /** On receipt of RelComInd and if there is no task attached to it,
+	the object is destroyed upon completion of this method
+     */
+    virtual void RelComInd(CallCause cause);
+
+    
+    /** Update and get call quality parameters
+     */
+    virtual float GetQuality(CallQualityParameter param);
+
+    /** Miscellaneous: set/get methods
+     */
+    void SetDirection(CallDirection direction);
+    CallDirection GetDirection();
+    void SetState(CallState state);
+    CallState GetState();
+    CallCause GetCause();
+    void SetCause(CallCause cause);
+    const char* GetName();
+    CTask* GetTask();
+
+    const char* GetInterfaceName() {
+	return _interfaceName.c_str();
+    }
+
+    const char* GetGroupName() {
+	return _groupName.c_str();
+    }
+
+    const char* GetClassTypeName() {
+	return _type_name.c_str();
+    }
+
+    void SetClassTypeName(const char *type_name) {
+	_type_name = type_name;
+    }
+
+    virtual void SetCharging(int charging) {
+    }
+
+    virtual bool SupportReleaseMediaMidCall() {
+	return false;
+    }
+
+protected:
+    friend class CallManager;
+    friend class CallAPI;
+
+    CTask* _task;
+    Call* _peerCall;
+    CallDirection _direction;
+    CallState _state;
+    CallParameter _callParam;
+    CallNumber _overlapRcvd;
+    CallCause _cause;
+    CallProgress _lastProgress;
+    bool _trace;
+    bool _released;
+    unsigned _traceId;
+
+    // GetMoreDigits related
+    unsigned _timeLastDigit;
+    unsigned _delayInterDigit;
+    unsigned _maxDigits;
+    bool _waitForMoreDigits;
+    char* _appDigits;
+    int* _appComplete;
+
+    String _interfaceName;
+    String _groupName;
+
+    int	_taskSuspendCount;
+    bool _taskAwareOfLineDrop;
+    Media* _media;
+
+    // call duration variables
+    bool _hasBeenConnected;
+    Low_Res_Timer _tmHolding;
+    Low_Res_Timer _tmConnected;
+
+    virtual void OnDisconnectInd();
+    virtual void OnRelComInd();
+
+#ifdef CALL_LOG_TRANSITION
+    typedef List<CallTransition> ListTransition;
+    ListTransition _transition;
+#endif
+
+private:
+    String _name;
+    String _type_name;
+};
+
+//Call * tmpCall;
+
+#endif // !defined(CT2_CALL_H__INCLUDED_)

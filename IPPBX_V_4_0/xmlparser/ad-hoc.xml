@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<conference-info confid="b7956f34-108e-4e2b-a56d-2dda1e673f2b" state="start">
+	<host-info entity="100@node1.vectone.com" confdisplayname="morningmeeting">
+	</host-info>
+	<users count="1">
+		<user entity="100@node1.vectone.com" type="host" index="0" callcount="2">
+			<call-info index="0">
+				<call_status status="joining"/>
+				<display-text value=""/>
+				<call-id id="1c0b82d4-5a9c-4ee2-b204-9b429dc6242d"/>
+				<to sipuri="102@node1.vectone.com" tagid="9b429dc6242d"/>
+				<from sipuri="100@node1.vectone.com" from tag id="b2041c0b82d4-5a9c-4ee2"/>
+			</call-info>
+			<call-info index="1">
+				<call_status status="joining" >
+				<display-text value=""/>
+				<call-id id="3c0b82d4-5a9c-4ee2-b204-9b429dc6242d"/>
+				<to sipuri="101@node1.vectone.com" tagid="20b429dc6242d"/>
+				<from sipuri="100@node1.vectone.com" tagid="21041c0b82d4-5a9c-4ee2"/>
+			</call-info>
+		</user>
+	</users>
+</conference-info>

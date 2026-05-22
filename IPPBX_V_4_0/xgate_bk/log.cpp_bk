@@ -1,0 +1,426 @@
+/* $Header: /xGate/log.cpp 6     22/05/02 17:59 Junanto $
+ *   
+ * CTENGINE
+ * (C) 2001 Switchlab, Ltd
+ *
+ * LOGGING interface.
+ *
+ * $Log: /xGate/log.cpp $
+ * 
+ * 6     22/05/02 17:59 Junanto
+ * Application logging to terminal can now be filtered out
+ * (to concentrate on system messages only) by a 
+ * new parameter "application" in "term logging".
+ * By default, application logging is displayed to terminal.
+ * To disable it: "no term logging application".
+ * 
+ * 5     7/30/01 3:50p Bennylp
+ * Resolve ambiguity by specifying explicit typecast.
+ * 
+ * 4     6/14/01 3:33p Bennylp
+ * Delete terminating newline in SysLastError
+ * 
+ * 3     4/12/01 8:08p Bennylp
+ * Integration.
+ *
+ */
+//#include "stdafx.h"
+#include "klog.h"
+#include "task.h"
+#include <string.h>
+
+//#define LOGENABLE 0
+
+class CTask;
+CTask *task;
+
+void PrintLog( LogVerbosity level, const char *sender, CTask *task, const char *format, va_list &marker)
+{
+    #ifdef LOGENABLE
+    CLog::Write( level, sender, task, format, marker);
+	#endif
+}
+
+void PrintLog( LogVerbosity level, const char *sender, const char *message)
+{
+    #ifdef LOGENABLE
+    CLog::Log( level, sender, (CTask*)0, message);
+	#endif
+
+}
+
+//-----------------------------------------------------------------------------
+void CLog::Write( LogVerbosity level, const char *sender, const char *format, va_list marker1)
+{
+    #ifdef LOGENABLE
+    CTask *task;
+
+    if((!KLog::Instance()) || (sender == NULL))return;
+	assert(KLog::Instance());
+    va_list marker;	//linux porting
+    KLog::Instance()->Log( level, sender, (CTask*)0, format, marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Write( LogVerbosity level, const char *sender, CTask *task, const char *format, va_list marker1)
+{
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;	//linux porting
+    KLog::Instance()->Log( level, sender, task, format, marker);
+	#endif
+};
+
+//-----------------------------------------------------------------------------
+void CLog::Log( LogVerbosity level, const char *sender, const char *format, ...)
+{
+//	printf("************ Inside CLog::Log **************\n");
+ //   #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+//	printf("************ Inside CLog::Log  calling KLog::Log  **************\n");
+    KLog::Instance()->Log( level, sender, (CTask*)0, format, marker);
+    va_end(marker);
+//	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Log( LogVerbosity level, const char *sender, CTask *task, const char *format, ...)
+{
+//	printf("************ Inside CLog::Log 1111 **************\n");
+//    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+//	printf("************ Inside CLog::Log 1111 calling KLog::Log **************\n");
+    KLog::Instance()->Log( level, sender, task, format, marker);
+    va_end(marker);
+//	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Detail( const char *sender, const char *format, ...)
+{
+
+  ///  cout << "**** Inside Clog::Detail ****" << endl;
+ //   #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_DETAIL, sender, (CTask*)0, format, marker);
+    va_end(marker);
+//	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Detail( const char *sender, CTask *task, const char *format, ...)
+{
+//    cout << "**** Inside Clog::Detail1 ****" << endl;
+  //  #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_DETAIL, sender, task, format, marker);
+    va_end(marker);
+//	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Debug( const char *sender, const char *format, ...)
+{
+//    cout << "**** Inside Clog::Debug ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_DEBUG, sender, (CTask*)0, format, marker);
+    va_end(marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Debug( const char *sender, CTask *task, const char *format, ...)
+{
+//    cout << "**** Inside Clog::Debug1 ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_DEBUG, sender, task, format, marker);
+    va_end(marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Info( const char *sender, const char *format, ...)
+{
+//	printf("******** clog::Info **********\n");
+ //   cout << "**** Inside Clog::Info ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_INFO, sender, (CTask*)0, format, marker);
+    va_end(marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Info( const char *sender, CTask *task, const char *format, ...)
+{
+  //  cout << "**** Inside Clog::Info1 ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_INFO, sender, task, format, marker);
+    va_end(marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::InfoApp( const char *sender, CTask *task, const char *format, ...)
+{
+ //   cout << "**** Inside Clog::InfoApp ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->LogApp( LOG_INFO, sender, task, format, marker);
+    va_end(marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Warning( const char *sender, const char *format, ...)
+{
+
+//	printf("******** clog::Warning **********\n");
+//    cout << "**** Inside Clog::Warning ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_WARNING, sender, (CTask*)0, format, marker);
+    va_end(marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Warning( const char *sender, CTask *task, const char *format, ...)
+{
+//	printf("******** clog::Warning **********\n");
+ //   cout << "**** Inside Clog::Warning1 ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_WARNING, sender, task, format, marker);
+    va_end(marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::WarningApp( const char *sender, CTask *task, const char *format, ...)
+{
+//    cout << "**** Inside Clog::WarningApp ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->LogApp( LOG_WARNING, sender, task, format, marker);
+    va_end(marker);
+	#endif
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Error( const char *sender, const char *format, ...)
+{
+//	printf("******** clog::Error **********\n");
+//    cout << "**** Inside Clog::Error ****" << endl;
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_ERRORS, sender, (CTask*)0, format, marker);
+    va_end(marker);
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Error( const char *sender, CTask *task, const char *format, ...)
+{
+ //   cout << "**** Inside Clog::Error1 ****" << endl;
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_ERRORS, sender, task, format, marker);
+    va_end(marker);
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::ErrorApp( const char *sender, CTask *task, const char *format, ...)
+{
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->LogApp( LOG_ERRORS, sender, task, format, marker);
+    va_end(marker);
+};
+
+
+//-----------------------------------------------------------------------------
+void CLog::Fatal( const char *sender, const char *format, ...)
+{
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_FATAL, sender, (CTask*)0, format, marker);
+    //KLog::Instance()->Log( LOG_FATAL, sender, task, format, marker);
+    va_end(marker);
+};
+
+//-----------------------------------------------------------------------------
+void CLog::Fatal( const char *sender, CTask *task, const char *format, ...)
+{
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    va_list marker;
+
+    va_start(marker,format);
+    KLog::Instance()->Log( LOG_FATAL, sender, task, format, marker);
+    va_end(marker);
+};
+
+//-----------------------------------------------------------------------------
+// Write Windows error
+void CLog::SysLastError(const char *sender, const char *msgfmt, ...)
+{
+    cout << "**** Inside Clog::SysLastError ****" << endl;
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+    assert(KLog::Instance());
+    if (!msgfmt)
+	return;
+
+    char m_StrBuf2[ LOG_MAX_MSG ], 
+	 m_StrBuf3[ LOG_MAX_MSG ];
+
+    //int err = GetLastError();
+    int err = task->GetLastError(); //linux porting
+
+    if (err == 0)
+	err = MINISOCK_LAST_ERROR;
+
+    int ret = strerror(err); //linux porting
+
+    if (!ret) {
+		_snprintf( m_StrBuf2, LOG_MAX_MSG, "GetLastError = %u (0x%X)", err, err);
+    } else {
+	// The last char normally is newline.
+	m_StrBuf2[ret-1] = '\0';
+    }
+
+
+    va_list marker;
+
+    va_start(marker, msgfmt);
+    _vsnprintf( m_StrBuf3, LOG_MAX_MSG, msgfmt, marker);
+    va_end(marker);
+    strcat( m_StrBuf3, ": %s");
+
+
+    CLog::Error( sender, (CTask*)0, m_StrBuf3, m_StrBuf2);
+	#endif
+
+};
+
+
+//-----------------------------------------------------------------------------
+// Write Windows error
+void CLog::SysLastError(const char *sender, CTask *task, const char *msgfmt, ...)
+{
+    #ifdef LOGENABLE
+    if((!KLog::Instance()) || (sender == NULL))return;
+
+    assert(KLog::Instance());
+    if (!msgfmt)
+	return;
+
+    char m_StrBuf2[ LOG_MAX_MSG ], 
+	 m_StrBuf3[ LOG_MAX_MSG ];
+
+    //int err = GetLastError();
+    int err = task->GetLastError();
+    if (err == 0)
+	err = MINISOCK_LAST_ERROR;	//linux porting
+
+    int ret = strerror(err); //linux porting
+    if (!ret) {
+	_snprintf( m_StrBuf2, LOG_MAX_MSG, "GetLastError = %u (0x%X)", err, err);
+    } else {
+	// The last char normally is newline.
+	m_StrBuf2[ret-1] = '\0';
+    }
+
+    va_list marker;
+
+    va_start(marker, msgfmt);
+    _vsnprintf( m_StrBuf3, LOG_MAX_MSG, msgfmt, marker);
+    va_end(marker);
+    strcat( m_StrBuf3, ": %s");
+
+
+    CLog::Error( sender, task, m_StrBuf3, m_StrBuf2);
+	#endif
+};
+
+

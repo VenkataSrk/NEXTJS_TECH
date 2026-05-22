@@ -1,0 +1,79 @@
+CC = g++
+CFLAGS = -g -w -lpthread -fpermissive -z muldefs
+
+INCLUDES =-I./ -I/usr/Include -I/usr/include/netinet -I/home/rajk/xgate/branches/Sofia/core/xgate -I/home/rajk/xgate/branches/Sofia/core/slrap/Include -I/home/rajk/xgate/branches/Sofia/core/lace/ace -I/home/rajk/xgate/branches/Sofia/core/lace -I/home/rajk/xgate/branches/Sofia/xgate -I/home/rajk/xgate/branches/Sofia/full/slsip/pchdir -I/home/rajk/xgate/branches/Sofia/full/xgate -I/home/rajk/xgate/branches/Sofia/full/Aculab/inc -I/home/rajk/xgate/branches/Sofia/full/Aculab/TiNG/highapi -I/home/rajk/xgate/branches/Sofia/full/Aculab/TiNG/include -I/home/rajk/xgate/branches/Sofia/full/SPT/include -I/home/rajk/xgate/branches/Sofia/full/Aculab/TiNG/apilib/WINNT -I/home/rajk/xgate/branches/Sofia/core/pwlib/include/ptlib -I/home/rajk/xgate/branches/Sofia/full/slsip/include -I/home/rajk/xgate/branches/sptq931fix/xgate -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nua/sofia-sip -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sip/sofia-sip -I/home/rajk/xgate/branches/Sofia/full/AudioCodes/voiplib -I/home/rajk/xgate/branches/Sofia/full/AudioCodes.v46/voiplib.v46/include -I/home/rajk/xgate/branches/Sofia/core/pwlib/include/ptlib -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nua -I/home/rajk/xgate/branches/Sofia/core/pwlib/include -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/open_c -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sip -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/url -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sdp -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nea -I/home/rajk/xgate/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/soa -I/home/rajk/xgate/branches/Sofia/full/septel/inc -I/home/rajk/xgate/branches/Sofia/full/Dialogic/inc/ccs -I/home/rajk/xgate/branches/Sofia/core/pwlib/include/ptclib -I/home/rajk/xgate/branches/Sofia/core/pwlib/include 
+
+
+LFLAGS = 
+
+LIBS = 
+
+# define the C++ source files
+SRCS =	accesslist.cpp \
+	api.cpp \
+	application.cpp \
+	arc4.cpp \
+	call.cpp \
+	callmanager.cpp \
+	cfg.cpp \
+	compileinfo.cpp \
+	ConServer.cpp \
+	ConsoleMgr.cpp \
+	ctbusmgr.cpp \
+	dbdriver.cpp \
+	devusage.cpp \
+	dns.cpp \
+	filedrv.cpp \
+	interpret.cpp \
+	kernel.cpp \
+	klog.cpp \
+	log.cpp \
+	main.cpp \
+	mboxdrv.cpp \
+	MediaManager.cpp \
+	odbc_base.cpp \
+	odbc_db.cpp \
+	odbc_exec.cpp \
+	odbc_rst.cpp \
+	PipeLine.cpp \
+	RapConfigurator.cpp \
+	RapManager.cpp \
+	RapParam.cpp \
+	SCbusMgr.cpp \
+	serviceprovider.cpp \
+	SignallingDriver.cpp \
+	SLApplicationEntry.cpp \
+	SLApplicationMonitor.cpp \
+	sl.cpp \
+	sleepdrv.cpp \
+	SLInterfaceEntry.cpp \
+	SLInterfaceMonitor.cpp \
+	SLSnmpManager.cpp \
+	SLSnmpProvider.cpp \
+	SLVoiceEntry.cpp \
+	SLVoiceMonitor.cpp \
+	switching.cpp \
+	systemapi.cpp \
+	task.cpp \
+	termcmd.cpp 
+
+
+OBJS = $(SRCS:.cpp=.o)
+
+# define the executable file 
+MAIN = xgate
+
+
+all:    $(MAIN)
+	@echo xgate has been compiled
+
+$(MAIN): $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+
+clean:
+	$(RM) *.o *~ $(MAIN)
+
+# DO NOT DELETE THIS LINE -- make depend needs it

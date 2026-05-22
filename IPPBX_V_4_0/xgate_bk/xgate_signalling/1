@@ -1,0 +1,11 @@
+#include "xGateMultiConference.h"
+
+xGateMultiConference::xGateMultiConference(){
+}
+xGateMultiConference::~xGateMultiConference(){
+}
+
+xGateReturn xGateMultiConference::infoRequest(){
+
+return SUCCESS;
+}

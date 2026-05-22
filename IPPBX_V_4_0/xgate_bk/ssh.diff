@@ -1,0 +1,295 @@
+1051d1050
+<   static int count = 0 ;
+1056,1057d1054
+<      cout << "testing Port ------- " << event->port << "sobj port --- " << (*sobj)->port   << "Coutn --- " << count ;
+<      count++;
+1171a1169
+> 
+1178,1181d1175
+<                             sobj->SofiaLegB->cp.callOnHoldFilenameCallingParty =  sobj->cp.callOnHoldFilenameCallingParty;
+<                             sobj->SofiaLegB->cp.callOnHoldFilenameCalledParty =  sobj->cp.callOnHoldFilenameCalledParty;
+<                             sobj->SofiaLegB->cp.PbState = 1;
+<                             sobj->SofiaLegB->cp.Legid = 1;
+1182a1177,1182
+>                             sobj->SofiaLegB->cp.PbState = 1;
+>                             sobj->SofiaLegB->cp.Legid = 1 ;// TODO  Yadav Chang ethe Leg ID to 2 since this leb B (this code is for temp need to revert after testeing)
+> 
+>                             sobj->cp.callOnHoldFilenameCallingParty = event->cp.callOnHoldFilenameCallingParty;
+>                             sobj->cp.callOnHoldFilenameCalledParty = event->cp.callOnHoldFilenameCalledParty;
+> 
+1220,1221d1219
+<                              sobj->cp.callOnHoldFilenameCallingParty = event->cp.callOnHoldFilenameCallingParty;
+<                              sobj->cp.callOnHoldFilenameCalledParty = event->cp.callOnHoldFilenameCalledParty;
+1223a1222,1224
+>                              sobj->cp.callOnHoldFilenameCallingParty = event->cp.callOnHoldFilenameCallingParty;
+>                              sobj->cp.callOnHoldFilenameCalledParty = event->cp.callOnHoldFilenameCalledParty;
+> 
+1432,1441d1432
+<   if(hmagic)
+<     sofiaobj = (xGateSofiaobj*)hmagic;
+<   else 
+<   {
+<     xGateSofiaobj *sofiaobj = NULL;
+<     xGateSofiaobj sofiaobj_temp;
+< 
+<     GetCallInfo(&sofiaobj_temp,callidstring);
+<     sofiaobj = &sofiaobj_temp;
+<   }           
+1444c1435,1437
+<   if(sofiaobj){
+---
+>   if(hmagic){
+>     sofiaobj = (xGateSofiaobj*)hmagic;
+> 
+1458d1450
+<         sofiaobj->SofiaLegB->mediastate = EN_MED_SUSPENDED;
+1464,1465c1456
+<         sofiaobj->mediastate = EN_MED_RESUMED;
+<         sofiaobj->SofiaLegB->mediastate = EN_MED_RESUMED;
+---
+>         sofiaobj->mediastate = EN_MED_SET;
+1474,1476c1465,1467
+<     SofiaReBindhandle((nua_handle_t*)sofiaobj->sofianh,nh,(nua_hmagic_t*)sofiaobj);
+<     sofiaobj->sofianh = nh; // Explicitly doing 
+<     sofiaobj->sofiamh = (void*)magic;
+---
+>     //SofiaReBindhandle((nua_handle_t*)sofiaobj->sofianh,nh,(nua_hmagic_t*)sofiaobj);
+>     // sofiaobj->sofianh = nh; // Explicitly doing 
+>     //sofiaobj->sofiamh = (void*)magic;
+1699,1705c1690,1695
+<     case 487:
+<       {
+<         DeleteForkedSofiaObject(((xGateSofiaobj*)hmagic));
+<         return;
+< 
+<       }
+<     default:
+---
+>     case 403:
+>     case 404:
+>     case 480:
+>     case 486:
+>     case 500:
+>     case 503:
+1707c1697,1704
+<         if(((xGateSofiaobj*)hmagic)->SofiaLegB->isParallelForked == true)
+---
+>         xGateSofiaobj* orgSofiaObj = ((xGateSofiaobj*)hmagic)->SofiaLegB;
+>         if(orgSofiaObj->noOfPeers == 1)
+>         {
+>           ((xGateSofiaobj*)hmagic)->SofiaLegB->sipeventtype = status;
+>           RespondToPeer(status,((xGateSofiaobj*)hmagic)->SofiaLegB);
+>           //     orgSofiaObj->SofiaForkLeg.erase(orgSofiaObj);
+>         }
+>         else
+1709,1717d1705
+<           xGateSofiaobj* orgSofiaObj = ((xGateSofiaobj*)hmagic)->SofiaLegB;
+<           if(orgSofiaObj->noOfPeers == 1)
+<           {
+<             ((xGateSofiaobj*)hmagic)->SofiaLegB->sipeventtype = status;
+<             RespondToPeer(status,((xGateSofiaobj*)hmagic)->SofiaLegB);
+<             //     orgSofiaObj->SofiaForkLeg.erase(orgSofiaObj);
+<           }
+<           else
+<           {
+1719,1731c1707,1718
+<             std::vector<xGateSofiaobj*>::iterator itr = orgSofiaObj->SofiaForkLeg.begin();
+<             while(itr != orgSofiaObj->SofiaForkLeg.end()) {
+<               xGateSofiaobj* forkSofiaObj = *itr;
+<               if(forkSofiaObj) {
+<                 //printf("****** failed forked LegId: %d\n", forkSofiaObj->forkedLegId);
+<                 if(((xGateSofiaobj*)hmagic)->forkedLegId == forkSofiaObj->forkedLegId)
+<                 {
+<                   //printf("****** matched forked LegId: %d\n", forkSofiaObj->forkedLegId);
+<                   orgSofiaObj->noOfPeers--;
+<                   itr = orgSofiaObj->SofiaForkLeg.erase(itr);
+<                   DeleteForkedSofiaObject(((xGateSofiaobj*)hmagic));
+<                   break;
+<                 }
+---
+>           std::vector<xGateSofiaobj*>::iterator itr = orgSofiaObj->SofiaForkLeg.begin();
+>           while(itr != orgSofiaObj->SofiaForkLeg.end()) {
+>             xGateSofiaobj* forkSofiaObj = *itr;
+>             if(forkSofiaObj) {
+>               printf("****** failed forked LegId: %d\n", forkSofiaObj->forkedLegId);
+>               if(((xGateSofiaobj*)hmagic)->forkedLegId == forkSofiaObj->forkedLegId)
+>               {
+>                 printf("****** matched forked LegId: %d\n", forkSofiaObj->forkedLegId);
+>                 orgSofiaObj->noOfPeers--;
+>                 itr = orgSofiaObj->SofiaForkLeg.erase(itr);
+>                 DeleteForkedSofiaObject(((xGateSofiaobj*)hmagic));
+>                 break;
+1733d1719
+<               ++itr;
+1734a1721
+>             ++itr;
+1736,1742d1722
+<           return;
+<         }
+<         else
+<         {
+<           ((xGateSofiaobj*)hmagic)->SofiaLegB->sipeventtype= status;
+<           RespondToPeer(status,((xGateSofiaobj*)hmagic)->SofiaLegB);
+<           break;
+1743a1724,1725
+>         return;
+> 
+1745c1727,1735
+<   }
+---
+>     case 487:
+>       {
+>         DeleteForkedSofiaObject(((xGateSofiaobj*)hmagic));
+>         return;
+> 
+>       }
+>     default:
+>       break;
+>   } 
+1926,1934c1916,1923
+<             sofiaobjsiphandle->SofiaSDPinfo.outproto = GetRtpPortType(sofiaobjsiphandle);
+<             /*  if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+<                 {
+<                 sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+<                 }
+<                 if(sofiaobjsiphandle->cp.csCallAgenttype == 1)
+<                 {
+<                 sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS";
+<                 }*/
+---
+>             if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+>             {
+>               sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+>             }
+>             if(sofiaobjsiphandle->cp.csCallAgenttype == 1)
+>             {
+>               sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS";
+>             }
+1945,1947c1934,1935
+<           //duplicate the sdp structure to sofia object void pointer
+<           if ((sofiaobjsiphandle->mediastate != EN_MED_SUSPENDED) && (sofiaobjsiphandle->mediastate != EN_MED_RESUMED))
+<           {
+---
+>           if ((sofiaobjsiphandle->mediastate != EN_MED_SUSPENDED) && (sofiaobjsiphandle->mediastate != EN_MED_RESUMED)){
+>             //duplicate the sdp structure to sofia object void pointer
+1951,1955c1939,1942
+<             sofiaobjsiphandle->SofiaSDPinfo.outproto = GetRtpPortType(sofiaobjsiphandle);
+<             /*   if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+<                  sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+<                  if(sofiaobjsiphandle->cp.csCallAgenttype == 1)
+<                  sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS"; */
+---
+>             if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+>               sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+>             if(sofiaobjsiphandle->cp.csCallAgenttype == 1)
+>               sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS";
+1971,1975c1958,1961
+<               sofiaobjsiphandle->SofiaSDPinfo.outproto = GetRtpPortType(sofiaobjsiphandle);
+<               /* if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+<                  sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+<                  if(sofiaobjsiphandle->cp.csCallAgenttype == 1)
+<                  sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS"; */
+---
+>               if(sofiaobjsiphandle->cp.csCallAgenttype == 2 || sofiaobjsiphandle->cp.csCallAgenttype == 0)
+>                 sofiaobjsiphandle->SofiaSDPinfo.outproto = "RTP";
+>               if(sofiaobjsiphandle->cp.csCallAgenttype == 1)
+>                 sofiaobjsiphandle->SofiaSDPinfo.outproto = "DTLS";
+1990a1977
+>         sofiaobjsiphandle->SofiaSDPinfo.outproto = GetRtpPortType(sofiaobjsiphandle);
+1998d1984
+<         sofiaobjsiphandle->SofiaSDPinfo.outproto = GetRtpPortType(sofiaobjsiphandle);
+2895,2896c2881
+<       }
+<       else if(pSipMgc->SofiaLegB->mediastate == EN_MED_SUSPENDED){
+---
+>       }else if(pSipMgc->SofiaLegB->mediastate == EN_MED_SUSPENDED){
+2902c2887
+<               NUTAG_OFFER_SENT(1),
+---
+>               SOATAG_ACTIVE_AUDIO(SOA_ACTIVE_RECVONLY),
+2909c2894
+<         if(CreateLocalSdpParam(pSipMgc) == true){
+---
+>         if(CreateLocalSdpParam(pSipMgc->SofiaLegB) == true){
+2911c2896
+<               NUTAG_OFFER_SENT(1),
+---
+>               SOATAG_ACTIVE_AUDIO(SOA_ACTIVE_SENDRECV),
+2914,2915c2899
+< 
+<       }     else{
+---
+>       }else{
+3482a3467
+> if (sofiaobjsiphandle->mediastate != EN_MED_SUSPENDED && sofiaobjsiphandle->mediastate != EN_MED_RESUMED) // This need to re-vist Yadav
+3497a3483
+>   CLog::Detail(THISMODULE,"SofiaSiphandler::OnHold_Resume %s",sobj->callid.c_str() );
+3500c3486
+<   CLog::Detail(THISMODULE,"SofiaSiphandler::OnHold_Resume %s",sobj->callid.c_str() );
+---
+> 
+3506c3492
+<     //RespondToPeer(EN_200_REL,sobj);
+---
+>     // RespondToPeer(EN_200_REL,sobj);
+3513c3499
+<     //	RespondToPeer(EN_200_REL,sobj->SofiaLegB);
+---
+>     // RespondToPeer(EN_200_REL,sobj->SofiaLegB);
+3515c3501
+<   }else if(sobj->callstate == CS_Connecting && sobj->mediastate == EN_MED_RESUMED) {// On Resume Leg A peer send to Leg B
+---
+>   }else if(sobj->callstate == CS_Connecting && sobj->mediastate == EN_MED_SET) {// On Resume Leg A peer send to Leg B
+3517,3518c3503
+<     //ForwardReInvite(sobj->SofiaLegB,ONRESUME);
+<     ForwardReInvite(sobj,ONRESUME); //TODO: Yoga, done it testing purpose
+---
+>     ForwardReInvite(sobj,ONRESUME);
+3520,3521c3505,3506
+<     //	RespondToPeer(EN_200_REL,sobj);
+<   }else if(sobj->SofiaLegB->callstate == CS_Connecting && sobj->SofiaLegB->mediastate == EN_MED_RESUMED) {// OnResume Leg B send to Leg A
+---
+>     RespondToPeer(EN_200_REL,sobj);
+>   }else if(sobj->SofiaLegB->callstate == CS_Connecting && sobj->SofiaLegB->mediastate == EN_MED_SET) {// OnResume Leg B send to Leg A
+3525c3510
+<     //	RespondToPeer(EN_200_REL,sobj->SofiaLegB);
+---
+>     // RespondToPeer(EN_200_REL,sobj->SofiaLegB);
+3526a3512
+>   
+3532c3518
+< xGateReturn SofiaSiphandler::ForwardReInvite(xGateSofiaobj *sofiaobj,bool hold_resume){
+---
+> xGateReturn SofiaSiphandler::ForwardReInvite(xGateSofiaobj *sofiaobj, bool hold_resume){
+3546c3532
+<   music_on_hold(sofiaobj,hold_resume);
+---
+> music_on_hold(sofiaobj,hold_resume);
+3554c3540
+<   if(sofiaobj->callstream == EN_OUTBOUND)
+---
+>   if (sofiaobj->callstream == EN_OUTBOUND)
+3558c3544
+<     sofiaobj->cp.csfilename = sofiaobj->SofiaLegB->cp.csfilename = sofiaobj->cp.callOnHoldFilenameCalledParty; // set csfilename = callOnHoldFilenameCall     edParty
+---
+>     sofiaobj->cp.csfilename = sofiaobj->SofiaLegB->cp.csfilename = sofiaobj->cp.callOnHoldFilenameCalledParty; // set csfilename = callOnHoldFilenameCalledParty
+3562,3563c3548,3549
+<   {   // else resume/hold from caller
+<     CLog::Detail(THISMODULE, "SofiaSiphandler::music_on_hold cp.callOnHoldFilenameCallingParty = %s", sofiaobj->cp.callOnHoldFilenameCallingParty.c_str()     );
+---
+>   { // else resume/hold from caller
+>     CLog::Detail(THISMODULE, "SofiaSiphandler::music_on_hold cp.callOnHoldFilenameCallingParty = %s", sofiaobj->cp.callOnHoldFilenameCallingParty.c_str());
+3565c3551
+<     sofiaobj->cp.csfilename = sofiaobj->SofiaLegB->cp.csfilename = sofiaobj->cp.callOnHoldFilenameCallingParty; // set csfilename = callOnHoldFilenameCal     lingParty
+---
+>     sofiaobj->cp.csfilename = sofiaobj->SofiaLegB->cp.csfilename = sofiaobj->cp.callOnHoldFilenameCallingParty; // set csfilename = callOnHoldFilenameCallingParty
+3568c3554
+<   if(ONHOLD)
+---
+>   if (ONHOLD)
+3580,3581c3566,3567
+<   ((SofiaSiphandler*)(sofiaobj->SofiaLegB->sofianh))->RequestForMedia(sofiaobj,EN_MEDIA_HOLD_RESUME);
+< 
+---
+> //  ((SofiaSiphandler*)(sofiaobj->SofiaLegB->sofianh))->RequestForMedia(sofiaobj,EN_MEDIA_HOLD_RESUME);
+> RequestForMedia(sofiaobj,EN_MEDIA_HOLD_RESUME);

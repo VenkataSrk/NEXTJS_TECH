@@ -1,0 +1,185 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests
+END
+check_sofia.c
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/check_sofia.c
+END
+check_dlopen_sofia.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/check_dlopen_sofia.c
+END
+test_nat_tags.c
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_nat_tags.c
+END
+test_ops.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_ops.c
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/Makefile.in
+END
+test_init.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_init.c
+END
+test_100rel.c
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_100rel.c
+END
+suite_for_nua.c
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/suite_for_nua.c
+END
+test_refer.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_refer.c
+END
+check_sofia.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/check_sofia.h
+END
+test_call_reject.c
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_call_reject.c
+END
+test_extension.c
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_extension.c
+END
+test_basic_call.c
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_basic_call.c
+END
+test_nua_api.c
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_nua_api.c
+END
+test_sip_events.c
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_sip_events.c
+END
+test_offer_answer.c
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_offer_answer.c
+END
+test_call_hold.c
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_call_hold.c
+END
+test_proxy.c
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_proxy.c
+END
+test_nat.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_nat.c
+END
+test_nua.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_nua.c
+END
+test_session_timer.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_session_timer.c
+END
+test_cancel_bye.c
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_cancel_bye.c
+END
+test_register.c
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_register.c
+END
+test_nua_params.c
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_nua_params.c
+END
+test_proxy.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_proxy.h
+END
+test_nat.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_nat.h
+END
+test_nua.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_nua.h
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/Makefile.am
+END
+test_simple.c
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/test_simple.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/tests/Makefile
+END
