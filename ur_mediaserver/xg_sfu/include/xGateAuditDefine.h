@@ -1,0 +1,36 @@
+#ifndef _AUDIT_SERVICE_DEFINE_H
+#define _AUDIT_SERVICE_DEFINE_H
+
+#define DEFAULT_AUDIT_START_TIME 60 //in minutest
+#define DEFAULT_AUDIT_ATTEMPT_COUNT 3 //maximum attempt auditor will check the status
+
+typedef enum
+{
+  EN_AUDIT_MSG_UNKNOWN = 0,
+  EN_AUDIT_MSG_REGISTER_CALL = 1, //TODO: Yoga, since we are register per client wise so need do change the enum name
+  EN_AUDIT_MSG_DEREGSITER_CALL = 2, //TODO: Yoga, since we are register per client wise so need do change the enum name
+  EN_AUDIT_MSG_CHECK_CALL_STATUS = 3,
+  EN_AUDIT_MSG_CHECK_CLIENT_STATUS = 4, 
+  EN_AUDIT_MSG_CLEANUP_CALL = 5,
+  EN_AUDIT_MSG_CLEANUP_CLIENT = 6,
+} xGateAuditMsgType;
+
+typedef enum
+{
+  EN_AUDIT_TIMER_CHECK_CALL_STATUS = 0,
+  EN_AUDIT_TIMER_CHECK_CLIENT_STATUS = 1,
+} AuditTimerType;
+
+typedef enum
+{
+  EN_AUDIT_STATE_UNKNOWN = 0,
+  EN_AUDIT_STATE_CLIENT_JUST_REGISTERED = 1,
+  EN_AUDIT_STATE_CLIENT_ENTRY_AVAILABLE = 2,
+  EN_AUDIT_STATE_CLIENT_ENTRY_DELETED = 3,
+  EN_AUDIT_STATE_CLIENT_STILL_ALIVE = 4,
+  EN_AUDIT_STATE_CALL_JUST_REGISTERED = 5,
+  EN_AUDIT_STATE_CALL_ENTRY_AVAILABLE = 6,
+  EN_AUDIT_STATE_CALL_ENTRY_DELETED = 7,
+  EN_AUDIT_STATE_CALL_STILL_ALIVE = 8,
+} AuditState;
+#endif

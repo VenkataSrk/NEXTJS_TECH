@@ -1,0 +1,143 @@
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig
+
+CC = g++ -std=c++0x 
+
+CFLAGS = -g  -DNDEBUG  -w -fpermissive -z muldefs `pkg-config --cflags --libs gstreamer-1.0 gstreamer-sdp-1.0 gstreamer-webrtc-1.0` `pkg-config --cflags --libs glib-2.0` -DH248_MG -DGST_WEBRTC -DHAVE_GST_DEBUG_PRINTS
+
+#CFLAGS = -g  -DNDEBUG  -w -fpermissive -z muldefs `pkgconfig --cflags --libs gstreamer-1.0` `pkgconfig --cflags --libs glib-2.0` -DH248_MG
+
+INCLUDES =  -I/usr/include -I./include -I/usr/local/include -I./include -I../  -I/usr/local/include/sofia-sip-1.12 -I/usr/local/aculab/v6/TiNG/apilib/POSIX -I/usr/include/netinet -I./pwlib/include -I./pwlib/include/ptlib -I$(ACE_ROOT)  -I/usr/local/aculab/v6/include -I./AudioCodes/voiplib -I./AudioCodes.v46/voiplib.v46/include -I../slsip/include -I/audiocodes/include/  
+
+INCLUDES =  -I/usr/include -I./include -I/usr/local/include -I./include -I../  -I/usr/local/include/sofia-sip-1.12 -I/usr/local/aculab/v6/TiNG/apilib/POSIX -I/usr/include/netinet -I./pwlib/include -I./pwlib/include/ptlib -I$(ACE_ROOT)  -I/usr/local/aculab/v6/include -I./AudioCodes/voiplib -I./AudioCodes.v46/voiplib.v46/include -I../slsip/include -I/audiocodes/include/ -I/usr/local/include/gstreamer-1.0/ -I/usr/local/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+
+
+
+#LFLAGS = -L/usr/local/lib 
+LFLAGS = -L/usr/local/lib -L$(ACE_ROOT)/ace
+
+LIBS = -lpthread -lpt -lrt -lm -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lgmodule-2.0 -lACE -lcrypto
+
+MG_SRC = ./src
+PCRE = ../pcre-3.4
+#ACE_ROOT = ../lace
+AUDIOCODES = ../AudioCodes.v46
+IPCALL = ../ipcall
+SPT = ../SPT
+
+
+# define the C++ source files
+SRCS = $(PCRE)/pcre.cpp \
+			 $(MG_SRC)/main.cpp \
+			 $(MG_SRC)/xGateUtil.cpp \
+			 $(MG_SRC)/xGateHmpGstUtil.cpp \
+                         $(MG_SRC)/xGateHmpGstAudioBin.cpp \
+                         $(MG_SRC)/xGateHmpGstVideoBin.cpp\
+                         $(MG_SRC)/xGateHmpGstBin.cpp\
+                         $(MG_SRC)/SFUController.cpp \
+                         $(MG_SRC)/SFUBridgeProcessor.cpp \
+                         $(MG_SRC)/SFUClient.cpp \
+			 $(MG_SRC)/xGateProcessor.cpp\
+			 $(MG_SRC)/xGateDispatcher.cpp\
+			 $(MG_SRC)/xGateMGDispatcher.cpp\
+			 $(MG_SRC)/xGateTCPServer.cpp\
+			 $(MG_SRC)/xGateSrvAcceptor.cpp \
+			 $(MG_SRC)/xGateTCPReceiver.cpp\
+			 $(MG_SRC)/xGateConnector.cpp\
+			 $(MG_SRC)/xGateMGCConnector.cpp\
+			 $(MG_SRC)/xGateTCPSocketHandler.cpp\
+			 $(PCRE)/pcreposix.cpp \
+			 $(MG_SRC)/xGateUtil.cpp \
+			 $(MG_SRC)/api.cpp \
+			 $(MG_SRC)/application.cpp \
+			 $(MG_SRC)/arc4.cpp \
+			 $(MG_SRC)/call.cpp \
+			 $(MG_SRC)/callmanager.cpp \
+			 $(MG_SRC)/cfg.cpp \
+			 $(MG_SRC)/ConServer.cpp \
+			 $(MG_SRC)/ConsoleMgr.cpp \
+			 $(MG_SRC)/ctbusmgr.cpp \
+			 $(MG_SRC)/devusage.cpp \
+			 $(MG_SRC)/filedrv.cpp \
+			 $(MG_SRC)/interpret.cpp \
+			 $(MG_SRC)/hostmedia.cpp \
+			 $(MG_SRC)/kernel.cpp \
+			 $(MG_SRC)/klog.cpp \
+			 $(MG_SRC)/log.cpp \
+			 $(MG_SRC)/MediaManager.cpp \
+			 $(MG_SRC)/Reactor_Imp_Sock.cpp  \
+			 $(MG_SRC)/PipeLine.cpp \
+			 $(MG_SRC)/sha1.cpp \
+			 $(MG_SRC)/serviceprovider.cpp \
+			 $(MG_SRC)/SignallingDriver.cpp \
+			 $(MG_SRC)/SLApplicationEntry.cpp \
+			 $(MG_SRC)/SLApplicationMonitor.cpp \
+			 $(MG_SRC)/sl.cpp \
+			 $(MG_SRC)/sleepdrv.cpp \
+			 $(MG_SRC)/SLInterfaceEntry.cpp \
+			 $(MG_SRC)/SLInterfaceMonitor.cpp \
+			 $(MG_SRC)/SLSnmpManager.cpp \
+			 $(MG_SRC)/SLSnmpProvider.cpp \
+			 $(MG_SRC)/SLVoiceEntry.cpp \
+			 $(MG_SRC)/switching.cpp \
+			 $(MG_SRC)/systemapi.cpp \
+  			 $(MG_SRC)/stringencode.cpp \
+			 $(MG_SRC)/task.cpp \
+			 $(MG_SRC)/telnet.cpp \
+			 $(MG_SRC)/termcmd.cpp \
+			 $(MG_SRC)/term.cpp \
+			 $(MG_SRC)/termsc.cpp \
+			 $(MG_SRC)/thread_process.cpp \
+			 $(MG_SRC)/timer.cpp \
+			 $(MG_SRC)/variant.cpp \
+			 $(MG_SRC)/version.cpp \
+			 $(MG_SRC)/quality.cpp \
+			 $(MG_SRC)/hrtimer.cpp \
+			 $(MG_SRC)/base64.cpp \
+			 $(MG_SRC)/spec.cpp \
+			 $(MG_SRC)/security.cpp \
+			 $(MG_SRC)/md5.cpp \
+			 $(AUDIOCODES)/src/audiocodes.cpp \
+			 $(AUDIOCODES)/src/log.cpp \
+			 ../Aculab/TiNG/assp/md5_stream.cpp \
+			 ../Aculab/TiNG/assp/md5.cpp \
+                         $(MG_SRC)/rtpmedia.cpp \
+                         $(MG_SRC)/rtpvirtual.cpp \
+                         $(MG_SRC)/voicedevice.cpp \
+                         $(MG_SRC)/rtpsig.cpp \
+                         $(MG_SRC)/megacotransport.cpp \
+			 $(SPT)/SPT_Q931/spt_q931tr.cpp \
+			 $(SPT)/SPT_Q931/spt_q931sm.cpp \
+			 $(SPT)/src/spt1.cpp \
+			 $(SPT)/src/spt0.cpp \
+
+#$(MG_SRC)/h248Callp.cpp
+#$(MG_SRC)/xGateRegistrar.cpp
+
+OBJS = $(SRCS:.cpp=.o)
+
+# define the executable file 
+MAIN = sfu_mg
+
+
+all:    $(MAIN)
+	@echo sfu_mg has been compiled
+
+$(MAIN): $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+
+clean:
+	rm -rf $(MAIN)
+	rm -rf $(MG_SRC)/*.o
+	rm -rf $(PCRE)/*.o
+	rm -rf $(MTNLIB)/*.o
+	rm -rf $(AUDIOCODES)/*.o
+	rm -rf $(IPCALL)/*.o
+	rm -rf $(SPT)/SPT_Q931/*.o
+	rm -rf $(SPT)/src/*.o
+
+
+
+# DO NOT DELETE THIS LINE -- make depend needs it

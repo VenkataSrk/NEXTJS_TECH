@@ -1,0 +1,4 @@
+until ./vid_rec> vid_rec.out 2> vid_rec.err < /dev/null ; do
+        echo "vid_rec stopped...; restarting it again" >&2
+        sleep 1
+done

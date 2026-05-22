@@ -1,0 +1,4 @@
+until ./mbc mbc> mbc_mbc.out 2> mbc_mbc.err < /dev/null ; do
+        echo "mbc_mbc stopped...; restarting it again" >&2
+        sleep 1
+done

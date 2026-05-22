@@ -1,0 +1,220 @@
+#include "HuntGroupDBHandler.h"
+#include "AcdConttroller.h"
+#include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/reader.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/ostreamwrapper.h"
+using namespace rapidjson;
+
+HuntGroupDBHandler::HuntGroupDBHandler()
+{}
+
+HuntGroupDBHandler::~HuntGroupDBHandler()
+{}
+
+bool HuntGroupDBHandler::handle_callq_query_request(string qExtn, string domainId)
+{
+  string strQueueURL = VMS_CONFIG::instance()->m_vmsControllerProfile.m_db_QueueDetailURL;
+  std::ostringstream oss;
+ 
+  oss << "{" << "\"q_extn\"" << ":" << "\"" << qExtn << "\"" << "," << "\"domain_id\"" << ":" << "\"" << domainId << "\"" << "}";
+
+  xGateHttpServiceMsg *ptHttpMSg = getHttpReuestMsg( strContext,strQueueURL, EN_HTTP_METHOD_POST,oss.str());
+
+  if(!ptHttpMSg)
+  {
+	  XGLOG_ERROR("OOM Issue. Creating HTTP request for Server info failed");
+	  return false;
+  }
+
+  XGLOG_INFO("ACD Controller sending request to HTTP Module [%s]", strQueueURL.c_str());
+  ACDCONTROLLER::instance()->handleModuleCallbackMsg(dynamic_cast<IURModuleMsg*>(ptHttpMSg));
+  return true;
+}
+
+xGateHttpServiceMsg * HuntGroupDBHandler::getHttpReuestMsg(string &strContext, string &strURL,
+        HttpReqMethod tHttpmethod,
+        string stData)
+{
+        XGLOG_DEBUG("Inside HuntGroupDBHandler::getHttpReuestMsg");
+        xGateHttpServiceMsg * ptHttpMsg = new xGateHttpServiceMsg();
+        if (!ptHttpMsg)
+        {
+                XGLOG_ERROR("OOM Issue. Creating HTTP request failed");
+                return NULL;
+        }
+        ptHttpMsg->setDstModuleId(IURDefines::UR_MODULE_HTTP_SERVICE);
+        ptHttpMsg->setSrcModuleId(IURDefines::UR_MODULE_SERVICE_CONTROLLER);
+        ptHttpMsg->setHttpMsgType(xGateHttpServiceMsg::HTTP_SRV_MSG_TYPE_REQUEST);
+        HttpRequestInfo &httpReqInfo            = ptHttpMsg->get_http_request_info();
+        httpReqInfo.m_url                                       = strURL.c_str();
+        httpReqInfo.m_contextId                         = strContext.c_str();
+        httpReqInfo.m_requestorModule           = ptHttpMsg->getSrcModuleId();
+        httpReqInfo.m_contentType                       = EN_CONTENT_TYPE_JSON;
+        httpReqInfo.m_httpReqMethod                     = tHttpmethod;
+        httpReqInfo.m_data                                      = stData.c_str();
+
+        return ptHttpMsg;
+}
+ 
+bool HuntGroupDBHandler::handle_callq_query_response(xGateHttpServiceMsg* pthttpSrvMsg, HuntGroup &huntGroup)
+{
+  xGateHttpServiceMsg* ptHttpMsg = dynamic_cast<xGateHttpServiceMsg*>(pthttpSrvMsg);
+        HttpRequestInfo &tHttpResponse = pthttpSrvMsg->get_http_request_info();
+
+        if (EN_HTTP_STATUS_SUCCESS != tHttpResponse.m_httpRespStatus)
+        {
+                XGLOG_ERROR("Reading Server deatils failed. HTTP ERROR response (%s)", tHttpResponse.m_output.c_str());
+                        return false;
+        }
+
+        if (!readQueueDetailfromJson(tHttpResponse.m_output.c_str(),
+                tHttpResponse.m_output.length(), huntGroup))
+        {
+                XGLOG_ERROR("Reading Server deatils failed. Creating HTTP request failed");
+                        return false;
+        }
+
+        return true;
+}
+
+bool HuntGroupDBHandler::readQueueDetailfromJson(const char  *data, unsigned int dataLen, HuntGroup &huntGroup)
+{
+  if(!data && dataLen <= 0) {
+    XGLOG_ERROR("Server Config data error from Database failed. data is empty!");
+    return false;
+  }
+
+  Document doc;
+  XGLOG_INFO( "PARSING Server info data: %s", data);
+  ParseResult ok = doc.Parse(data);
+  if(!ok)
+  {
+    XGLOG_ERROR( "Server Config data error from Database . Encountered with json parse error !");
+    return false;
+  }
+  else if (!doc.IsObject())
+  {
+	  XGLOG_ERROR( "Server Config data error from Database . Not able create documnet object !");
+	  return false;
+  }
+
+  XGLOG_INFO("successfully parsed Server Config data from Database");
+
+  if (doc.HasMember("status_code"))
+  {
+	  huntGroup.m_StatusCode = doc["status_code"].GetInt();
+  }
+  else
+  {
+	  XGLOG_ERROR( "Server Config data error from Database. 'uid' is missing in business json message !");
+	  return false;
+  }
+  if (doc.HasMember("err_code"))
+  {
+	  huntGroup.m_errorcode = doc["err_code"].GetInt();
+  }
+  else
+  {
+	  XGLOG_ERROR("Server Config data error from Database. 'err_code' is missing in business json message !");
+	  return false;
+  }
+  if (doc.HasMember("affected_rows"))
+        {
+                huntGroup.affectedrows = doc["affected_rows"].GetInt();
+        }
+        else
+        {
+                XGLOG_ERROR("Server Config data error from Database. 'affected_rows' is missing in business json message !");
+                return false;
+        }
+
+        if (huntGroup.affectedrows < 1)
+        {
+                XGLOG_ERROR("Server Config data error from Database. 'affected_rows' is missing in business json message !");
+                return false;
+        }
+
+        if (doc.HasMember("message"))
+        {
+                huntGroup.m_message = doc["message"].GetString();
+        }
+        else
+        {
+                XGLOG_ERROR( "Server Config data error from Database. 'opcode' is missing in json message !");
+                return false;
+        }
+  Value val;
+  if (!doc.HasMember("sipPbxGetCallqRes"))
+        {
+                XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+        val = doc["sipPbxGetCallqRes"].GetObject();
+   if (val.HasMember("q_status"))
+        {
+     huntGroup.m_callqStatus = val["q_status"].GetInt();
+   } else {
+                XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+   if(val.HasMember("greeting")) 
+{
+  huntGroup.m_callqGreeting = val["greeting"].GetString();
+} else {
+ XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+if(val.HasMember("connecting_sound"))
+ {
+  huntGroup.m_callqConnecting = val["connecting_sound"].GetString();
+ } else {
+  XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+if(val.HasMember("hold_music"))
+{ 
+  huntGroup.m_callqHoldmusic = val["hold_music"].GetString();
+} else {
+XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+if(val.HasMember("user_hr_q_handling"))
+{
+  huntGroup.m_callqHandlingType = val["user_hr_q_handling"].GetInt();
+} else {
+XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+if(val.HasMember("max_wait_time"))
+{
+  huntGroup.m_callqMaxWait = val["max_wait_time"].GetInt();
+} else {
+XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+if(val.HasMember("max_hold_time"))
+{
+  huntGroup.m_callqMaxHold = val["max_hold_time"].GetInt();
+} else {
+XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+if(val.HasMember("after_hold_time"))
+{
+ huntGroup.m_callqHoldTimeout = val["after_hold_time"].GetInt();
+} else {
+XGLOG_ERROR("Server Config data error from Database. output is missing in json message !");
+                return false;
+        }
+if(val.HasMember("call_forward_extn"))
+{
+  huntGroup.m_callqForwardExtn = vsl
+  
+
+  
+
+ 
