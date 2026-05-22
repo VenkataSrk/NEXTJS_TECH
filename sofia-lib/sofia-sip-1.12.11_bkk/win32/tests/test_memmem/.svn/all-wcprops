@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_memmem
+END
+test_memmem.dsp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_memmem/test_memmem.dsp
+END
+test_memmem.vcxproj
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_memmem/test_memmem.vcxproj
+END
+test_memmem.vcproj
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_memmem/test_memmem.vcproj
+END

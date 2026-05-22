@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_tport
+END
+test_tport.vcxproj
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_tport/test_tport.vcxproj
+END
+test_class.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_tport/test_class.cpp
+END
+test_table.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_tport/test_table.cpp
+END
+test_tport.vcproj
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_tport/test_tport.vcproj
+END
+test_tport.dsp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_tport/test_tport.dsp
+END

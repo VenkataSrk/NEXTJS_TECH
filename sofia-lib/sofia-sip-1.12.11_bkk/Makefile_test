@@ -1,0 +1,15 @@
+
+CFLAGS = -g -O0
+
+all: hello-caller hello-callee
+
+hello-caller: hello.c
+	gcc `pkg-config sofia-sip-ua --cflags --libs` -DCALLER \
+	$(CFLAGS) -o hello-caller hello.c
+
+hello-callee: hello.c
+	gcc `pkg-config sofia-sip-ua --cflags --libs` \
+	$(CFLAGS) -o hello-callee hello.c
+
+clean:
+	rm hello-caller hello-callee

@@ -1,0 +1,18 @@
+[Unit]
+Description=CONF-BRIDGE Daemon Service
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=/home/Live/unifiedringengineplatform/build
+ExecStart=/usr/bin/uravconf
+Restart=always
+RestartSec=5
+
+Environment=URENGINE_BASE=/root
+
+[Install]
+WantedBy=multi-user.target
+

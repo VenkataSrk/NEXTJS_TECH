@@ -1,0 +1,14 @@
+http_status.lo: http_status.c ../../config.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h \
+ sofia-sip/http_status.h ../su/sofia-sip/su_config.h \
+ ../su/sofia-sip/su_configure.h
+
+../../config.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h:
+
+sofia-sip/http_status.h:
+
+../su/sofia-sip/su_config.h:
+
+../su/sofia-sip/su_configure.h:

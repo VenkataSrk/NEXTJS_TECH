@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sofia-resolv
+END
+sres_async.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sofia-resolv/sres_async.h
+END
+sres_record.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sofia-resolv/sres_record.h
+END
+sres.h
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sofia-resolv/sres.h
+END
+sres_cache.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sofia-resolv/sres_cache.h
+END
+sres_config.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sofia-resolv/sres_config.h
+END

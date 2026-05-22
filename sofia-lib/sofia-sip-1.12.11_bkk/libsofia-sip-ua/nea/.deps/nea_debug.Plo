@@ -1,0 +1,19 @@
+nea_debug.lo: nea_debug.c \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h nea_debug.h \
+ ../su/sofia-sip/su_debug.h ../su/sofia-sip/su_log.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stdarg.h \
+ ../su/sofia-sip/su_config.h ../su/sofia-sip/su_configure.h
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stddef.h:
+
+nea_debug.h:
+
+../su/sofia-sip/su_debug.h:
+
+../su/sofia-sip/su_log.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/include/stdarg.h:
+
+../su/sofia-sip/su_config.h:
+
+../su/sofia-sip/su_configure.h:

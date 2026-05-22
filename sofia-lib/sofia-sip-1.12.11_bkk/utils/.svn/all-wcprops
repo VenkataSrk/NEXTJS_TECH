@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/Makefile.in
+END
+Doxyfile
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/Doxyfile
+END
+sip-options
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/sip-options
+END
+sip-options.c
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/sip-options.c
+END
+sip-date
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/sip-date
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/ChangeLog
+END
+sip-date.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/sip-date.c
+END
+utils.docs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/utils.docs
+END
+Doxyfile.in
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/Doxyfile.in
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/Makefile.am
+END
+apps_utils.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/apps_utils.h
+END
+sip-dig
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/sip-dig
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/Makefile
+END
+sip-dig.c
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/utils/sip-dig.c
+END

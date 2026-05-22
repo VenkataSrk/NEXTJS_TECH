@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_htable
+END
+test_htable.vcproj
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_htable/test_htable.vcproj
+END
+test_htable.dsp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_htable/test_htable.dsp
+END
+test_htable.vcxproj
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_htable/test_htable.vcxproj
+END

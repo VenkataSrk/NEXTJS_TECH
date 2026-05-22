@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/Makefile.in
+END
+sofia-sip-1.12.11.spec
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/sofia-sip-1.12.11.spec
+END
+sofia-sip-ua.pc.in
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/sofia-sip-ua.pc.in
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/ChangeLog
+END
+sofia-sip.spec.in
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/sofia-sip.spec.in
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/Makefile.am
+END
+sofia-sip-ua-glib.pc
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/sofia-sip-ua-glib.pc
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/Makefile
+END
+sofia-sip-ua-glib.pc.in
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/sofia-sip-ua-glib.pc.in
+END
+sofia-sip-ua.pc
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/packages/sofia-sip-ua.pc
+END

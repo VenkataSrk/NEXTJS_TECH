@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip
+END
+msg_mclass_hash.h
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_mclass_hash.h
+END
+msg_protos.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_protos.h
+END
+msg_mime.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_mime.h
+END
+msg_header.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_header.h
+END
+msg_protos.h.in
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_protos.h.in
+END
+msg_parser.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_parser.h
+END
+msg_mime_protos.h
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_mime_protos.h
+END
+msg_tag_class.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_tag_class.h
+END
+msg_mime_protos.h.in
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_mime_protos.h.in
+END
+msg_types.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_types.h
+END
+msg_buffer.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_buffer.h
+END
+msg_addr.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_addr.h
+END
+msg_date.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_date.h
+END
+msg.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg.h
+END
+msg_mclass.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg/sofia-sip/msg_mclass.h
+END
