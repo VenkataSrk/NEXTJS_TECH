@@ -2817,7 +2817,8 @@ CREATE TABLE `email_config` (
 LOCK TABLES `email_config` WRITE;
 /*!40000 ALTER TABLE `email_config` DISABLE KEYS */;
 /* email_config data redacted for security */
-/*!40000 ALTER TABLE `email_config` ENABLE KEYS */;
+
+*//*!40000 ALTER TABLE `email_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
