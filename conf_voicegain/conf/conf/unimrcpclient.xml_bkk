@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- UniMRCP client document -->
+<unimrcpclient xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:noNamespaceSchemaLocation="unimrcpclient.xsd" 
+version="1.0">
+<include>
+<profile name="unimrcpserver-mrcp2" version="2">
+<param name="server-ip" value="82.113.66.29"/>
+<param name="server-port" value="8060"/>
+<param name="resource-location" value=""/>
+<param name="client-ip" value="10.22.2.152"/>
+<param name="client-port" value="8062"/>
+<param name="sip-transport" value="tcp"/>
+<param name="ua-name" value="Freeswitch"/>
+<param name="sdp-origin" value="Freeswitch"/>
+<param name="rtp-ip" value="10.22.3.249"/>
+<param name="rtp-port-min" value="4000"/>
+<param name="rtp-port-max" value="5000"/>
+<param name="codecs" value="PCMA"/>
+<param name="speechsynth" value="flite"/>
+</profile>
+</include>
+</unimrcpclient>

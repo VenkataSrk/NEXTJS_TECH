@@ -1,0 +1,2 @@
+/usr/bin/ar cr libxglog.a  CMakeFiles/xglog.dir/xglog.cpp.o
+/usr/bin/ranlib libxglog.a

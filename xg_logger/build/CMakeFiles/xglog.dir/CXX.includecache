@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/yoga/VMS/xgate_logger/logmsg.h
+string
+-
+ace/Message_Block.h
+-
+xglog.h
+/home/yoga/VMS/xgate_logger/xglog.h
+
+/home/yoga/VMS/xgate_logger/xglog.cpp
+fstream
+-
+stdexcept
+-
+logmsg.h
+/home/yoga/VMS/xgate_logger/logmsg.h
+xglog.h
+/home/yoga/VMS/xgate_logger/xglog.h
+
+/home/yoga/VMS/xgate_logger/xglog.h
+ace/Task.h
+-
+ace/Singleton.h
+-
+ace/Log_Msg.h
+-
+
