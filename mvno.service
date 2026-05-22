@@ -1,0 +1,24 @@
+#This Service file is used to run mvno business service as a daemon process
+[Unit]
+Description=Mvno Business Service
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+
+#Environment variable for your config path
+Environment="CONF_PATH=/etc/xgate/"
+
+ExecStart=/usr/bin/mvno_service
+ExecStartPre=/usr/bin/truncate -s 0 /var/log/xgate/mvno/mvno_service.err
+ExecStartPre=/usr/bin/truncate -s 0 /var/log/xgate/mvno/mvno_service.out
+StandardError=append:/var/log/xgate/mvno/mvno_service.err
+StandardOutput=append:/var/log/xgate/mvno/mvno_service.out
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
+

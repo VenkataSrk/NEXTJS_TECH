@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<conf>
+  <siptrunk>    
+    <trunk>
+      <trunk_name>pbizzmob</trunk_name>
+      <ip_src>80.74.227.75</ip_src>
+      <ip_src>10.150.2.117</ip_src>
+      <ip_src>10.22.7.184</ip_src>
+      <cli_dbprofile>cli_check_fr</cli_dbprofile>
+      <spawntask>UKESP</spawntask>
+      <maxchannel>1024 </maxchannel>
+      <iwmsc_prefix>fwbau</iwmsc_prefix>
+      <mvno_prefix>mvmau</mvno_prefix>
+      <hlr_url>http://10.150.0.140/hlr</hlr_url>
+      <site_code>MCM</site_code>
+    </trunk>
+  </siptrunk>
+<business>
+  <port>32780</port>
+</business>
+<monitor>
+    <port>32800</port>
+    <connection_timeout>1000</connection_timeout>
+    <response_timeout>1000</response_timeout>
+    <ip>10.22.8.33</ip>
+</monitor>
+
+<logging>
+	<!-- TRACE    - 0
+	     DEBUG    - 1
+	     INFO     - 2
+	     WARN     - 3
+	     ERROR    - 4
+	     CRITICAL - 5
+    	     FATAL    - 6
+	     EXCEP    - 7 
+	     OFF      - 8 -->
+	<level>1|2|4|7</level>
+ 	<file_path>/var/log/xgate/log</file_path>
+	<max_file_size>10</max_file_size>
+	<retention>5</retention>
+</logging>
+ <local-db>
+	<db_type>MYSQL</db_type>
+	<conn_string>tcp://127.0.0.1:3306</conn_string>
+	<user>root</user>
+	<passwd>tinusm</passwd>
+	<conn_timeout>10</conn_timeout>
+	<conn_pool>5</conn_pool>
+	<retention>5</retention>
+	<backup>1</backup>
+</local-db>
+<global>
+  <CDR_PATH>/var/cdr/</CDR_PATH>
+  <CDR_PATH_BACKUP>/var/cdr/</CDR_PATH_BACKUP>
+  <IP_ADDRESS>10.22.3.102</IP_ADDRESS>
+  <MACHINE_CODE>341</MACHINE_CODE>
+  <MACHINE_ID>341</MACHINE_ID>
+  <SWITCH_CODE>417</SWITCH_CODE>
+  <TERM_LEG>1728</TERM_LEG>
+  <TIME_ZONE_GMT>1</TIME_ZONE_GMT>
+  <CALL_TIMEOUT>40</CALL_TIMEOUT>
+  <DB_WAITTIMEOUT>10800</DB_WAITTIMEOUT>
+</global>
+
+<prefix didprefix="^PBX01.*"  trunkname="pbizzmob"></prefix>
+
+<Application task_name="UKESP" app="ESP" espdb="mcmdb" espparamdb="mcmprmdb" hlrdb="" npopr="npopr_uk" routing="ukroutingvect5" switch="ukroutingdb" ccaasdb="ccaas"></Application>
+
+<db_profile profile_name="cli_check_fr" connection_string="DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=10.150.0.53;UID=xglogin;PWD=XG@vec@123;DATABASE=npopr_supper;port=3306;" connection_timeout="10" connection_count="5" desc="" dbtype="mysql"></db_profile>
+<db_profile profile_name="ukroutingdb" connection_string="DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=10.150.0.53;UID=xglogin;PWD=XG@vec@123;DATABASE=routingv2_voip;port=3306;" connection_timeout="10" connection_count="1" desc="" dbtype="mysql"></db_profile>
+<db_profile profile_name="ukroutingvect5" connection_string="DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=10.150.0.53;UID=xglogin;PWD=XG@vec@123;DATABASE=routing_vect;port=3306;" connection_timeout="10" connection_count="1" desc="" dbtype="mysql"></db_profile>
+<db_profile profile_name="mcmdb" connection_string="DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=10.150.0.53;UID=xglogin;PWD=XG@vec@123;DATABASE=esp;port=3306;" connection_timeout="10" connection_count="1" desc="" dbtype="mysql"></db_profile>
+<db_profile profile_name="mcmprmdb" connection_string="DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=10.150.0.53;UID=xglogin;PWD=XG@vec@123;DATABASE=espprm;port=3306;" connection_timeout="10" connection_count="1" desc="" dbtype="mysql"></db_profile>
+<db_profile profile_name="npopr_uk" connection_string="DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=10.150.0.53;UID=xglogin;PWD=XG@vec@123;DATABASE=npopr_supper;port=3306;" connection_timeout="10" connection_count="1" desc="" dbtype="mysql"></db_profile>
+<db_profile profile_name="ccaas" connection_string="DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=10.150.3.70;DATABASE=ccaas2023;UID=ccaasdev;PWD=ccAAsdev@435;PORT=3306;SSLMODE=DISABLED;" connection_timeout="10" connection_count="1" desc="" dbtype="mysql"></db_profile>
+<!--db_profile profile_name="ccaas" connection_string="DRIVER={MySQL ODBC 8.0 Unicode Driver};SERVER=10.150.0.176;DATABASE=ccaas2023;UID=ccaasdev;PWD=ccAAsdev@435;PORT=3306;SSLMODE=DISABLED;" connection_timeout="10" connection_count="1" desc="" dbtype="mysql"></db_profile--> 
+
+</conf>
+

@@ -1,0 +1,4 @@
+until ./mvno_service > mvno_service.out 2> mvno_service.err < /dev/null ; do
+        echo "mvno_service stopped...; restarting it again" >&2
+        sleep 1
+done
