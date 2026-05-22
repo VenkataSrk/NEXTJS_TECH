@@ -1,0 +1,91 @@
+
+
+
+.dot{
+    width: 10px;
+    height: 10px;
+    border-radius: 12px;
+}
+
+.dropdownWrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+
+    .dropdownButton {
+      border-radius: 6px;
+      border: 1px solid var(--border-line, #D2D3D4);
+      background: var(--Full-White, #FFF);
+      height: 38px;
+      box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 12px;
+      width: 200px;
+        cursor: pointer;
+        p {
+            color: var(--text-water-mark-place-holder-text, #252526);
+            font-size: 14px;
+            line-height: normal;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+
+    .dropdownMenu {
+      position: absolute;
+      left: 0;
+      z-index: 1000;
+      border-radius: 8px;
+      border: 1px solid var(--border-line, #D2D3D4);
+      background: #FFF;
+      width: 100%;
+      box-shadow: 0px 6px 8px 0px rgba(12, 21, 35, 0.18);
+      // overflow: hidden;
+  
+      &.dropdownBottom {
+        top: 110%;
+        right: 0;
+        z-index: 1000;
+        border: 1px solid var(--border-line, #D2D3D4);
+        border-radius: 16px;
+        background: #FFF;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        min-width: 200px;
+        // overflow: hidden;
+
+        .dropdownMenuinner {
+            padding: 4px 0;
+            max-height: 240px;
+            // overflow: hidden;
+        }
+      }
+    }
+  
+    .option {
+      gap: 8px;
+      align-items: center;
+     padding: 6px 12px;
+      cursor: pointer;
+      color: var(--Text-Title, #252526);
+      font-size: 14px;
+      line-height: normal;
+      display: flex;
+      width: 100%;
+
+      &:hover {
+        background-color: #f1f1f1;
+      }
+    }
+    .selected {
+        background-color: #e6f7f4;
+        font-family: 'intersemibold';
+        border-left: 3px solid #00b885;
+      }
+      
+}
+

@@ -1,0 +1,116 @@
+.smscontainer{
+    .breadcrumb{
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        max-width: 987px;
+        padding: 13px 21px;
+        margin: auto;
+        @include big4{
+            max-width: 100%;
+            padding: 12px 16px;
+        }
+        .breadcrumbtitle{
+            color: #000;
+            font-family: 'Inter';
+            font-size: 21px;
+            font-weight: 600;
+            line-height: 28px;
+        }
+        .breadcrumbsubtitle{
+            color: #000;
+            font-family: 'Inter';
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 18px;
+        }
+    }
+    .smsviewcontainer{
+         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: 798px;
+        margin: auto;
+        gap: 12px;
+        .smsblock{
+            width: 100%;
+            border-radius: 13px;
+            background: #F8F8F8;
+            // padding: 14px 14px 22px;
+            padding: 14px ;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            .smsblockleft{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .smstitleblock{
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    color: #000;
+                    font-family: 'Inter';
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 16px; 
+                }
+                .smstitleslot{
+                    color: #757676;
+                    font-family: 'Inter';
+                    font-size:  12px;
+                    font-weight: 400;
+                    line-height:  16px; 
+                }
+            }
+            .smsblockright{
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                .smscontact{
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    .smscontactitle{
+                        display: flex;
+                        width: 34px;
+                        height: 34px;
+                        min-width: 34px;
+                        min-height: 34px;
+                        padding: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 12px;
+                        border-radius: 34px;
+                        background: #7423D7;
+                        color: #FFF;
+                        text-align: center;
+                        font-family: 'Inter';
+                        font-size: 14px;
+                        font-weight: 600;
+                        line-height: 24px;
+                    }
+                    .smscontactsubtitle{
+                        color: #000;
+                        font-family:  'Inter';
+                        font-size:  16px;
+                        font-weight: 600;
+                        line-height:  24px; 
+                    }
+                }
+                .smsdescription{
+                    color: #0B0B0B;
+                    font-family: 'Inter';
+                    font-size:  14px;
+                    font-weight: 400;
+                    line-height:  24px; 
+                }
+            }
+        }
+    }
+}

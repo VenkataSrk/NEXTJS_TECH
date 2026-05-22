@@ -1,0 +1,39 @@
+.smtpemailcontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+
+    .smtpinnerblock {
+        width: 100%;
+        border-radius: 16px;
+        border: 1px solid var(--Colors-Essentials-Stoke-Stoke---Border---Line, #D2D3D4);
+        background: #FFF;
+
+        .setmainblockmain {
+            border-bottom: 1px solid var(--Colors-Essentials-Stoke-Stoke---Border---Line, #D2D3D4);
+            padding: 12px 20px;
+
+            .label {
+                color: var(--Full-Black, #000);
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 161.8%;
+                /* 25.888px */
+                margin: 0 0 4px;
+            }
+
+            .value {
+                color: var(--Colors-Essentials-Text-Sub-Title, #757676);
+                font-size: 13px;
+                font-weight: 500;
+                line-height: 161.8%;
+                /* 21.034px */
+            }
+
+            &:nth-last-child(1) {
+                border-bottom: 0;
+            }
+        }
+    }
+}

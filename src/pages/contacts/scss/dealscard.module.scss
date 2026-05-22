@@ -1,0 +1,92 @@
+.dealscardcontainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    .dealscardblock{
+        width: 100%;
+        border-radius: 16px;
+        border: 1px solid var(--Colors-Black-Black-200, #E3E4E5);
+        background: var(--Colors-Black-White, #FFF);
+        padding: 14px 22px;
+        .companylistitle{
+            color: var(--Text-color-text-primary, #0B0B0B);
+            font-family: 'Inter';
+            font-size: 12px;
+            line-height: 22px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            span{
+               font-weight: 600;
+               font-size: 13px;
+            }
+        }
+        .dealscardblockleft{
+            border-bottom:  0.6px solid #BFBFBF;
+            padding: 0 0 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            .dealnametitle{
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: var(--Text-color-text-primary, #0B0B0B);
+                font-family: 'Inter';
+                font-size: 18px;
+                font-weight: 600;
+                line-height:24px;
+                span{
+                    color: var(--clr-text-accent-info, #155BC2);
+                    font-family: 'Inter';
+                    font-size: 12px;
+                    font-weight: 400;
+                    line-height: 16px;
+                    border-radius: 24px;
+                    border: 0.618px solid var(--Border-c-border-info, #1A73E8);
+                    background: var(--Elements-c-element-info-subtle, #F3F7FE);
+                    padding: 2px 8px;
+                    &.closed{
+                        color: #0C7F48;
+                        border-radius: 24px;
+                        border: 0.618px solid var(--Border-c-border-sucess, #0F9D58);
+                        background: var(--Elements-c-element-success-subtle, #F2FBF7);
+                    }
+                }
+            }
+            .companylist{
+                display: flex;
+                align-items: center;
+                gap: 13px;
+            }
+        }
+        .dealscardblockright{
+            padding:16px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            .companytitleblock{
+                display: flex;
+                align-items: center;
+                gap: 13px;
+                .companyprofilecard{
+                    display: flex;
+                    width: 34px;
+                    height: 34px;
+                    min-width: 34px;
+                    max-width: 34px;
+                    min-height: 34px;
+                    max-height: 34px;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}

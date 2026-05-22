@@ -1,0 +1,460 @@
+.titlearea {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 32px;
+
+  .titlearealeft {
+    .title {
+      color: #000;
+      font-size: 21px;
+      line-height: 27px;
+    }
+
+    .desc {
+      color: #404040;
+      font-size: 13px;
+      line-height: 22px;
+    }
+  }
+
+  .titlearearight {}
+}
+
+.fieldmain {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 16px;
+
+  .label {
+    color: #000;
+
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 21px;
+  }
+
+  .value {
+    color: #000;
+
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+
+    /* 21.28px */
+    span {
+      color: var(--Colors-Special-Colors-Ultramarine-blue, #575CFF);
+      font-size: 13px;
+      font-style: normal;
+      line-height: 133%;
+      /* 17.29px */
+    }
+  }
+}
+
+.subscribe {
+  border-radius: 8px;
+  border: 1px solid var(--true-black-300, #D2D3D4);
+
+  .cardblock {
+    border-radius: 16px;
+    background: var(--Colors-Black-White, #FFF);
+
+    .cardblocktop {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 16px 24px;
+
+      .cardblocktopleft {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+
+        .cardprofile {
+          display: flex;
+          width: 55px;
+          height: 55px;
+          min-width: 55px;
+          max-width: 55px;
+          min-height: 55px;
+          max-height: 55px;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .title {
+          color: #000;
+          font-size: 16px;
+          font-style: normal;
+          line-height: 21px;
+          text-transform: capitalize;
+        }
+
+        .status {
+          border-radius: 24px;
+          border: 0.618px solid #136809;
+          background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+          color: #0A3405;
+          font-size: 11px;
+          font-style: normal;
+          line-height: 18px;
+          padding: 4px 8px;
+        }
+      }
+
+      .cardblocktopright {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        button {
+          color: #000;
+
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 18px;
+          border-radius: 13px;
+          border: 0.6px solid #BFBFBF;
+          background: #FFF;
+        }
+
+        .price {
+          color: #000;
+          text-align: right;
+          font-size: 21px;
+          font-style: normal;
+          line-height: 133%;
+          /* 27.93px */
+        }
+
+        .period {
+          color: #212121;
+          text-align: right;
+          font-size: 13px;
+          font-style: normal;
+          line-height: 115%;
+          /* 14.95px */
+        }
+      }
+    }
+
+    .cardblockbottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px;
+      border-top: 1px solid var(--Colors-Black-Black-200, #E3E4E5);
+
+      .cardblockbottomleft {
+        display: inline-grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        justify-items: start;
+        gap: 16px;
+        @include big5{
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .fieldmain {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin: 0;
+          flex-direction: row;
+        }
+      }
+
+      .cardblockbottomright {
+        width: 100px;
+        text-align: right;
+      }
+    }
+  }
+
+  .addonsSection {
+    .accordionHeader {
+      color: var(--Text-Title, #252526);
+      font-size: 14px;
+      font-style: normal;
+      line-height: normal;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      border-top: 1px solid #d2d3d4;
+      border-bottom: 1px solid #d2d3d4;
+    }
+
+    .addonCard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid var(--border-line, #D2D3D4);
+      background: var(--Full-White, #FFF);
+      padding: 16px 24px;
+
+      .addonCardleft {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .icon {
+          width: 34px;
+          height: 34px;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .info {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+
+          .title {
+            color: var(--Text-Title, #252526);
+
+            /* Font/Table/Table Header */
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            line-height: normal;
+          }
+
+          .desc {
+            color: var(--Text-Sub-Title, #757676);
+            font-family: Inter;
+            font-size: 12px;
+            font-style: normal;
+            line-height: normal;
+          }
+        }
+      }
+
+      .addonCardright {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .priceBox {
+          color: var(--Text-Title, #252526);
+          font-size: 18px;
+          font-style: normal;
+          line-height: normal;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 2px;
+          white-space: nowrap;
+          align-items: flex-end;
+
+          span {
+            color: var(--Text-Sub-Title, #757676);
+            font-family: Inter;
+            font-size: 12px;
+            font-style: normal;
+            line-height: normal;
+          }
+        }
+
+        button {}
+      }
+    }
+  }
+}
+
+.addonsSection {
+  margin-top: 20px;
+
+  .title {
+    color: #000;
+    font-family: Inter;
+    font-size: 18px;
+
+  }
+
+  .accordionHeader {
+    color: var(--Text-Title, #252526);
+    font-size: 14px;
+    font-style: normal;
+    line-height: normal;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-top: 1px solid #d2d3d4;
+    border-bottom: 1px solid #d2d3d4;
+
+  }
+
+  .addonCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+
+    padding: 16px 24px;
+    border-radius: 16px;
+    border: 1px solid var(--Colors-Black-Black-200, #E3E4E5);
+    background: var(--Colors-Black-White, #FFF);
+
+    .addonCardleft {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .icon {
+        width: 34px;
+        height: 34px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        .title {
+          color: #000;
+
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 23px;
+          text-transform: capitalize;
+        }
+
+        .desc {
+          color: #404040;
+
+          font-size: 13px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 21px;
+          text-transform: capitalize;
+        }
+      }
+    }
+
+    .addonCardright {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .priceBox {
+        color: var(--Text-Title, #252526);
+        font-size: 18px;
+        font-style: normal;
+        line-height: normal;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2px;
+        white-space: nowrap;
+        align-items: flex-end;
+
+        span {
+          color: var(--Text-Sub-Title, #757676);
+          font-family: Inter;
+          font-size: 12px;
+          font-style: normal;
+          line-height: normal;
+        }
+      }
+
+      button {}
+    }
+  }
+}
+
+.addonList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.createmaincontainer {
+  max-width: 798px;
+  margin: auto;
+
+  .cardblockeditor {
+    color: #000;
+
+    font-size: 21px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 27px;
+    padding: 13px 0px;
+  }
+
+  .headerole {
+     padding: 24px 0;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+
+    h3 {
+      color: #000;
+
+      font-size: 21px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 27px;
+    }
+
+    p {
+      color: #404040;
+      font-size: 12px;
+      line-height: 22px;
+      margin: 0;
+
+    }
+  }
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  &.iconspan{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dbdada;
+    border-radius: 8px;
+  .fallbackIcon{
+    font-size: 20px;
+  }
+ }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

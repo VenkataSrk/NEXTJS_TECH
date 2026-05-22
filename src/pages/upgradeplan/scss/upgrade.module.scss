@@ -1,0 +1,91 @@
+.upgradeplancontainer{
+    height: 100%;
+    display: flex;
+    .maincontainer{
+        max-width: 945px;
+        display: flex;
+        padding: 0 34px;
+        justify-content: center;
+        align-items: center;
+        gap: 34px;
+        margin: auto;
+        .leftcontainer{
+            display: flex;
+            width: 377px;
+            max-width: 377px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 21px;
+            .unlockdeals{
+                color: #000;
+                font-family:  'Inter';
+                font-size:  20px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 24px;
+            }
+            .updatestitle{
+                color: #000;
+                font-family:  'Inter';
+                font-size:  14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height:  24px;
+            }
+            button{
+                height: 44px;
+                min-height: 44px;
+                max-height: 38px;
+            }
+        }
+        .rightcontainer{
+            display: flex;
+            padding: 26px 22.991px 45.982px 22.991px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 13px;
+        }
+    }
+}
+
+
+
+.upgradelistbg {
+    background-image: url('../../../assets/images/upgradeimage.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+
+    .contactsaletitle {
+        color: #000;
+        text-align: center;
+        font-family: 'Inter';
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 24px;
+    }
+    .contentblocker{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        .contentile{
+            color: #757676;
+            font-size: 13px;
+            font-weight: 400;
+        }
+        .contentblock{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            img{
+                width: 24px;
+                height: 24px;
+                min-width: 24px;
+            }
+        }
+    }
+}

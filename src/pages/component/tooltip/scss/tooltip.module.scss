@@ -1,0 +1,128 @@
+
+// ── Tooltip variables ──────────────────────────────────────────────────────
+$bg          : #1a1816;
+$text-color  : #f5f2ec;
+$font        : 'DM Sans', system-ui, sans-serif;
+$font-size   : 13px;
+$padding     : 7px 14px;
+$radius      : 10px;
+$arrow-size  : 7px;
+$gap         : 8px;          // space between arrow tip and the anchor element
+$transition  : 180ms cubic-bezier(0.16, 1, 0.3, 1);
+ 
+// ── Wrapper ────────────────────────────────────────────────────────────────
+// position:relative so the tooltip can be placed relative to the trigger
+.wrapper {
+  position : relative;
+  display  : inline-flex;    // shrink-wraps to the child element
+  width    : fit-content;
+ 
+  // show tooltip on hover or focus-within
+  &:hover,
+  &:focus-within {
+    .tooltip { opacity: 1; pointer-events: auto; }
+ 
+    // per-direction translate on show (slides in from starting offset)
+    .top    { transform: translateX(-50%) translateY(0); }
+    .bottom { transform: translateX(-50%) translateY(0); }
+    .left   { transform: translateY(-50%) translateX(0); }
+    .right  { transform: translateY(-50%) translateX(0); }
+  }
+}
+ 
+// ── Tooltip bubble ─────────────────────────────────────────────────────────
+.tooltip {
+  position       : absolute;
+  z-index        : 9999;
+  width          : max-content;
+  max-width      : 240px;
+ 
+  background     : $bg;
+  color          : $text-color;
+  font-family    : $font;
+  font-size      : $font-size;
+  font-weight    : 400;
+  line-height    : 1.4;
+  padding        : $padding;
+  border-radius  : $radius;
+  box-shadow     : 0 4px 6px rgba(0,0,0,.12),
+                   0 12px 28px rgba(0,0,0,.22),
+                   0 0 0 .5px rgba(255,255,255,.06) inset;
+ 
+  // hidden by default
+  opacity        : 0;
+  pointer-events : none;
+  transition     : opacity $transition, transform $transition;
+}
+ 
+// ── Arrow ──────────────────────────────────────────────────────────────────
+.arrow {
+  position : absolute;
+  width    : 0;
+  height   : 0;
+}
+ 
+// ── TOP ────────────────────────────────────────────────────────────────────
+.top {
+  bottom    : calc(100% + $gap);
+  left      : 50%;
+  transform : translateX(-50%) translateY(-4px);   // starts 4px above, slides down on show
+ 
+  .arrow {
+    top         : 100%;
+    left        : 50%;
+    transform   : translateX(-50%);
+    border-left  : $arrow-size solid transparent;
+    border-right : $arrow-size solid transparent;
+    border-top   : $arrow-size solid $bg;
+  }
+}
+ 
+// ── BOTTOM ─────────────────────────────────────────────────────────────────
+.bottom {
+  top       : calc(100% + $gap);
+  left      : 50%;
+  transform : translateX(-50%) translateY(4px);    // starts 4px below, slides up on show
+ 
+  .arrow {
+    bottom       : 100%;
+    left         : 50%;
+    transform    : translateX(-50%);
+    border-left  : $arrow-size solid transparent;
+    border-right : $arrow-size solid transparent;
+    border-bottom: $arrow-size solid $bg;
+  }
+}
+ 
+// ── LEFT ───────────────────────────────────────────────────────────────────
+.left {
+  right     : calc(100% + $gap);
+  top       : 50%;
+  transform : translateY(-50%) translateX(-4px);
+ 
+  .arrow {
+    left         : 100%;
+    top          : 50%;
+    transform    : translateY(-50%);
+    border-top   : $arrow-size solid transparent;
+    border-bottom: $arrow-size solid transparent;
+    border-left  : $arrow-size solid $bg;
+  }
+}
+ 
+// ── RIGHT ──────────────────────────────────────────────────────────────────
+.right {
+  left      : calc(100% + $gap);
+  top       : 50%;
+  transform : translateY(-50%) translateX(4px);
+ 
+  .arrow {
+    right        : 100%;
+    top          : 50%;
+    transform    : translateY(-50%);
+    border-top   : $arrow-size solid transparent;
+    border-bottom: $arrow-size solid transparent;
+    border-right : $arrow-size solid $bg;
+  }
+}
+ 

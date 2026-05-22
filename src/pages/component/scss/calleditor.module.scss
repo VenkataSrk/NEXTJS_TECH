@@ -1,0 +1,84 @@
+.editor {
+    min-height: 120px;
+    outline: none;
+    color: #fff !important;
+    font-size: 14px;
+    line-height: normal;
+    max-height: 120px;
+    overflow-y: auto;
+
+    &:empty::before {
+        content: attr(data-placeholder);
+        color: #888;
+        pointer-events: none;
+    }
+
+    &:focus::before {
+        content: '';
+    }
+
+    ul {
+        padding: 0 0 0 16px;
+    }
+
+    ol {
+        padding: 0 0 0 16px;
+    }
+
+    p {
+        color: #fff;
+    }
+}
+
+
+.title {
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 133%;
+    /* 23.94px */
+}
+
+.editorbottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 6px;
+
+    .editorbottominner {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        max-width: 38px;
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        &.active{
+            background-color: #fff;
+            border-radius: 50%;
+        }
+    }
+}
+
+.notes {
+    padding: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.savetxt {
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.dimtxt {
+    opacity: 0.5;
+}
+
+.formalist{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
