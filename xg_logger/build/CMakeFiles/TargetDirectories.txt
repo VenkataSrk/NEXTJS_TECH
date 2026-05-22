@@ -1,0 +1,1 @@
+/home/yoga/VMS/xgate_logger/build/CMakeFiles/xglog.dir

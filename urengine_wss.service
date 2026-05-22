@@ -1,0 +1,34 @@
+#This Service file is used to run urengine_wss as a daemon process
+[Unit]
+Description=Signaling Gateway Service
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/urengine_wss
+ExecStartPre=/usr/bin/truncate -s 0 /var/log/xgate/wss/urengine_wss.err
+ExecStartPre=/usr/bin/truncate -s 0 /var/log/xgate/wss/urengine_wss.out
+StandardError=append:/var/log/xgate/wss/urengine_wss.err
+StandardOutput=append:/var/log/xgate/wss/urengine_wss.out
+Restart=always
+RestartSec=1
+
+#Required environment variables
+Environment= "URENGINE_BASE=/root"
+Environment= "SOFIA_DEBUG=9"
+Environment= "NUA_DEBUG=9"
+Environment= "SOA_DEBUG=9"
+Environment= "SDP_DEBUG=9"
+Environment= "NEA_DEBUG=9"
+Environment= "IPTSEC_DEBUG=9"
+Environment= "NTA_DEBUG=9"
+Environment= "TPORT_DEBUG=9"
+Environment= "TPORT_LOG=9"
+Environment= "TPORT_DUMP=1"
+Environment= "SU_DEBUG=9"
+User=root
+
+[Install]
+WantedBy=multi-user.target

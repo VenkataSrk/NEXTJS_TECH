@@ -1,0 +1,34 @@
+#ifndef _XGATE_MEDIA_SERVICE_H
+#define _XGATE_MEDIA_SERVICE_H
+#include <ace/Task.h>
+#include <ace/Singleton.h>
+
+//local includes
+#include "MediaServiceDefine.h"
+#include "xGateBaseMsg.h"
+#include "IURModule.h"
+
+#define MEDIASERVICE MediaService::instance()
+class xGateMediaService : public ACE_Task<ACE_MT_SYNCH>,public IURModule {
+  public:  
+    xGateMediaService();
+    ~xGateMediaService(void);
+
+    bool init();
+    virtual int svc(void);
+    bool stop();
+
+  private:
+    bool m_run;
+    
+    IURModuleConfig * m_mediaConfig;
+    virtual MODULE_ID getModuleID(){
+      return UR_MODULE_MEDIA_SERVICE;
+    }
+    virtual bool pushModuleMsg(IURModuleMsg * pmediaMsg);
+    bool handle_msg(ACE_Message_Block *pAmb);
+};
+
+typedef ACE_Unmanaged_Singleton<xGateMediaService, ACE_Null_Mutex> MediaService;
+
+#endif

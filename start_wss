@@ -1,0 +1,4 @@
+until ./urengine_wss > urengine_wss.out 2> urengine_wss.err < /dev/null ; do
+	echo "wss stopped...; restarting it again" >&2
+	sleep 1
+done

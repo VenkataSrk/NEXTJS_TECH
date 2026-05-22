@@ -1,0 +1,46 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ACE_TMAIN	main.cpp	/^int ACE_TMAIN (int, ACE_TCHAR *[])$/;"	f
+LogProfile	VmsConfig.cpp	/^LogProfile::LogProfile() : m_filePath(LOG_FILE_PATH), m_fileCount(LOG_FILE_COUNT),  $/;"	f	class:LogProfile
+LogProfile	VmsConfig.cpp	/^LogProfile::LogProfile(const LogProfile& src)$/;"	f	class:LogProfile
+MAX_CONF_BUFFER_SIZE	VmsConfig.cpp	11;"	d	file:
+PushMsgFromCtrltoModule	VmsController.cpp	/^bool VmsController::PushMsgFromCtrltoModule()$/;"	f	class:VmsController
+VmsController	VmsController.cpp	/^VmsController::VmsController() :$/;"	f	class:VmsController
+VmsControllerProfile	VmsConfig.cpp	/^VmsControllerProfile::VmsControllerProfile() : m_directAccessNumber(""), m_extnAccessNumber(""),$/;"	f	class:VmsControllerProfile
+VmsControllerProfile	VmsConfig.cpp	/^VmsControllerProfile::VmsControllerProfile(const VmsControllerProfile& src)$/;"	f	class:VmsControllerProfile
+VmsUtil	VmsUtil.cpp	/^VmsUtil::VmsUtil()$/;"	f	class:VmsUtil
+checkConfigPath	VmsConfig.cpp	/^bool XGConfig::checkConfigPath() $/;"	f	class:XGConfig
+deInit	VmsConfig.cpp	/^bool XGConfig::deInit()$/;"	f	class:XGConfig
+getCallBack	VmsConfig.cpp	/^IURModuleCallBack* XGConfig::getCallBack()$/;"	f	class:XGConfig
+getVmsControllerProfile	VmsConfig.cpp	/^VmsControllerProfile& XGConfig::getVmsControllerProfile()$/;"	f	class:XGConfig
+handleModuleCallbackMsg	VmsController.cpp	/^bool VmsController::handleModuleCallbackMsg(IURModuleMsg * pctrlMsg)$/;"	f	class:VmsController
+handle_msg	VmsController.cpp	/^bool VmsController::handle_msg(ACE_Message_Block *pAmb)$/;"	f	class:VmsController
+init	VmsConfig.cpp	/^bool XGConfig::init(...)$/;"	f	class:XGConfig
+init	VmsController.cpp	/^bool VmsController::init()$/;"	f	class:VmsController
+operator =	VmsConfig.cpp	/^LogProfile& LogProfile::operator=(const LogProfile& src)$/;"	f	class:LogProfile
+operator =	VmsConfig.cpp	/^VmsControllerProfile& VmsControllerProfile::operator=(const VmsControllerProfile& src)$/;"	f	class:VmsControllerProfile
+parseJson	xGateUtil.cpp	/^bool xGateUtil::parseJson(const char *jsonData, Document &doc)$/;"	f	class:xGateUtil
+parseJsonConfigFile	VmsConfig.cpp	/^bool XGConfig::parseJsonConfigFile()$/;"	f	class:XGConfig
+post	VmsUtil.cpp	/^bool VmsUtil::post(xGateBaseMsg *pMsg)$/;"	f	class:VmsUtil
+post	xGateUtil.cpp	/^bool xGateUtil::post(xGateBaseMsg *pBaseMsg)$/;"	f	class:xGateUtil
+readCommonDetails	VmsConfig.cpp	/^bool XGConfig::readCommonDetails()$/;"	f	class:XGConfig
+readConfig	VmsConfig.cpp	/^bool XGConfig::readConfig(void)$/;"	f	class:XGConfig
+readLogProfile	VmsConfig.cpp	/^bool XGConfig::readLogProfile()$/;"	f	class:XGConfig
+readVmsControllerProfile	VmsConfig.cpp	/^bool XGConfig::readVmsControllerProfile()$/;"	f	class:XGConfig
+setCallBack	VmsConfig.cpp	/^void XGConfig::setCallBack(IURModuleCallBack* ptCallBack)$/;"	f	class:XGConfig
+setConsoleLogLevel	VmsConfig.cpp	/^void LogProfile::setConsoleLogLevel(const char* logLevel)$/;"	f	class:LogProfile
+setFileLogLevel	VmsConfig.cpp	/^void LogProfile::setFileLogLevel(const char *logLevel)$/;"	f	class:LogProfile
+setJsonParam	xGateUtil.cpp	/^Value xGateUtil::setJsonParam(const string &strValue, Document &doc)$/;"	f	class:xGateUtil
+setJsonParam	xGateUtil.cpp	/^Value xGateUtil::setJsonParam(unsigned int iValue)$/;"	f	class:xGateUtil
+stop	VmsController.cpp	/^bool VmsController::stop(void)$/;"	f	class:VmsController
+svc	VmsController.cpp	/^int VmsController::svc(void)$/;"	f	class:VmsController
+xGateUtil	xGateUtil.cpp	/^xGateUtil::xGateUtil()$/;"	f	class:xGateUtil
+~LogProfile	VmsConfig.cpp	/^LogProfile::~LogProfile()$/;"	f	class:LogProfile
+~VmsController	VmsController.cpp	/^VmsController::~VmsController(void)$/;"	f	class:VmsController
+~VmsControllerProfile	VmsConfig.cpp	/^VmsControllerProfile::~VmsControllerProfile()$/;"	f	class:VmsControllerProfile
+~VmsUtil	VmsUtil.cpp	/^VmsUtil::~VmsUtil(void)$/;"	f	class:VmsUtil
+~xGateUtil	xGateUtil.cpp	/^xGateUtil::~xGateUtil(void)$/;"	f	class:xGateUtil

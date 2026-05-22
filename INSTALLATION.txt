@@ -1,0 +1,144 @@
+Requirements to install SGW => Linux & Ip team
+/*********************************************
+*	Ubuntu 24.04.2 LTS -> machine
+*	Public IPv4 and IPv6
+*	Private IP for internal com
+*	Open 5061 & 57344 ports
+*	Enable public routing for public IPv4
+**********************************************/
+####################
+(Recommended)
+For automated package Installation run ./configure.sh
+####################
+sudo apt update
+sudo apt upgrade
+sudo apt install build-essential
+apt install cmake
+
+//copy files from the src 
+
+find -name '*.tar.xz' -execdir tar -xvf '{}' \;
+find -name '*.tar.bz*' -execdir tar -xvf '{}' \;
+find -name '*.tar.gz' -execdir tar -xvzf '{}' \;
+find -name '*.tgz' -execdir tar -xvf '{}' \;
+
+//1.Libffi Installation 
+cd libffi-3.4.2
+./configure --prefix=/usr/local --disable-static
+make -j$(nproc)
+make install -j$(nproc)
+cd ..
+
+//2.Pcre2 Installation  ///usr/local/lib/libpcre2-8.a
+apt-get install -y libreadline-dev
+apt install zlib1g-dev
+apt-get install bzip2
+
+cd pcre2-10.40
+./configure --prefix=/usr/local 
+make -j$(nproc)
+make install -j$(nproc)
+cd ..
+
+//3.Glib Installation 
+sudo apt install pkg-config
+sudo apt install meson
+sudo apt install libmount-dev
+sudo apt install xsltproc
+sudo apt install docbook-xsl
+cd glib-2.72.0
+meson setup builddir -Dgtk_doc=false
+cd builddir
+
+ninja -j$(nproc)
+ninja install -j$(nproc)
+
+//4.openssl Installation
+#the version is OpenSSL 3.0.2
+#check using openssl version -a
+
+apt install -y libssl-dev
+
+//5.Auto conf Installation
+sudo apt-get install m4
+cd autoconf-2.69
+sh configure --prefix /usr/local
+make -j$(nproc)
+make install -j$(nproc)
+cd ..
+
+//6.Automake Installation 
+cd automake-1.15
+sh configure --prefix /usr/local
+make -j$(nproc)
+make install -j$(nproc)
+cd ..
+
+//7.Libtool installation
+cd libtool-2.4
+./configure --prefix /usr/local
+make -j$(nproc)
+make install -j$(nproc)
+cd ..
+
+//8.Ace Wrappers Installation 
+cd ACE_wrappers
+
+export ACE_ROOT=/usr/local/src/ACE_wrappers
+export LD_LIBRARY_PATH=$ACE_ROOT/lib:$LD_LIBRARY_PATH
+
+- Create a configuration file in 
+vim $ACE_ROOT/ace/config.h          
+- include below line
+#include "ace/config-linux.h"
+
+- Create a build configuration file, 
+vim $ACE_ROOT/include/makeinclude/platform_macros.GNU
+- include below line for linux
+include $(ACE_ROOT)/include/makeinclude/platform_linux.GNU
+INSTALL_PREFIX = /usr/local
+
+make -j$(nproc)
+make install -j$(nproc)
+
+//9.MySQL Installation 
+cd unixODBC-2.3.11
+./configure --prefix=/usr/local
+make -j$(nproc)
+make install -j$(nproc)
+cd ..
+apt-get install unixodbc unixodbc-dev
+wget https://repo.mysql.com/apt/ubuntu/pool/mysql-8.0/m/mysql-community/mysql-community-client-plugins_8.0.34-1ubuntu22.04_amd64.deb --no-check-certificate
+sudo dpkg -i  mysql-community-client-plugins_8.0.34-1ubuntu22.04_amd64.deb
+wget --no-check-certificate https://dev.mysql.com/get/Downloads/Connector-ODBC/8.0/mysql-connector-odbc_8.0.32-1ubuntu22.04_amd64.deb
+sudo dpkg -i mysql-connector-odbc_8.0.32-1ubuntu22.04_amd64.deb
+
+//10.Sofia-sip installaltion
+cd sofia-sip-1.13.17
+./bootstrap.sh
+./configure 
+make -j$(nproc)
+make install
+
+ldconfig
+
+**************************
+After installation reboot the system once.
+Steps to start SGW service
+--------------------------
+Clone code from bit bucket
+Checkout the branch
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Debug ../
+
+make -j$(nproc)
+make install
+--------------------------
+NOTE: use systemctl commands to check status of urengine_wss.service
+
+
+
+
+
+
