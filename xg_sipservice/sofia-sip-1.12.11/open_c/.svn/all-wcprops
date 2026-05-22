@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c
+END
+config.h.in
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/config.h.in
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/Makefile.in
+END
+autogen.cmd
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/autogen.cmd
+END
+build_sources.cmd
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/build_sources.cmd
+END
+version.awk
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/version.awk
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/Makefile.am
+END
+version_files.cmd
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/version_files.cmd
+END
+config.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/config.h
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/Makefile
+END

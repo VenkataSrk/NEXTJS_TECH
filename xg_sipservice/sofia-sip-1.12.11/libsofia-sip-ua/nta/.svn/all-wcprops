@@ -1,0 +1,185 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta
+END
+invite.msc
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/invite.msc
+END
+sl_utils_log.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/sl_utils_log.c
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/Makefile.in
+END
+Doxyfile
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/Doxyfile
+END
+sl_utils.docs
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/sl_utils.docs
+END
+check_nta_server.c
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/check_nta_server.c
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/ChangeLog
+END
+Doxyfile.in
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/Doxyfile.in
+END
+check_nta_api.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/check_nta_api.c
+END
+nta_tag_ref.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/nta_tag_ref.c
+END
+sl_utils_print.c
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/sl_utils_print.c
+END
+test_nta_api.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/test_nta_api.c
+END
+check_nta_client.c
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/check_nta_client.c
+END
+run_test_nta_api
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/run_test_nta_api
+END
+nta_tag.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/nta_tag.c
+END
+check_nta.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/check_nta.c
+END
+nta_check.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/nta_check.c
+END
+portbind.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/portbind.c
+END
+test_nta.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/test_nta.c
+END
+nta.c
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/nta.c
+END
+cafile.pem
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/cafile.pem
+END
+run_check_nta
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/run_check_nta
+END
+sl_read_payload.c
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/sl_read_payload.c
+END
+nta_internal.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/nta_internal.h
+END
+run_test_nta
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/run_test_nta
+END
+check_nta.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/check_nta.h
+END
+nta.docs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/nta.docs
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/Makefile.am
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/Makefile
+END
+agent.pem
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta/agent.pem
+END

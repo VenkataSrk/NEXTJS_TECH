@@ -1,0 +1,4 @@
+until ./uravconf > uravconf.out 2> uravconf.err < /dev/null ; do
+        echo "uravconf stopped...; restarting it again" >&2
+        sleep 1
+done

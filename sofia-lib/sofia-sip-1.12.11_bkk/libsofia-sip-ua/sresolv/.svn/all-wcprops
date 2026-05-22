@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv
+END
+run_test_sresolv
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/run_test_sresolv
+END
+sres_cache.c
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sres_cache.c
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/Makefile.in
+END
+Doxyfile
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/Doxyfile
+END
+3.f.f.e.1.2.0.0.3.0.1.2.c.0.0.0.arpa
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/3.f.f.e.1.2.0.0.3.0.1.2.c.0.0.0.arpa
+END
+127.zone
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/127.zone
+END
+sresolv.docs
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sresolv.docs
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/ChangeLog
+END
+Doxyfile.in
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/Doxyfile.in
+END
+194.2.188
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/194.2.188
+END
+root.zone
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/root.zone
+END
+sres.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sres.c
+END
+3.f.f.e.1.2.0.0.3.0.1.2.c.0.0.0
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/3.f.f.e.1.2.0.0.3.0.1.2.c.0.0.0
+END
+torture_sresolv.c
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/torture_sresolv.c
+END
+sres_blocking.c
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sres_blocking.c
+END
+check_sres_sip.c
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/check_sres_sip.c
+END
+example.com
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/example.com
+END
+sres_sip.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sres_sip.c
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/Makefile.am
+END
+rndc.conf
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/rndc.conf
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/Makefile
+END
+test_sresolv.c
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/test_sresolv.c
+END
+sresolv.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv/sresolv.c
+END

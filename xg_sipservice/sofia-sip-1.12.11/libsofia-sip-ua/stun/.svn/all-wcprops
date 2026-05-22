@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun
+END
+stun.docs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stun.docs
+END
+stun_common.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stun_common.c
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/Makefile.in
+END
+Doxyfile
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/Doxyfile
+END
+stun_mini.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stun_mini.c
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/ChangeLog
+END
+Doxyfile.in
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/Doxyfile.in
+END
+lookup_stun_server.c
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/lookup_stun_server.c
+END
+stunc
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stunc
+END
+stun_tag_ref.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stun_tag_ref.c
+END
+stun_tag.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stun_tag.c
+END
+key.pem
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/key.pem
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/Makefile.am
+END
+stun.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stun.c
+END
+stun_internal.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stun_internal.h
+END
+cert.pem
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/cert.pem
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/Makefile
+END
+stunc.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stunc.c
+END
+stun_dns.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun/stun_dns.c
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt/sofia-sip
+END
+token64.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt/sofia-sip/token64.h
+END
+uniqueid.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt/sofia-sip/uniqueid.h
+END
+base64.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt/sofia-sip/base64.h
+END
+utf8.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt/sofia-sip/utf8.h
+END
+rc4.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt/sofia-sip/rc4.h
+END

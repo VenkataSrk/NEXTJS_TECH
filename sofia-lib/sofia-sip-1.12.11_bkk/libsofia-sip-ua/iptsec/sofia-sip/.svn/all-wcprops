@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec/sofia-sip
+END
+auth_common.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec/sofia-sip/auth_common.h
+END
+auth_ntlm.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec/sofia-sip/auth_ntlm.h
+END
+auth_client_plugin.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec/sofia-sip/auth_client_plugin.h
+END
+auth_client.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec/sofia-sip/auth_client.h
+END
+auth_plugin.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec/sofia-sip/auth_plugin.h
+END
+auth_digest.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec/sofia-sip/auth_digest.h
+END
+auth_module.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec/sofia-sip/auth_module.h
+END

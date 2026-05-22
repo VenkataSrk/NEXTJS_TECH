@@ -1,0 +1,423 @@
+Making install in s2check
+make[1]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/s2check'
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/s2check'
+make[2]: Nothing to be done for `install-exec-am'.
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/s2check'
+make[1]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/s2check'
+Making install in libsofia-sip-ua
+make[1]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua'
+Making install in su
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su'
+test -z "/usr/local/bin" || mkdir -p -- "/usr/local/bin"
+  /bin/sh ../../libtool --mode=install /usr/bin/install -c 'addrinfo' '/usr/local/bin/addrinfo'
+libtool: install: /usr/bin/install -c addrinfo /usr/local/bin/addrinfo
+  /bin/sh ../../libtool --mode=install /usr/bin/install -c 'localinfo' '/usr/local/bin/localinfo'
+libtool: install: /usr/bin/install -c localinfo /usr/local/bin/localinfo
+test -z "/usr/local/share/sofia-sip" || mkdir -p -- "/usr/local/share/sofia-sip"
+ /usr/bin/install -c 'tag_dll.awk' '/usr/local/share/sofia-sip/tag_dll.awk'
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_types.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_types.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_errno.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_errno.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_addrinfo.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_addrinfo.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_localinfo.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_localinfo.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_wait.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_wait.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_alloc.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_alloc.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_alloc_stat.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_alloc_stat.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_strlst.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_strlst.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_vector.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_vector.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_time.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_time.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_tag.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_tag_class.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_tag_class.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_tagarg.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_tagarg.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_tag_io.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_tag_io.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_tag_inline.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_tag_inline.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/htable.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/htable.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/htable2.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/htable2.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/rbtree.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/rbtree.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/heap.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/heap.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_debug.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_debug.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_log.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_log.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_config.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_config.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_md5.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_md5.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_uniqueid.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_uniqueid.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_bm.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_bm.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/tstdef.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/tstdef.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_os_nw.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_os_nw.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_string.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_string.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/string0.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/string0.h'
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_configure.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_configure.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su'
+Making install in features
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/features'
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/features'
+make[3]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sofia_features.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sofia_features.h'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/features'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/features'
+Making install in bnf
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/bnf'
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/bnf'
+make[3]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/bnf.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/bnf.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/hostdomain.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/hostdomain.h'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/bnf'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/bnf'
+Making install in sresolv
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv'
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv'
+make[3]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sresolv.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sresolv.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sres_sip.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sres_sip.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-resolv/sres.h' '/usr/local/include/sofia-sip-1.12/sofia-resolv/sres.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-resolv/sres_config.h' '/usr/local/include/sofia-sip-1.12/sofia-resolv/sres_config.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-resolv/sres_async.h' '/usr/local/include/sofia-sip-1.12/sofia-resolv/sres_async.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-resolv/sres_cache.h' '/usr/local/include/sofia-sip-1.12/sofia-resolv/sres_cache.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-resolv/sres_record.h' '/usr/local/include/sofia-sip-1.12/sofia-resolv/sres_record.h'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sresolv'
+Making install in ipt
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt'
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt'
+make[3]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/base64.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/base64.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/token64.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/token64.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/uniqueid.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/uniqueid.h'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/ipt'
+Making install in sdp
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sdp'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sdp'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sdp'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sdp.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sdp.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sdp_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sdp_tag.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sdp'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sdp'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sdp'
+Making install in url
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/url'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/url'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/url'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/url.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/url.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/url_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/url_tag.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/url_tag_class.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/url_tag_class.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/url'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/url'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/url'
+Making install in msg
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/share/sofia-sip" || mkdir -p -- "/usr/local/share/sofia-sip"
+ /usr/bin/install -c 'msg_parser.awk' '/usr/local/share/sofia-sip/msg_parser.awk'
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_protos.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_protos.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_mime_protos.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_mime_protos.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_header.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_header.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_types.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_types.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_mclass.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_mclass.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_mclass_hash.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_mclass_hash.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_parser.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_parser.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_addr.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_addr.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_date.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_date.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_buffer.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_buffer.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_tag_class.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_tag_class.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/msg_mime.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/msg_mime.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/msg'
+Making install in sip
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sip'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sip'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sip'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_hclasses.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_hclasses.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_protos.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_protos.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_tag.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_extra.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_extra.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_util.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_util.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_header.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_header.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_parser.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_parser.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_tag_class.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_tag_class.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_status.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_status.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_hclasses.h.in' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_hclasses.h.in'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_protos.h.in' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_protos.h.in'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_tag.h.in' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_tag.h.in'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sip_extra.h.in' '/usr/local/include/sofia-sip-1.12/sofia-sip/sip_extra.h.in'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sip'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sip'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/sip'
+Making install in http
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/http'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/http'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/http'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/http_protos.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/http_protos.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/http_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/http_tag.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/http.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/http.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/http_header.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/http_header.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/http_parser.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/http_parser.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/http_tag_class.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/http_tag_class.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/http_status.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/http_status.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/http_hclasses.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/http_hclasses.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/http'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/http'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/http'
+Making install in stun
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun'
+test -z "/usr/local/bin" || mkdir -p -- "/usr/local/bin"
+  /bin/sh ../../libtool --mode=install /usr/bin/install -c 'stunc' '/usr/local/bin/stunc'
+libtool: install: /usr/bin/install -c stunc /usr/local/bin/stunc
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/stun.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/stun.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/stun_common.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/stun_common.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/stun_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/stun_tag.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/stun'
+Making install in soa
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/soa'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/soa'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/soa'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/soa.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/soa.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/soa_session.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/soa_session.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/soa_add.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/soa_add.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/soa_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/soa_tag.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/soa'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/soa'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/soa'
+Making install in tport
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/tport'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/tport'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/tport'
+test -z "/usr/local/bin" || mkdir -p -- "/usr/local/bin"
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/tport.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/tport.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/tport_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/tport_tag.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/tport_plugins.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/tport_plugins.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/tport'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/tport'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/tport'
+Making install in nta
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nta.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nta.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nta_stateless.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nta_stateless.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nta_tport.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nta_tport.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nta_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nta_tag.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/sl_utils.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/sl_utils.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nta'
+Making install in nth
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nth'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nth'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nth'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nth.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nth.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nth_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nth_tag.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nth'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nth'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nth'
+Making install in nea
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nea'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nea'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nea'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nea.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nea.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nea_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nea_tag.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nea'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nea'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nea'
+Making install in iptsec
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/auth_common.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/auth_common.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/auth_client.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/auth_client.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/auth_digest.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/auth_digest.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/auth_module.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/auth_module.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/auth_plugin.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/auth_plugin.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/auth_client_plugin.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/auth_client_plugin.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/iptsec'
+Making install in nua
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nua'
+make  install-am
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nua'
+make[4]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nua'
+make[4]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nua.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nua.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/nua_tag.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/nua_tag.h'
+make[4]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nua'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nua'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/nua'
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua'
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua'
+test -z "/usr/local/lib" || mkdir -p -- "/usr/local/lib"
+ /bin/sh ../libtool --mode=install /usr/bin/install -c  'libsofia-sip-ua.la' '/usr/local/lib/libsofia-sip-ua.la'
+libtool: install: /usr/bin/install -c .libs/libsofia-sip-ua.so.0.6.0 /usr/local/lib/libsofia-sip-ua.so.0.6.0
+libtool: install: (cd /usr/local/lib && { ln -s -f libsofia-sip-ua.so.0.6.0 libsofia-sip-ua.so.0 || { rm -f libsofia-sip-ua.so.0 && ln -s libsofia-sip-ua.so.0.6.0 libsofia-sip-ua.so.0; }; })
+libtool: install: (cd /usr/local/lib && { ln -s -f libsofia-sip-ua.so.0.6.0 libsofia-sip-ua.so || { rm -f libsofia-sip-ua.so && ln -s libsofia-sip-ua.so.0.6.0 libsofia-sip-ua.so; }; })
+libtool: install: /usr/bin/install -c .libs/libsofia-sip-ua.lai /usr/local/lib/libsofia-sip-ua.la
+libtool: install: /usr/bin/install -c .libs/libsofia-sip-ua.a /usr/local/lib/libsofia-sip-ua.a
+libtool: install: chmod 644 /usr/local/lib/libsofia-sip-ua.a
+libtool: install: ranlib /usr/local/lib/libsofia-sip-ua.a
+libtool: finish: PATH="/usr/lib/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/sbin" ldconfig -n /usr/local/lib
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /usr/local/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the `-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH' environment variable
+     during linking
+   - use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+make[3]: Nothing to be done for `install-data-am'.
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua'
+make[1]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua'
+Making install in libsofia-sip-ua-glib
+make[1]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib'
+Making install in su-glib
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib/su-glib'
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib/su-glib'
+make[3]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/include/sofia-sip-1.12" || mkdir -p -- "/usr/local/include/sofia-sip-1.12"
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_source.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_source.h'
+ /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/install-sh -c -m 644 'sofia-sip/su_glib.h' '/usr/local/include/sofia-sip-1.12/sofia-sip/su_glib.h'
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib/su-glib'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib/su-glib'
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib'
+make[3]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib'
+test -z "/usr/local/lib" || mkdir -p -- "/usr/local/lib"
+ /bin/sh ../libtool --mode=install /usr/bin/install -c  'libsofia-sip-ua-glib.la' '/usr/local/lib/libsofia-sip-ua-glib.la'
+libtool: install: warning: relinking `libsofia-sip-ua-glib.la'
+libtool: install: (cd /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib; /bin/sh /root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libtool  --tag CC --silent --mode=relink gcc -g -O2 -o libsofia-sip-ua-glib.la -rpath /usr/local/lib -version-info 3:0:0 ../libsofia-sip-ua/libsofia-sip-ua.la su-glib/libsu-glib.la -L/usr/local/lib -lglib-2.0 -lrt -lpthread )
+libtool: install: /usr/bin/install -c .libs/libsofia-sip-ua-glib.so.3.0.0T /usr/local/lib/libsofia-sip-ua-glib.so.3.0.0
+libtool: install: (cd /usr/local/lib && { ln -s -f libsofia-sip-ua-glib.so.3.0.0 libsofia-sip-ua-glib.so.3 || { rm -f libsofia-sip-ua-glib.so.3 && ln -s libsofia-sip-ua-glib.so.3.0.0 libsofia-sip-ua-glib.so.3; }; })
+libtool: install: (cd /usr/local/lib && { ln -s -f libsofia-sip-ua-glib.so.3.0.0 libsofia-sip-ua-glib.so || { rm -f libsofia-sip-ua-glib.so && ln -s libsofia-sip-ua-glib.so.3.0.0 libsofia-sip-ua-glib.so; }; })
+libtool: install: /usr/bin/install -c .libs/libsofia-sip-ua-glib.lai /usr/local/lib/libsofia-sip-ua-glib.la
+libtool: install: /usr/bin/install -c .libs/libsofia-sip-ua-glib.a /usr/local/lib/libsofia-sip-ua-glib.a
+libtool: install: chmod 644 /usr/local/lib/libsofia-sip-ua-glib.a
+libtool: install: ranlib /usr/local/lib/libsofia-sip-ua-glib.a
+libtool: finish: PATH="/usr/lib/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/sbin" ldconfig -n /usr/local/lib
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /usr/local/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the `-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH' environment variable
+     during linking
+   - use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+make[3]: Nothing to be done for `install-data-am'.
+make[3]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib'
+make[1]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua-glib'
+Making install in utils
+make[1]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/utils'
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/utils'
+test -z "/usr/local/bin" || mkdir -p -- "/usr/local/bin"
+  /bin/sh ../libtool --mode=install /usr/bin/install -c 'sip-options' '/usr/local/bin/sip-options'
+libtool: install: /usr/bin/install -c .libs/sip-options /usr/local/bin/sip-options
+  /bin/sh ../libtool --mode=install /usr/bin/install -c 'sip-date' '/usr/local/bin/sip-date'
+libtool: install: /usr/bin/install -c .libs/sip-date /usr/local/bin/sip-date
+  /bin/sh ../libtool --mode=install /usr/bin/install -c 'sip-dig' '/usr/local/bin/sip-dig'
+libtool: install: /usr/bin/install -c .libs/sip-dig /usr/local/bin/sip-dig
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/utils'
+make[1]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/utils'
+Making install in packages
+make[1]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/packages'
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/packages'
+make[2]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/lib/pkgconfig" || mkdir -p -- "/usr/local/lib/pkgconfig"
+ /usr/bin/install -c -m 644 'sofia-sip-ua.pc' '/usr/local/lib/pkgconfig/sofia-sip-ua.pc'
+ /usr/bin/install -c -m 644 'sofia-sip-ua-glib.pc' '/usr/local/lib/pkgconfig/sofia-sip-ua-glib.pc'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/packages'
+make[1]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/packages'
+Making install in tests
+make[1]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/tests'
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/tests'
+make[2]: Nothing to be done for `install-exec-am'.
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/tests'
+make[1]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11/tests'
+make[1]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11'
+mkdir -p man man/man1 2> /dev/null
+touch man/man1/sip-date.1 man/man1/sip-options.1 man/man1/localinfo.1 man/man1/addrinfo.1 man/man1/stunc.1 man/man1/sip-dig.1
+make[2]: Entering directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11'
+make[2]: Nothing to be done for `install-exec-am'.
+test -z "/usr/local/share/man/man1" || mkdir -p -- "/usr/local/share/man/man1"
+ /usr/bin/install -c -m 644 './man/man1/sip-date.1' '/usr/local/share/man/man1/sip-date.1'
+ /usr/bin/install -c -m 644 './man/man1/sip-options.1' '/usr/local/share/man/man1/sip-options.1'
+ /usr/bin/install -c -m 644 './man/man1/localinfo.1' '/usr/local/share/man/man1/localinfo.1'
+ /usr/bin/install -c -m 644 './man/man1/addrinfo.1' '/usr/local/share/man/man1/addrinfo.1'
+ /usr/bin/install -c -m 644 './man/man1/stunc.1' '/usr/local/share/man/man1/stunc.1'
+ /usr/bin/install -c -m 644 './man/man1/sip-dig.1' '/usr/local/share/man/man1/sip-dig.1'
+make[2]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11'
+make[1]: Leaving directory `/root/xgate_32bit_working/xGateLinux/branches/Sofia/core/sofia-sip-1.12.11'

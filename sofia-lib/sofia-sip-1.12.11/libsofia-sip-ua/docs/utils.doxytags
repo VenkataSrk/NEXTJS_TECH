@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<tagfile>
+  <compound kind="page">
+    <name>sip-date</name>
+    <title>Print or parse SIP date</title>
+    <filename>sip-date</filename>
+    <docanchor file="sip-date" title="Synopsis">sip_date_synopsis</docanchor>
+    <docanchor file="sip-date" title="Description">sip_date_description</docanchor>
+    <docanchor file="sip-date" title="Options">sip_date_options</docanchor>
+    <docanchor file="sip-date" title="Examples">sip_date_examples</docanchor>
+    <docanchor file="sip-date" title="Reporting Bugs">sip_date_bugs</docanchor>
+    <docanchor file="sip-date" title="Author">sip_date_author</docanchor>
+    <docanchor file="sip-date" title="Copyright">sip_date_copyright</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>sip-dig</name>
+    <title>Resolve SIP URIs.</title>
+    <filename>sip-dig</filename>
+    <docanchor file="sip-dig" title="Synopsis">sip_dig_synopsis</docanchor>
+    <docanchor file="sip-dig" title="Description">sip_dig_description</docanchor>
+    <docanchor file="sip-dig" title="Command Line Options">sip_dig_options</docanchor>
+    <docanchor file="sip-dig" title="Return Codes">sip_dig_return</docanchor>
+    <docanchor file="sip-dig" title="Examples">sip_dig_examples</docanchor>
+    <docanchor file="sip-dig" title="Environment">sip_dig_environment</docanchor>
+    <docanchor file="sip-dig" title="Reporting Bugs">sip_dig_bugs</docanchor>
+    <docanchor file="sip-dig" title="Author">sip_dig_author</docanchor>
+    <docanchor file="sip-dig" title="Copyright">sip_dig_copyright</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>sip-options</name>
+    <title>Query SIP OPTIONS</title>
+    <filename>sip-options</filename>
+    <docanchor file="sip-options" title="Synopsis">sip_options_synopsis</docanchor>
+    <docanchor file="sip-options" title="Description">sip_options_description</docanchor>
+    <docanchor file="sip-options" title="Command Line Options">sip_options_options</docanchor>
+    <docanchor file="sip-options" title="Return Codes">sip_options_return</docanchor>
+    <docanchor file="sip-options" title="Examples">sip_options_examples</docanchor>
+    <docanchor file="sip-options" title="Environment">sip_options_environment</docanchor>
+    <docanchor file="sip-options" title="Reporting Bugs">sip_options_bugs</docanchor>
+    <docanchor file="sip-options" title="Author">sip_options_author</docanchor>
+    <docanchor file="sip-options" title="Copyright">sip_options_copyright</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>localinfo</name>
+    <title>list local network addresses</title>
+    <filename>localinfo</filename>
+    <docanchor file="localinfo" title="Synopsis">localinfo_synopsis</docanchor>
+    <docanchor file="localinfo" title="Description">localinfo_description</docanchor>
+    <docanchor file="localinfo" title="Options">localinfo_options</docanchor>
+    <docanchor file="localinfo" title="Examples">localinfo_examples</docanchor>
+    <docanchor file="localinfo" title="Reporting Bugs">localinfo_bugs</docanchor>
+    <docanchor file="localinfo" title="Author">localinfo_author</docanchor>
+    <docanchor file="localinfo" title="Copyright">localinfo_copyright</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>addrinfo</name>
+    <title>Resolve network services</title>
+    <filename>addrinfo</filename>
+    <docanchor file="addrinfo" title="Synopsis">addrinfo_synopsis</docanchor>
+    <docanchor file="addrinfo" title="Description">addrinfo_description</docanchor>
+    <docanchor file="addrinfo" title="Options">addrinfo_options</docanchor>
+    <docanchor file="addrinfo" title="Reporting Bugs">addrinfo_bugs</docanchor>
+    <docanchor file="addrinfo" title="Author">addrinfo_author</docanchor>
+    <docanchor file="addrinfo" title="Copyright">addrinfo_copyright</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>stunc</name>
+    <title>STUN test client.</title>
+    <filename>stunc</filename>
+    <docanchor file="stunc" title="Synopsis">stunc_synopsis</docanchor>
+    <docanchor file="stunc" title="Description">stunc_description</docanchor>
+    <docanchor file="stunc" title="Command Line Options">stunc_options</docanchor>
+    <docanchor file="stunc" title="Return Codes">stunc_return</docanchor>
+    <docanchor file="stunc" title="Examples">stunc_examples</docanchor>
+    <docanchor file="stunc" title="Environment">stunc_environment</docanchor>
+    <docanchor file="stunc" title="Reporting Bugs">stunc_bugs</docanchor>
+    <docanchor file="stunc" title="Authors">stunc_author</docanchor>
+    <docanchor file="stunc" title="Copyright">stunc_copyright</docanchor>
+  </compound>
+  <compound kind="dir">
+    <name>/home/thilaga/video_conf/unifiedringengineplatform/sofia-sip-1.12.11/libsofia-sip-ua</name>
+    <path>/home/thilaga/video_conf/unifiedringengineplatform/sofia-sip-1.12.11/libsofia-sip-ua/</path>
+    <filename>dir_9fd62b53fa74edb5cd7a02ed6db7aeb6.html</filename>
+    <dir>/home/thilaga/video_conf/unifiedringengineplatform/sofia-sip-1.12.11/libsofia-sip-ua/stun</dir>
+    <dir>/home/thilaga/video_conf/unifiedringengineplatform/sofia-sip-1.12.11/libsofia-sip-ua/su</dir>
+  </compound>
+  <compound kind="dir">
+    <name>/home/thilaga/video_conf/unifiedringengineplatform/sofia-sip-1.12.11/libsofia-sip-ua/stun</name>
+    <path>/home/thilaga/video_conf/unifiedringengineplatform/sofia-sip-1.12.11/libsofia-sip-ua/stun/</path>
+    <filename>dir_b85aa85c5eb2145e9315e7bd285fb35c.html</filename>
+    <file>stunc.c</file>
+  </compound>
+  <compound kind="dir">
+    <name>/home/thilaga/video_conf/unifiedringengineplatform/sofia-sip-1.12.11/libsofia-sip-ua/su</name>
+    <path>/home/thilaga/video_conf/unifiedringengineplatform/sofia-sip-1.12.11/libsofia-sip-ua/su/</path>
+    <filename>dir_c00b10023c3821aa26845b37b4f3b7b7.html</filename>
+    <file>addrinfo.c</file>
+    <file>localinfo.c</file>
+  </compound>
+  <compound kind="page">
+    <name>index</name>
+    <title>Sofia SIP User Agent Library - &quot;utils&quot; - Sofia-SIP Command Line Utilities</title>
+    <filename>index</filename>
+    <docanchor file="index" title="Module Meta Information">utils_meta</docanchor>
+    <docanchor file="index" title="Overview">utuils_overview</docanchor>
+  </compound>
+</tagfile>

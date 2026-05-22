@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/pthread
+END
+md5.sum.txt
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/pthread/md5.sum.txt
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/pthread/ChangeLog
+END
+pthreadVC2.lib
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/pthread/pthreadVC2.lib
+END
+semaphore.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/pthread/semaphore.h
+END
+pthreadVC2.dll
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/pthread/pthreadVC2.dll
+END
+sched.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/pthread/sched.h
+END
+pthread.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/pthread/pthread.h
+END

@@ -1,0 +1,515 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su
+END
+inet_pton.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/inet_pton.c
+END
+Makefile.in
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/Makefile.in
+END
+Doxyfile
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/Doxyfile
+END
+su_time.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_time.c
+END
+test_poll.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/test_poll.c
+END
+poll.c
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/poll.c
+END
+torture_su_root_osx.c
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su_root_osx.c
+END
+su_vector.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_vector.c
+END
+torture_su.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su.c
+END
+su_taglist.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_taglist.c
+END
+su_tag_ref.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_tag_ref.c
+END
+test_su_osx.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/test_su_osx.c
+END
+smoothsort.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/smoothsort.c
+END
+su.c
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su.c
+END
+su_default_log.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_default_log.c
+END
+su_md5.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_md5.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/Makefile
+END
+su_osx_runloop.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_osx_runloop.c
+END
+memspn.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/memspn.c
+END
+su_strlst.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_strlst.c
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/ChangeLog
+END
+torture_su_tag.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su_tag.c
+END
+Doxyfile.in
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/Doxyfile.in
+END
+torture_rbtree.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_rbtree.c
+END
+su_global_log.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_global_log.c
+END
+su_tag_io.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_tag_io.c
+END
+su_alloc_lock.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_alloc_lock.c
+END
+su_kqueue_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_kqueue_port.c
+END
+su_wait.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_wait.c
+END
+torture_su_timer.c
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su_timer.c
+END
+su_localinfo.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_localinfo.c
+END
+su_win32_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_win32_port.c
+END
+memmem.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/memmem.c
+END
+torture_su_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su_port.c
+END
+su_tag.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_tag.c
+END
+torture_su_alloc.c
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su_alloc.c
+END
+su_timer.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_timer.c
+END
+run_addrinfo
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/run_addrinfo
+END
+run_test_su
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/run_test_su
+END
+torture_su_bm.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su_bm.c
+END
+su_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_port.c
+END
+su_errno.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_errno.c
+END
+su.docs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su.docs
+END
+su_addrinfo.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_addrinfo.c
+END
+inet_ntop.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/inet_ntop.c
+END
+su_port.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_port.h
+END
+su_open_c_localinfo.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_open_c_localinfo.cpp
+END
+su_alloc.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_alloc.c
+END
+torture_heap.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_heap.c
+END
+memcspn.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/memcspn.c
+END
+getopt.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/getopt.c
+END
+su_socket_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_socket_port.c
+END
+su_bm.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_bm.c
+END
+addrinfo
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/addrinfo
+END
+run_localinfo
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/run_localinfo
+END
+torture_su_root.c
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su_root.c
+END
+su_poll_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_poll_port.c
+END
+localinfo
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/localinfo
+END
+su_base_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_base_port.c
+END
+addrinfo.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/addrinfo.c
+END
+string0.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/string0.c
+END
+test_su.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/test_su.c
+END
+su_proxy.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_proxy.c
+END
+su_strdup.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_strdup.c
+END
+strtoull.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/strtoull.c
+END
+su_root.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_root.c
+END
+su_uniqueid.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_uniqueid.c
+END
+su_os_nw.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_os_nw.c
+END
+test_htable.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/test_htable.c
+END
+su_pthread_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_pthread_port.c
+END
+localinfo.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/localinfo.c
+END
+tag_dll.awk
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/tag_dll.awk
+END
+su_module_debug.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_module_debug.h
+END
+test_memmem.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/test_memmem.c
+END
+su_string.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_string.c
+END
+su_devpoll_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_devpoll_port.c
+END
+test_htable2.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/test_htable2.c
+END
+su_time0.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_time0.c
+END
+su_epoll_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_epoll_port.c
+END
+su_log.c
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_log.c
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/Makefile.am
+END
+torture_su_time.c
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/torture_su_time.c
+END
+su_select_port.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_select_port.c
+END
+su_sprintf.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/su_sprintf.c
+END
+memccpy.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/libsofia-sip-ua/su/memccpy.c
+END

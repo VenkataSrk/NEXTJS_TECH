@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_nua
+END
+test_nat_tags.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_nua/test_nat_tags.cpp
+END
+test_nua.vcproj
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_nua/test_nua.vcproj
+END
+test_nua.dsp
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_nua/test_nua.dsp
+END
+test_nua.vcxproj
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/win32/tests/test_nua/test_nua.vcxproj
+END

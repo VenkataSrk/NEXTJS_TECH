@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/rules
+END
+lcov.am
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/rules/lcov.am
+END
+recursive.am
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/rules/recursive.am
+END
+silent.am
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/rules/silent.am
+END
+valcheck.am
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/rules/valcheck.am
+END
+sofia.am
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/rules/sofia.am
+END

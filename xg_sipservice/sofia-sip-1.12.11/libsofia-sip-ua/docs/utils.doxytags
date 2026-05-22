@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes' ?>
+<tagfile>
+  <compound kind="page">
+    <name>index</name>
+    <title>Sofia SIP User Agent Library - &quot;utils&quot; - Sofia-SIP Command Line Utilities</title>
+    <filename>index</filename>
+    <docanchor file="index">utuils_overview</docanchor>
+    <docanchor file="index">utils_meta</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>sip-date</name>
+    <title>Print or parse SIP date</title>
+    <filename>sip-date</filename>
+    <docanchor file="sip-date">sip_date_bugs</docanchor>
+    <docanchor file="sip-date">sip_date_copyright</docanchor>
+    <docanchor file="sip-date">sip_date_examples</docanchor>
+    <docanchor file="sip-date">sip_date_synopsis</docanchor>
+    <docanchor file="sip-date">sip_date_description</docanchor>
+    <docanchor file="sip-date">sip_date_author</docanchor>
+    <docanchor file="sip-date">sip_date_options</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>sip-dig</name>
+    <title>Resolve SIP URIs.</title>
+    <filename>sip-dig</filename>
+    <docanchor file="sip-dig">sip_dig_copyright</docanchor>
+    <docanchor file="sip-dig">sip_dig_synopsis</docanchor>
+    <docanchor file="sip-dig">sip_dig_return</docanchor>
+    <docanchor file="sip-dig">sip_dig_bugs</docanchor>
+    <docanchor file="sip-dig">sip_dig_description</docanchor>
+    <docanchor file="sip-dig">sip_dig_author</docanchor>
+    <docanchor file="sip-dig">sip_dig_options</docanchor>
+    <docanchor file="sip-dig">sip_dig_examples</docanchor>
+    <docanchor file="sip-dig">sip_dig_environment</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>sip-options</name>
+    <title>Query SIP OPTIONS</title>
+    <filename>sip-options</filename>
+    <docanchor file="sip-options">sip_options_author</docanchor>
+    <docanchor file="sip-options">sip_options_environment</docanchor>
+    <docanchor file="sip-options">sip_options_synopsis</docanchor>
+    <docanchor file="sip-options">sip_options_bugs</docanchor>
+    <docanchor file="sip-options">sip_options_options</docanchor>
+    <docanchor file="sip-options">sip_options_copyright</docanchor>
+    <docanchor file="sip-options">sip_options_description</docanchor>
+    <docanchor file="sip-options">sip_options_examples</docanchor>
+    <docanchor file="sip-options">sip_options_return</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>localinfo</name>
+    <title>list local network addresses</title>
+    <filename>localinfo</filename>
+    <docanchor file="localinfo">localinfo_copyright</docanchor>
+    <docanchor file="localinfo">localinfo_options</docanchor>
+    <docanchor file="localinfo">localinfo_description</docanchor>
+    <docanchor file="localinfo">localinfo_synopsis</docanchor>
+    <docanchor file="localinfo">localinfo_examples</docanchor>
+    <docanchor file="localinfo">localinfo_author</docanchor>
+    <docanchor file="localinfo">localinfo_bugs</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>addrinfo</name>
+    <title>Resolve network services</title>
+    <filename>addrinfo</filename>
+    <docanchor file="addrinfo">addrinfo_copyright</docanchor>
+    <docanchor file="addrinfo">addrinfo_description</docanchor>
+    <docanchor file="addrinfo">addrinfo_author</docanchor>
+    <docanchor file="addrinfo">addrinfo_bugs</docanchor>
+    <docanchor file="addrinfo">addrinfo_options</docanchor>
+    <docanchor file="addrinfo">addrinfo_synopsis</docanchor>
+  </compound>
+  <compound kind="page">
+    <name>stunc</name>
+    <title>STUN test client.</title>
+    <filename>stunc</filename>
+    <docanchor file="stunc">stunc_environment</docanchor>
+    <docanchor file="stunc">stunc_return</docanchor>
+    <docanchor file="stunc">stunc_examples</docanchor>
+    <docanchor file="stunc">stunc_options</docanchor>
+    <docanchor file="stunc">stunc_copyright</docanchor>
+    <docanchor file="stunc">stunc_description</docanchor>
+    <docanchor file="stunc">stunc_bugs</docanchor>
+    <docanchor file="stunc">stunc_synopsis</docanchor>
+    <docanchor file="stunc">stunc_author</docanchor>
+  </compound>
+</tagfile>

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/sis
+END
+libsofia-sip-ua-glib.pkg
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/sis/libsofia-sip-ua-glib.pkg
+END
+test_nua.pkg
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/sis/test_nua.pkg
+END
+libsofia-sip-ua.pkg
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/sis/libsofia-sip-ua.pkg
+END
+su_source_test.pkg
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/sis/su_source_test.pkg
+END
+test_tport.pkg
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/xGateLinux/!svn/ver/131/Sofia/core/sofia-sip-1.12.11/open_c/sis/test_tport.pkg
+END
