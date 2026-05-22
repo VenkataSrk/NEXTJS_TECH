@@ -1,0 +1,463 @@
+@import '../../../assets/styles/variables.scss';
+.activitydealcontact{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    max-width: 987px;
+    padding: 13px 21px;
+    margin: auto;
+    @include big4{
+        max-width: 100%;
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .breadcrumb{
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        .breadcrumbtitle{
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            .negotiationtitle{
+                color: #0B0B10;
+                font-family: 'Inter';
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                span{
+                    color: var(--clr-text-accent-info, #155BC2);
+                    font-family: 'Inter';
+                    font-size: 12px;
+                    font-weight: 400;
+                    line-height: 16px;
+                    border-radius: 24px;
+                    border: 0.618px solid var(--Border-c-border-info, #1A73E8);
+                    background: var(--Elements-c-element-info-subtle, #F3F7FE);
+                    padding: 2px 8px;
+                }
+            }
+            .dealcontent{
+                color: var(--Text-color-text-primary, #0B0B10);
+                font-family: 'Inter';
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 26px;
+            }
+        }
+    }
+    .breadcrumbsubtitle{
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color:  #0B0B0B;
+        font-family: 'Inter';
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        span{
+            font-weight: 600;
+            font-size: 13px;
+        }
+    }
+}
+.cardcontainerdeals{
+    width: 100%;
+    max-width: 798px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    @include big4{
+        max-width: 100%;
+        padding: 0 16px;
+    }
+    .summarycardblock{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        .summarycardtitle{
+            color:  #0B0B10;
+            font-family: 'Inter';
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 26px;
+        }
+        .summarysubtitle{
+            color: #0B0B10;
+            font-family: "Inter";
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+        }
+    }
+    .totalamountblock{
+        display: grid;
+        align-items: stretch;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        @include big4{
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include big6{
+            grid-template-columns: repeat(1, 1fr);
+        }
+        .totalamountlist{
+            border-radius: 16px;
+            border: 0.6px solid #D2D3D4;
+            background: #FFF;
+            padding: 21px 13px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            .totalamountitle{
+                color:  #5E5E69;
+                font-family: 'Inter';
+                font-size:  14px;
+                font-weight: 400;
+                line-height: 18px;
+            }
+            .totalamounsubtitle{
+                color: var(--Text-color-text-primary, #0B0B10);
+                font-family: 'Inter';
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 26px;
+            }
+        }
+    }
+}
+.dealactivity {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 14px 0;
+
+    .dealactivityleft {
+        width: 100%;
+        border-radius: 16px;
+        border: 0.6px solid #D2D3D4;
+        background: #FFF;
+        padding: 22px;
+
+        .dealblock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0 21px;
+
+            .dealblocktitle {
+                color: #000;
+                font-family: 'Inter';
+                font-size: 21px;
+                font-weight: 600;
+                line-height: 28px;
+            }
+
+            button {
+                background: #FFF;
+                border-radius: 13px;
+                border: 0.6px solid #BFBFBF;
+                color: #000;
+                font-family: 'Inter';
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 18px;
+                padding: 8px 16px;
+                min-height: 44px;
+            }
+        }
+
+        .dealcreatedblock {
+            .loopcontainer {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                margin: 0 0 12px;
+
+                .loopcount {
+                    border-radius: 30px;
+                    color: #BDBEBF;
+                    background: #FFF;
+                    font-family: 'Inter';
+                    font-size: 13px;
+                    font-weight: 600;
+                    line-height: 22px;
+                    padding: 0 8px;
+                    border: 1px solid #BDBEBF;
+                    margin: 0 0 12px;
+                    position: relative;
+
+
+                    &.active {
+                        color: #7423D7;
+                        border: 1px solid #7423D7;
+
+                        &::before {
+                            content: '';
+                            width: 1px;
+                            height: 100%;
+                            background: #7423D7;
+                            display: block;
+                            left: 12px;
+                            top: 32px;
+                            position: absolute;
+                        }
+
+                        &::after {
+                            content: '';
+                            width: 1px;
+                            height: 100%;
+                            background: #7423D7;
+                            display: block;
+                            left: 12px;
+                            bottom: 36px;
+                            position: absolute;
+                        }
+                    }
+
+                    &::before {
+                        content: '';
+                        width: 1px;
+                        height: 100%;
+                        background: #BDBEBF;
+                        display: block;
+                        left: 12px;
+                        top: 32px;
+                        position: absolute;
+                    }
+
+                    &::after {
+                        content: '';
+                        width: 1px;
+                        height: 100%;
+                        background: #BDBEBF;
+                        display: block;
+                        left: 12px;
+                        bottom: 36px;
+                        position: absolute;
+                    }
+                }
+
+                .loopblock {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 8px;
+
+                    .loopblocktitle {
+                        color: #3A3A3A;
+                        font-family: 'Inter';
+                        font-size: 16px;
+                        font-weight: 400;
+                        line-height: 22px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    }
+
+                    .loopblocksubtitle {
+                        color: #404040;
+                        font-family: 'Inter';
+                        font-size: 13px;
+                        font-weight: 500;
+                        line-height: 22px;
+                    }
+
+                    .loopblocktitleline {
+                        color: #000;
+                        font-family: 'Inter';
+                        font-size: 12px;
+                        font-weight: 400;
+                        line-height: 16px;
+                    }
+                }
+            }
+
+            .loopcontainer:first-child .loopcount::after {
+                display: none;
+                content: none;
+            }
+
+            .loopcontainer:last-child .loopcount::before {
+                display: none;
+                content: none;
+            }
+        }
+    }
+
+    .dealactivityright {
+        border-radius: 16px;
+        border: 0.6px solid #D2D3D4;
+        background: #FFF;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+
+        .subscriptionmain {
+            .subscriptioncontent {
+                color: #000;
+                font-family: 'Inter';
+                font-size: 21px;
+                font-weight: 600;
+                line-height: 28px;
+            }
+
+            .subscriptiondetails {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                padding: 10px 0px 14px;
+                gap: 14px;
+            }
+
+            .subscriptionupdate {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                .billingtype {
+                    color: #000;
+                    font-family: 'Inter';
+                    font-size: 12px;
+                    font-weight: 400;
+                    line-height: 16px;
+                }
+
+                .billingtypesubtitle {
+                    color: #0B0B0B;
+                    font-family: 'Inter';
+                    font-size: 13px;
+                    font-weight: 600;
+                    line-height: 22px;
+                }
+            }
+        }
+
+        .totalblock {
+            display: flex;
+            align-items: stretch;
+            gap: 14px;
+
+            .amountsetblock {
+                border-radius: 16px;
+                border: 0.6px solid #D2D3D4;
+                background: #FFF;
+                padding: 22px 14px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+                flex: 1 0 0;
+
+                .amountitle {
+                    color: #0B0B0B;
+                    font-family: 'Inter';
+                    font-size: 12px;
+                    font-weight: 400;
+                    line-height: 16px;
+                }
+
+                .amountsubtitle {
+                    color: #000;
+                    font-family: 'Inter';
+                    font-size: 21px;
+                    font-weight: 600;
+                    line-height: 28px;
+                }
+            }
+        }
+
+        .blockcontainersuggestion {
+            border-radius: 16px;
+            border: 0.6px solid #D2D3D4;
+            background: #FFF;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+
+            .requiredtitle {
+                color: #000;
+                font-family: 'Inter';
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 26px;
+            }
+
+            .requiredtitleaction {
+                color: #404040;
+                font-family: 'Inter';
+                font-size: 13px;
+                font-weight: 500;
+                line-height: 22px;
+            }
+        }
+
+        .summarycontainerset {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+            margin: 0 0 12px;
+
+            .summarytitlesection {
+                color: #000;
+                font-family: 'Inter';
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 26px;
+            }
+
+            .subsummary {
+                color: #0B0B0B;
+                font-family: 'Inter';
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 22px;
+            }
+        }
+    }
+}
+
+.badge {
+    color: #0A3405;
+    text-align: center;
+    font-family: 'Inter';
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    border-radius: 24px;
+    border: 0.6px solid #136809;
+    background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+    padding: 2px 8px;
+
+    &.completed {
+        color: #0A3405;
+        border: 0.6px solid #136809;
+        background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+    }
+
+    &.inprogress {
+        color: #1A73E8;
+        border-radius: 24px;
+        border: 0.6px solid #1A73E8;
+        background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+    }
+
+    &.upcoming {
+        color: #58595B;
+        background: #D6D5D7;
+        border: 0.6px solid transparent;
+    }
+}

@@ -1,0 +1,145 @@
+.salecontainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    max-width: 798px;
+    width: 100%;
+    margin: 24px auto 0;
+    @include big1{
+        padding: 0 16px;
+    }
+    @include big3{
+        max-width: 100%;
+        margin: 16px auto 0;
+    }
+    .chartline{
+        width: 100%;
+        border-radius: var(--Radius-space-radius-medium, 16px);
+        border:  0.6px solid  #D2D3D4;
+        background-color: #FFF;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        .targetitle{
+            color: #0B0B10;
+            font-family: 'Inter';
+            font-size:  20px;
+            font-weight: 600;
+            line-height: 24px; 
+            padding: 0 0 13px;
+        }
+        .axislist{
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            .axislistitle{
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: #000;
+                font-family: 'Inter';
+                font-size: 11px;
+                font-weight: 400;
+                line-height: 18px;
+                span{
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+    .saleblockcontainer{
+        border-radius: 24px;
+        border: 0.6px solid #D2D3D4;
+        background: #FFF;
+        padding: 16px;
+        gap: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        @include big3{
+            border-radius: 16px;
+        }
+        .insightscard{
+            display: grid;
+            gap: 4px;
+            .insightscardtitle{
+                color:  #0B0B10;
+                font-family:  'Inter';
+                font-size:  16px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+            .insightscardsubtitle{
+                color: #5E5E69;
+                font-family: "Inter";
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 22px;
+            }
+        }
+        .ratetitle{
+            @include paragraph;
+                span{
+                   font-weight: 500;
+                } 
+         }
+    }
+    .totalsaleblock{
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: stretch;
+        gap: 8px;
+        @include big5{
+            grid-template-columns: repeat(1, 1fr);
+        }
+        &.totalsalelist{
+            grid-template-columns: repeat(2, 1fr);
+            @include big5{
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+        .revenuecontainer{
+            border-radius: var(--Radius-space-radius-medium, 16px);
+            border:  0.6px solid  #D2D3D4;
+            background-color: #FFF;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            .totalsaletitle{
+                color:#0B0B10;
+                font-family: 'Inter';
+                font-size:  16px;
+                font-weight: 600;
+                line-height:  24px; 
+            }
+            .totalsalesubtitle{
+                color:  #0B0B10;
+                font-family: 'Inter';
+                font-size:  20px;
+                font-weight: 600;
+                line-height:  24px; 
+            }
+            .totalsaledesc{
+                @include paragraph;
+            }
+            .tradelist{
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                color: #0E8F50;
+                font-family: 'Inter';
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 24px;
+                padding: 8px 0;
+            }
+        }
+    }
+}

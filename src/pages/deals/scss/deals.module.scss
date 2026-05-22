@@ -1,0 +1,486 @@
+ .dealsinnerbody {
+     margin: 16px;
+ }
+
+ .card {
+     border-radius: 16px;
+     border: $border;
+     padding: 20px;
+     display: flex;
+     flex-direction: column;
+     gap: 16px;
+
+     .top {
+         border-bottom: $border;
+         display: flex;
+         flex-direction: column;
+         gap: 8px;
+         padding-bottom: 12px;
+
+         .secondline {
+             display: flex;
+             gap: 12px;
+
+             p {
+                 .boldtxt {
+                     font-size: 14px;
+                     font-weight: 500;
+                 }
+
+                 span {
+                     margin-right: 6px;
+                 }
+             }
+         }
+     }
+
+     .bottom {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+
+         .lefts {
+             display: flex;
+             gap: 12px;
+             align-items: center;
+
+             p {
+                 .boldtxt {
+                     font-size: 14px;
+                     font-weight: 500;
+                 }
+
+                 span {
+                     margin-right: 6px;
+                 }
+             }
+         }
+
+         .rights {
+             p {
+                 .boldtxt {
+                     font-size: 14px;
+                     font-weight: 500;
+                 }
+
+                 span {
+                     margin-right: 6px;
+                 }
+             }
+         }
+     }
+
+     .namewithbadge {
+         display: flex;
+         gap: 16px;
+         align-items: center;
+     }
+
+     .badge {
+         border-radius: 24px;
+         width: fit-content;
+         padding: 2px 8px;
+         font-size: 13px;
+
+         &.green {
+             border: 0.618px solid #136809;
+             background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+         }
+
+     }
+
+
+ }
+ .termscardinvoice{
+        background-color: #FFF;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px;
+        position: sticky;
+        top: 0;
+        .invoiceleft{
+            display: flex;
+            align-items: flex-start;
+            gap:8px ;
+            .containsdetails{
+                display: grid;
+                gap: 4px;
+                .quotationtitle{
+                    color: #000;
+                    font-size: 18px;
+                    font-family: 'inter';
+                    font-weight: 600;
+                    line-height: 22px;
+                }
+                .quotationsubtitle{
+                    color: #000;
+                    font-size: 16px;
+                    font-family: 'inter';
+                    font-weight: 400;
+                }
+            }
+        }
+        .invoiceright{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            button{
+                padding: 8px 16px;
+                min-height: 38px;
+                font-family: 'Inter';
+                &:nth-child(1){
+                    color: #000;
+                    background-color: #FFFFFF;
+                    border: 0.6px solid #BFBFBF;
+                }
+            }
+        }
+    }
+
+ .invoicecontainer{
+    // height: calc(100vh - 124px);
+    // overflow-y: auto;
+    .termsinvoicelead{
+        max-width: 1120px;
+        margin: auto;
+    }
+    .termscardinvoice{
+        background-color: #FFF;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px;
+        position: sticky;
+        top: 0;
+        .invoiceleft{
+            display: flex;
+            align-items: flex-start;
+            gap:8px ;
+            .containsdetails{
+                display: grid;
+                gap: 4px;
+                .quotationtitle{
+                    color: #000;
+                    font-size: 18px;
+                    font-family: 'inter';
+                    font-weight: 600;
+                    line-height: 22px;
+                }
+                .quotationsubtitle{
+                    color: #000;
+                    font-size: 16px;
+                    font-family: 'inter';
+                    font-weight: 400;
+                }
+            }
+        }
+        .invoiceright{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            button{
+                padding: 8px 16px;
+                min-height: 38px;
+                font-family: 'Inter';
+                &:nth-child(1){
+                    color: #000;
+                    background-color: #FFFFFF;
+                    border: 0.6px solid #BFBFBF;
+                }
+            }
+        }
+    }
+ }
+ .invoice {
+     border-radius: 16px;
+     border: $border;
+     margin-bottom: 16px;
+ 
+
+     .invoiceheader {
+         display: flex;
+         justify-content: space-between;
+         width: 100%;
+         border-radius: 16px 16px 0 0;
+
+         background: #0B0B0B;
+         padding: 20px;
+
+         .lefts {
+             display: flex;
+             flex-direction: column;
+             gap: 12px;
+
+             .lefttop {
+                 display: flex;
+                 gap: 16px;
+
+                 .namewithdiv {
+                     display: flex;
+                     flex-direction: column;
+                     gap: 6px;
+
+                     p {
+                         &:nth-child(2) {
+                             font-size: 12px;
+                         }
+                     }
+                 }
+             }
+
+             .leftbottom {
+                 display: flex;
+                 flex-direction: column;
+                 gap: 8px;
+
+                 p {
+                     font-size: 13px !important;
+                 }
+             }
+         }
+
+         p {
+             color: #FFF !important;
+         }
+
+         .lefts {}
+
+         .rights {
+             text-align: right;
+             display: flex;
+             flex-direction: column;
+             gap: 12px;
+
+             p {
+                 font-size: 13px !important;
+             }
+         }
+     }
+
+     .details {
+         display: flex;
+         flex-direction: column;
+         gap: 12px;
+
+         .contentflex {
+             display: flex;
+
+             .half {
+                 width: 50%;
+
+                 p {
+                     padding-bottom: 8px;
+                 }
+             }
+         }
+     }
+ }
+
+ .details {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 32px;
+     padding: 24px;
+ }
+
+
+ .items {
+     padding: 24px;
+ }
+
+
+ .table {
+     border: $border;
+     border-radius: 8px;
+     overflow: hidden;
+ }
+
+
+ .rowHead,
+ .row {
+     display: grid;
+     grid-template-columns: 2fr 3fr 1fr 1fr 1fr;
+     gap: 12px;
+     padding: 12px;
+ }
+
+
+ .rowHead {
+     background: #f8f8f8;
+     font-weight: 500;
+ }
+
+
+ .row:not(:last-child) {
+     border-bottom: $border;
+ }
+
+
+ .summary {
+     display: flex;
+     justify-content: flex-end;
+     padding: 24px;
+ }
+
+
+ .summaryBox {
+     width: 360px;
+     border: $border;
+     border-radius: 8px;
+
+     .header {
+         background: #f8f8f8;
+         font-weight: 500;
+         padding: 12px;
+         border-radius: 8px;
+     }
+
+     .summaryRow {
+         display: flex;
+         justify-content: space-between;
+         margin-bottom: 8px;
+         padding: 6px 12px;
+     }
+
+     .total {
+         display: flex;
+         justify-content: space-between;
+         margin-top: 16px;
+         padding: 6px 12px 12px;
+     }
+
+     .negative {
+         color: red;
+     }
+
+ }
+ .termscard{
+    
+   
+    border-radius: 16px;
+border: $border;
+padding: 20px;
+margin-bottom: 20px;
+&.termscardnew{
+        display: flex;
+    flex-direction: column;
+    gap: 12px;
+    label{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin: 12px 0;
+       
+    }
+}
+.block{
+    display: flex;
+    gap: 6px;
+    flex-direction: column;
+    label{
+        margin-bottom: 6px;
+    }
+    input{
+        border-radius: 6px;
+border: $border;
+background: #FFF;
+padding: 8px 12px;
+min-height: 38px;
+    font-family: 'Inter';
+
+/* Web Shadow sm - Light */
+box-shadow: 0 2px 3px 0 rgba(12, 21, 35, 0.04);
+&:focus{
+    border: 1px solid #BFBFBF;
+}
+    }
+}
+.inner{
+    margin: 16px 0 0 0;
+display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3,1fr);
+    h5{
+        font-size: 15px;
+    }
+}
+ }
+
+ .timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .item {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 16px;
+
+    .left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        background: $secondary;
+        border-radius: 50%;
+      }
+
+      .line {
+        flex: 1;
+        width: 1px;
+        background: $grey;
+        margin-top: 8px;
+      }
+    }
+
+    .content {
+      background: $bg-white;
+    }
+
+    .time {
+      align-self: flex-start;
+
+      span {
+        border: 1px solid #1A73E8;
+        border-radius: 12px;
+        padding: 4px 10px;
+        font-size: 12px;
+        color: #1A73E8;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+.activitylinelist {
+    height: calc(100vh - 120px);
+    overflow: auto;
+
+    .timelineheader {
+        display: flex;
+        max-width: 1123px;
+        padding: 34px 21px 21px 21px;
+        align-items: center;
+        gap: 21px;
+        margin: auto;
+        position: sticky;
+        top: 0;
+        z-index: 9;
+        background-color: #FFF;
+        color: #000;
+        font-family: 'Inter';
+        font-size: 21px;
+        font-weight: 600;
+        line-height: 27px;
+    }
+
+    .activecenter {
+        max-width: 798px;
+        margin: 38px auto;
+    }
+}

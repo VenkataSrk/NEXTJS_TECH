@@ -1,0 +1,78 @@
+.status-dropdown {
+  position: relative;
+  display: inline-block;
+
+  .status-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .arrow {
+      font-size: 14px;
+      color: #6b7280;
+     
+      display: grid;
+      place-items: center;
+      width: 24px;
+    }
+  }
+
+  .menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 150px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    color: #000;
+    height: 116px;
+    overflow: auto;
+    z-index: 10;
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+      border-radius: 8px;
+      cursor: pointer;
+
+      &:hover {
+        background: #f3f4f6;
+      }
+
+      &.disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+
+        &:hover {
+          background: transparent;
+        }
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+    }
+  }
+}

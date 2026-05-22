@@ -1,0 +1,777 @@
+@import '../../../assets/styles/variables.scss';
+
+.companynameheader {
+    max-width: 987px;
+    margin: auto;
+    @include big4{
+        max-width: 100%;
+    }
+
+    .topbarheader {
+        padding: 14px 22px;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+
+        .topbarleft {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+
+            img {
+                cursor: pointer;
+            }
+        }
+
+        .topbarright {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+
+            .titleblock {
+                color: #000;
+                font-family: 'Inter';
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+
+                span {
+                    border-radius: 24px;
+                    border: 0.618px solid #136809;
+                    background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+                    color: #0A3405;
+                    font-family: 'Inter';
+                    font-size: 12px;
+                    font-weight: 400;
+                    line-height: 16px;
+                    padding: 2px 6px;
+                }
+            }
+
+            .topbarcontain {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .subtitlecard {
+                    color: #000;
+                    font-family: 'Inter';
+                    font-size: 13px;
+                    font-weight: 600;
+                    line-height: 22px;
+                }
+            }
+
+            .subtitle {
+                color: #000;
+                font-family: 'Inter';
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 26px;
+            }
+        }
+    }
+
+    .videosummary {
+        width: 798px;
+        margin: 24px auto;
+
+        .summarytoptitle {
+            position: relative;
+
+            .titleblocksummary {
+                color: #0A3405;
+                font-family: 'Inter';
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 18px;
+                border-radius: 24px;
+                border: 0.618px solid #136809;
+                background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+                padding: 2px 6px;
+                width: fit-content;
+                position: absolute;
+                top: -10px;
+                left: 24px;
+            }
+
+            .card {
+                border-radius: 21px;
+                border: 0.6px solid #D2D3D4;
+                background: linear-gradient(180deg, #FFF 50%, #F2F2F2 100%);
+                box-shadow: -2px 2px 4px 0 rgba(217, 217, 217, 0.12);
+                padding: 34px 22px;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                align-items: flex-start;
+
+                .cardtitle {
+                    color: var(--true-black-800, #252526);
+                    font-family: 'Inter';
+                    font-size: 21px;
+                    font-weight: 600;
+                    line-height: 28px;
+                }
+
+                .cardsubtitle {
+                    color: #000;
+                    font-family: 'Inter';
+                    font-size: 16px;
+                    font-weight: 400;
+                    line-height: 26px;
+                }
+            }
+        }
+
+        .attendeescontainer {
+            border-radius: 21px;
+            border: 0.6px solid #D2D3D4;
+            background: #FFF;
+            padding: 22px;
+            margin: 0 0 16px;
+            .inviteparticipants{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .invitedparticipantlist{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .attendees{
+                      display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            border-radius: 13px;
+                            background-color: #0B0B10;
+                            border: 0.6px solid #0B0B10;
+                            color: #fff;
+                            text-align: center;
+                            font-family: 'Inter';
+                            font-size: 16px;
+                            font-weight: 500;
+                            line-height: 18px;
+                            padding: 8px 16px 8px 12px;
+                }
+            }
+            
+
+            .addattendee {
+                border-radius: 21px;
+                border: 1px solid #E3E4E5;
+                background: #FFF;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                width: 100%;
+                justify-content: center;
+                padding: 8px 21px;
+                height: 46px;
+                margin: 14px 0;
+                color: #000;
+                font-family: 'Inter';
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 26px;
+            }
+
+            .attendeestitle {
+                color: #0B0B0B;
+                text-align: left;
+                font-family: 'Inter';
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+            }
+
+            .attendeessubtitle {
+                color: #000;
+                text-align: left;
+                font-family: 'Inter';
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 22px;
+            }
+
+            .cardblockmain {
+                padding: 14px 0 0;
+                display: flex;
+                flex-direction: column;
+                gap: 13px;
+                align-items: stretch;
+
+                .cardblock {
+                    border-radius: 21px;
+                    border: 0.6px solid #E3E4E5;
+                    background: #FFF;
+                    padding: 14px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: baseline;
+
+                    .cardcontainerleft {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 6px;
+
+                        .cardsource {
+                            width: 36px;
+                            height: 36px;
+                            min-width: 36px;
+                        }
+
+                        .cardcustomer {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 4px;
+
+                            .cardcustomername {
+                                color: #000;
+                                font-family: 'Inter';
+                                font-size: 16px;
+                                font-weight: 600;
+                                line-height: 26px;
+                            }
+
+                            .cardcustomeremail {
+                                color: #000;
+                                font-family: 'Inter';
+                                font-size: 13px;
+                                font-weight: 400;
+                                line-height: 18px;
+                            }
+                        }
+                    }
+
+                    .cardcontainerright {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+
+                        .leadcard {
+                            color: #1B191D;
+                            font-family: 'Inter';
+                            font-size: 12px;
+                            font-weight: 400;
+                            line-height: 16px;
+                            border-radius: 24px;
+                            background: #DDDAE0;
+                            padding: 2px 8px;
+                        }
+
+                        .accepted {
+                            color: #0A3405;
+                            font-family: 'Inter';
+                            font-size: 12px;
+                            font-weight: 400;
+                            line-height: 16px;
+                            border-radius: 24px;
+                            border: 0.618px solid #136809;
+                            background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+                            padding: 2px 6px;
+
+                            &.pending {
+                                color: #804680;
+                                border-radius: 24px;
+                                border: 0.618px solid #FF8BFF;
+                                background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+                            }
+                        }
+                    }
+                }
+
+                .notetitlecard {
+                    border-radius: 21px;
+                    border: 1px solid var(--Colors-Black-Black-200, #E3E4E5);
+                    background: #FFF;
+                    padding: 22px;
+
+                    .notescontainer {
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        border-bottom: 0.6px solid #BFBFBF;
+                        padding: 14px 0;
+
+                        .cardicon {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            .notescard {
+                                color: #000;
+                                font-family: 'Inter';
+                                font-size: 13px;
+                                font-weight: 400;
+                                line-height: 18px;
+                            }
+                        }
+
+                        .notescardline {
+                            color: #000;
+                            font-family: 'Inter';
+                            font-size: 13px;
+                            font-weight: 400;
+                            line-height: 18px;
+                        }
+                    }
+
+                    .notessubtitles {
+                        padding: 14px 0 0;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 4px;
+
+                        .notesrequest {
+                            color: #000;
+                            font-family: 'Inter';
+                            font-size: 18px;
+                            font-weight: 600;
+                            line-height: 24px;
+                        }
+
+                        .subrequest {
+                            color: #000;
+                            font-family: 'Inter';
+                            font-size: 16px;
+                            font-weight: 400;
+                            line-height: 26px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .acmecorpcontainer {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 14px;
+            margin: 0 0 16px;
+
+            .cardblocksetcall {
+                border-radius: 21px;
+                border: 0.6px solid #D2D3D4;
+                background: #FFF;
+                padding: 22px;
+
+                .callcardtitle {
+                       .calldiscover{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        .callslot{
+                            color:  #F57C00;
+                            text-align: center;
+                            font-family: 'Inter';
+                            font-size:  12px;
+                            font-weight: 600;
+                            line-height:  16px; 
+                        }
+                    }
+                    .callsubtitle {
+                        color: #0B0B0B;
+                        text-align: center;
+                        font-family: 'Inter';
+                        font-size: 18px;
+                        font-weight: 600;
+                        line-height: 24px;
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        padding: 0 0 16px;
+
+                        span {
+                            color: #2C2E80;
+                            font-family: 'Inter';
+                            font-size: 12px;
+                            font-weight: 400;
+                            line-height: 16px;
+                            border-radius: 24px;
+                            border: 0.618px solid #575CFF;
+                            background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+                            padding: 2px 8px;
+                        }
+                    }
+
+                    .discovery {
+                        display: grid;
+                        align-items: center;
+                        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                        gap: 14px;
+
+                        .callcardblock {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            .datecontainerright {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-start;
+
+                                .discovercall {
+                                    color: #000;
+                                    font-family: 'Inter';
+                                    font-size: 13px;
+                                    font-weight: 400;
+                                    line-height: 18px;
+                                }
+
+                                .discovercalldate {
+                                    color: #000;
+                                    font-family: 'Inter';
+                                    font-size: 13px;
+                                    font-weight: 600;
+                                    line-height: 22px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .meetinglinkcontainer {
+                    .meetingtitle {
+                        color: #0B0B0B;
+                        text-align: left;
+                        font-family: 'Inter';
+                        font-size: 18px;
+                        font-weight: 600;
+                        line-height: 24px;
+                    }
+
+                    .meetingblock {
+                        border-radius: 21px;
+                        border: 1px solid #E3E4E5;
+                        background: #FFF;
+                        padding: 14px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin: 14px 0;
+                            gap: 26px;
+
+
+                        .meetingleftblock {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+
+                            a {
+                                color: #000;
+                                font-family: 'Inter';
+                                font-size: 13px;
+                                font-weight: 400;
+                                line-height: 18px;
+                                text-decoration: none;
+                                    word-break: break-word;
+                            }
+                        }
+                        .copyrightblock{
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            .startmeet{
+                          display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            border-radius: 13px;
+                            background-color: #0B0B10;
+                            border: 0.6px solid #0B0B10;
+                            color: #fff;
+                            text-align: center;
+                            font-family: 'Inter';
+                            font-size: 16px;
+                            font-weight: 500;
+                            line-height: 18px;
+                            padding: 8px 16px 8px 12px;
+                            }
+                        }
+                        .meetingrightblock {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            border-radius: 13px;
+                            border: 0.6px solid #BFBFBF;
+                            color: #000;
+                            text-align: center;
+                            font-family: 'Inter';
+                            font-size: 16px;
+                            font-weight: 500;
+                            line-height: 18px;
+                            padding: 8px 16px 8px 12px;
+                        }
+                    }
+
+                    .linksubtitle {
+                        color: #000;
+                        text-align: left;
+                        font-family: 'Inter';
+                        font-size: 12px;
+                        font-weight: 400;
+                        line-height: 16px;
+                    }
+                }
+            }
+        }
+
+        .chargeinvoice {
+            .callreviewblock {
+                display: flex;
+                justify-content: space-between;
+                width: 798px;
+                margin: auto;
+                padding: 14px;
+
+                .callreviewleft {
+                    width: 50%;
+                    padding-right: 40px;
+
+                    .summary {
+                        margin: 0 0 1rem;
+                        padding: 0 0 0rem;
+                        border-radius: 8px;
+
+                        .quicksummary {
+                            color: #000;
+                            font-family: 'Inter';
+                            font-size: 16px;
+                            font-style: normal;
+                            font-weight: 600;
+                            line-height: 26px;
+
+                            &.quicksummaryp {
+                                font-weight: 400;
+                            }
+                        }
+
+                        h4 {
+                            font-weight: 600;
+                            margin-bottom: 13px;
+                        }
+
+                        p {
+                            font-size: 14px;
+                            line-height: normal;
+                            text-align: left;
+                        }
+                    }
+
+                    .content {
+                        grid-template-columns: 1.5fr 1fr;
+                        gap: 1.5rem;
+
+                        .videoSection {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 0.8rem;
+
+                            video {
+                                width: 100%;
+                                border-radius: 10px;
+                                // height: 50px;
+                                border: 1px solid transparent;
+                            }
+
+                            .controls {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding: 6px 0 13px;
+
+
+                                .transcriptysl {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 21px;
+                                }
+
+                                label {
+                                    font-size: 0.9rem;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 13px;
+                                    margin: 0;
+                                    flex-direction: row-reverse;
+                                }
+
+                                .sentiment {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 13px;
+
+                                    span {
+                                        color: #000;
+                                        font-family: 'Inter';
+                                        font-size: 14px;
+                                        font-style: normal;
+                                        font-weight: 500;
+                                        line-height: 21px;
+                                    }
+
+                                    .score {
+                                        background: #e6ffe6;
+                                        color: #009900;
+                                        font-weight: 600;
+                                        padding: 0.2rem 0.5rem;
+                                        border-radius: 8px;
+                                    }
+                                }
+                            }
+                        }
+
+                        .transcripts {
+                            background: #fafafa;
+                            border-radius: 8px;
+                            padding: 1rem;
+                            overflow-y: auto;
+                            max-height: 400px;
+
+                            h4 {
+                                margin-bottom: 0.8rem;
+                                font-weight: 600;
+                            }
+
+                            .list {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 1rem;
+                            }
+
+                            .item {
+                                .meta {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    font-size: 0.85rem;
+                                    color: #555;
+
+                                    .metaprofi {
+                                        display: grid;
+                                    }
+                                }
+
+                                p {
+                                    font-size: 0.9rem;
+                                    line-height: 1.4;
+                                    color: #333;
+                                    word-wrap: break-word;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .callreviewright {
+                    width: 50%;
+                    background: #f5f5f5;
+                    border-radius: 12px;
+
+                    .transcripty {
+                        color: #000000;
+                        font-size: 16px;
+                        padding: 16px;
+                        font-family: 'Inter';
+                        font-size: 18px;
+                        font-weight: 600;
+                        line-height: 24px
+                    }
+
+                    .list {
+                        max-height: calc(100vh - 420px);
+                        overflow-y: auto;
+                        padding: 12px 16px;
+                    }
+
+                    .metaavatar {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 16px;
+                        margin: 0rem 0rem 1rem;
+                        flex-direction: row-reverse;
+                        justify-content: space-between;
+
+                        span {
+                            color: #828385;
+                            font-family: 'Inter';
+                            font-size: 13px;
+                            font-style: normal;
+                            font-weight: 500;
+                            line-height: 17px;
+                        }
+
+                        .metaprofi {
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 13px;
+
+                            .spanvatar {
+                                color: #fff;
+                                display: flex;
+                                align-items: center;
+                                gap: 13px;
+                                width: 20px;
+                                height: 20px;
+                                min-width: 20px;
+                                justify-content: center;
+                                background-color: #653AE0;
+                                border-radius: 0 5px;
+                                font-size: 8px;
+                                font-family: 'Inter';
+                            }
+
+                            .msgagent {
+                                display: grid;
+                                align-items: flex-start;
+                                justify-content: flex-start;
+                                gap: 5px;
+
+                                .agentheader {
+                                    color: #000;
+                                    font-family: 'Inter';
+                                    font-size: 16px;
+                                    font-style: normal;
+                                    font-weight: 600;
+                                    line-height: 25px;
+                                }
+
+                                .plansubtitle {
+                                    color: var(--Colors-Essentials-Text-Sub-Title, #757676);
+                                    font-family: 'Inter';
+                                    font-size: 13px;
+                                    font-weight: 500;
+                                    line-height: 22px;
+                                }
+                            }
+                        }
+
+                        .hourwellse {
+                            display: grid;
+                            gap: 13px;
+                            align-items: flex-start;
+
+                            p {
+                                color: #757676;
+                                font-family: 'Inter';
+                                font-size: 13px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 21px;
+                                margin: 0rem;
+                                text-transform: capitalize;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

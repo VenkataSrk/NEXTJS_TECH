@@ -1,0 +1,193 @@
+.likeblock {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 16px;
+
+    img{
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+    }
+
+    .likeblockinner {
+        position: relative;
+        display: flex;
+        cursor: pointer;
+
+        .liketool {
+            display: none;
+            border-radius: 3px;
+            background:  #252526;
+            color: #FFF;
+            font-size: 13px;
+            
+            line-height: normal;
+            position: absolute;
+            width: max-content;
+            height: 30px;
+            align-items: center;
+            justify-content: center;
+            padding: 0 12px;
+            bottom: 32px;
+            left: -12px;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                /* arrow below tooltip box */
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #333 transparent transparent transparent;
+            }
+        }
+
+        img {}
+
+        &:hover {
+            .liketool {
+                display: flex;
+            }
+        }
+
+        &.dislikes {
+            .liketool {
+                left: -22px;
+            }
+        }
+
+        &.speaker {
+            .liketool {
+                left: -38px;
+            }
+        }
+    }
+}
+
+.modal {
+    background: #00000085;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+
+    .modalinner {
+        border-radius: 16px;
+        background: #FFF;
+        box-shadow: -2px 2px 4px 0 rgba(217, 217, 217, 0.12);
+        width: 420px;
+        padding: 24px;
+
+        .modalheader {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+
+            .title {
+                color: #000;
+                font-size: 21px;
+             
+                line-height: 27px;
+            }
+
+            img {
+                cursor: pointer;
+            }
+        }
+
+        .modalbody {
+            padding: 4px 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            .desc {
+                color: #404040;
+                font-size: 13px;
+            
+                line-height: 22px;
+            }
+
+            textarea {
+                border-radius: 6px;
+                border: 1px solid #BFBFBF;
+                background: var(--Full-White, #FFF);
+                resize: none;
+                padding: 8px;
+              
+                width: 100%;
+
+                &:focus-visible {
+                    outline: 0;
+                    border-color: #000;
+                }
+            }
+        }
+
+        .modalfooter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            button {
+                border-radius: 13px;
+                background: var(--Mint-Green-400, #00E2A4);
+                color: #000;
+                font-size: 16px;
+              
+                line-height: 18px;
+                height: 44px;
+                width: 90px;
+
+                &:nth-child(1) {
+                    border-radius: 13px;
+                    border: 0.6px solid #BFBFBF;
+                    background: var(--Colors-Black-White, #FFF);
+
+                    &:hover {
+                        background: #000 !important;
+                        border-color: #000 !important;
+                        color: #fff !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.infoblock {
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+
+    .infoblockinner {
+        color: #FFF;
+        font-size: 13px;
+    
+        line-height: 133%;
+        border-radius: 13px;
+        background: var(--Colors-Black-Black, #000);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 16px;
+
+        img {}
+    }
+}
