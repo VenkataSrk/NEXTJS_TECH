@@ -1,0 +1,15 @@
+[Unit]
+Description=STT_TTS_MG systemd service.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/stt_tts_mg
+Environment="LD_LIBRARY_PATH=/usr/local/unimrcp/lib:/usr/local/apr/lib:/usr/local/lib:/opt/boost/lib"
+WorkingDirectory=/home/daemon_process/worktual_stt_tts_mg/build
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
