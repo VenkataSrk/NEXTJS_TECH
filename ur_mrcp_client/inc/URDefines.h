@@ -1,0 +1,22 @@
+#pragma once
+class URDefines
+{
+public:
+	URDefines();
+	~URDefines();
+
+	typedef enum __URMODULE_ENUM {
+
+		UR_MODULE_NONE = 0,// not using
+		UR_MODULE_SIP_SIGNALING_LAYER = 1,
+		UR_MODULE_RECORDER_MEDIA_MODULE = 2,
+		UR_MODULE_RECORDER_CONTROLLER = 3,
+		UR_MODULE_VMS_CONTROLLER = 4,
+		UR_MODULE_HTTP_CLIENT = 5,
+		UR_MODULE_IVR_MODULE = 6,
+		UR_MODULE_MSG_BROCKER_CLIENT = 7,
+		UR_MAX_LEN = 8,// using for len
+	}MODULE_ID;
+};
+
+

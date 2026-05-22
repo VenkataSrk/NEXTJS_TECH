@@ -1,0 +1,4 @@
+until ./stt_tts_mg > stt_tts_mg.out 2> stt_tts_mg.err < /dev/null ; do
+	echo "xgate stopped...; restarting it again" >&2
+	sleep 1
+done

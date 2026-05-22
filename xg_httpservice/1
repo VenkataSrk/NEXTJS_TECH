@@ -1,0 +1,37 @@
+#ifndef _XGATE_HTTP_SERVICE_H
+#define _XGATE_HTTP_SERVICE_H
+#include <ace/Task.h>
+#include <ace/Singleton.h>
+
+#include "xGateUtil.h"
+#include "xGateHttpHandler.h"
+#include "xGateBaseMsg.h"
+#include "IURModule.h"
+
+#define HTTPSERVICE HttpService::instance()
+class xGateHttpService : public ACE_Task<ACE_MT_SYNCH>,public IURModule
+{
+  public:  
+    xGateHttpService();
+    ~xGateHttpService(void);
+
+    bool init(IURModuleConfig *);
+    virtual int svc(void);
+    bool stop();
+
+  private:
+    //member variables
+    bool m_run;
+   // MODULE_ID m_requestorModule;
+    IURModuleConfig * m_httpConfig;
+    virtual MODULE_ID getModuleID(){
+      return UR_MODULE_HTTP_SERVICE;
+    }
+    virtual int pushModuleMsg(IURModuleMsg * phttpMsg);
+    //member functions
+    bool handle_msg(ACE_Message_Block *pAmb);
+    bool post(HttpRequestInfo *httpReqInfo);
+};
+
+typedef ACE_Unmanaged_Singleton<xGateHttpService, ACE_Null_Mutex> HttpService;
+#endif
