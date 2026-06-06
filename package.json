@@ -1,0 +1,77 @@
+{
+  "name": "worktualccaas_chatbot",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.25.9",
+    "@babel/preset-typescript": "^7.26.0",
+    "@reduxjs/toolkit": "^1.9.0",
+    "@square/web-sdk": "^2.0.1",
+    "@stitches/react": "^1.2.8",
+    "@stripe/react-stripe-js": "^2.3.1",
+    "@stripe/stripe-js": "^2.1.10",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "antd": "^5.3.1",
+    "braintree-web-drop-in": "^1.40.2",
+    "crypto-js": "^4.2.0",
+    "dotenv-webpack": "^8.1.0",
+    "framer-motion": "^10.12.16",
+    "html-react-parser": "^3.0.15",
+    "html2pdf.js": "^0.10.2",
+    "idb": "^8.0.0",
+    "js-sha1": "^0.6.0",
+    "jspdf": "^2.5.1",
+    "lottie-react": "^2.4.0",
+    "moment": "^2.29.4",
+    "path": "^0.12.7",
+    "react": "^18.2.0",
+    "react-calendly": "^4.3.0",
+    "react-dom": "^18.2.0",
+    "react-phone-input-2": "^2.15.1",
+    "react-rating": "^2.0.5",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "5.0.1",
+    "react-speech-recognition": "^3.10.0",
+    "react-square-web-payments-sdk": "^3.2.1",
+    "redux": "^4.2.1",
+    "redux-persist": "^6.0.0",
+    "regenerator-runtime": "^0.14.1",
+    "sass": "^1.80.2",
+    "sass-loader": "^16.0.2",
+    "socket.io-client": "^4.6.1",
+    "svg-inline-loader": "^0.8.2",
+    "web-vitals": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "webpack --mode production --progress",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/emoji-mart": "^3.0.9",
+    "terser-webpack-plugin": "^5.3.10",
+    "webpack-cli": "^5.1.4"
+  }
+}
