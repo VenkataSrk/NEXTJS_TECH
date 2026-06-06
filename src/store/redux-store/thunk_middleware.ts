@@ -1,0 +1,1 @@
+export const CustomMiddleware = "Middleware";

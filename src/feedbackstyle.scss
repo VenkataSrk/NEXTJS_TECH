@@ -1,0 +1,242 @@
+@import "./variable.scss";
+
+.chatBodyfeedbackform {
+      background: #000000ab;
+      height: 100%;
+      bottom: 0;
+      position: absolute;
+      left: 0;
+
+      .scroller.chatbotformtitle {
+            background: #F0F1F2;
+            height: 100%;
+            position: relative;
+            top: 72px;
+            border-radius: 16px 16px 0 0;
+            height: calc(100vh - 210px);
+            overflow-y: scroll;
+            z-index: 9;
+            &::-webkit-scrollbar {
+                  display: none;
+                }
+              
+                scrollbar-width: none;
+              
+                -ms-overflow-style: none; 
+                @include big6{
+                  height: calc(100vh - 72px);
+                }
+      }
+
+      .closeButton {
+            position: absolute;
+            right: 8px;
+            top: 12px;
+            z-index: 99999;
+      }
+
+      .titleColor {
+            text-align: center;
+            padding: 12px;
+            &.titlecolormsgcont{
+                  padding: 16px !important;
+            }
+
+            img {
+                  height: 75px;
+            }
+
+            p {
+                  font-size: 12px;
+                  line-height: 19px;
+                  margin: 6px 0;
+            }
+
+            h3 {
+                  font-size: 14px;
+                  margin: 0;
+            }
+      };
+
+      .feedblocks {
+            background: #fff;
+            border-radius: 8px;
+            margin: 12px;
+            &.feedblockpad{
+                  padding: 12px !important;
+                  // height: calc(100vh - 434px);
+                  max-height: 282px;
+                  overflow-y: scroll;
+                  scrollbar-width: thin;
+
+                  &::-webkit-scrollbar {
+                        display: none;
+                      }
+                    
+                      scrollbar-width: none;
+                    
+                      -ms-overflow-style: none; 
+            }
+      }
+
+      .ratingBlock {
+            border-bottom: 0.4px solid #d2d3d4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            &.ratingblockpad{
+                  margin: 12px !important;
+            }
+
+            .ratingBlockh5 {
+                  font-size: 14px;
+                  margin: 0 0 8px;
+            }
+
+            .ratingshow {
+                  display: flex !important;
+                  gap: 12px;
+                  align-items: center;
+            }
+            .hover-label{
+                  height: 20px;
+                  margin: -6px 0 8px;
+            }
+      }
+
+      .questionBlock {
+            .questionBlockinner {
+                  padding: 12px;
+                  &.qnblockpad{
+                        margin-bottom: 16px !important;
+                       
+                  }
+
+                  p {
+                        font-size: 12px;
+                        line-height: 19px;
+                        margin: 0 0 6px !important;
+                        font-weight: 600;
+                  }
+
+                  .ant-radio-group,
+                  .ant-checkbox-group {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 8px;
+                        margin: 12px 0 0;
+
+                        label {
+                              color: #757576;
+                              font-size: 13px;
+                              font-family: 'interregular';
+                        }
+                  }
+            }
+      }
+
+      .mainformscroller {
+            overflow: hidden;
+            overflow-y: scroll;
+            // height: calc(100vh - 370px);
+            height: calc(100vh - 618px);
+            @include hbig3{
+                  // height: calc(100vh - 282px);
+                  height: calc(100vh - 500px);
+            }
+
+      }
+
+      .footerbutton {
+            
+            display: flex;
+            align-items: center;
+            padding: 2px 16px 16px!important;
+            gap: 8px;
+            justify-content: flex-end;
+            &.footerbtnfeedbckform{
+
+                  .ftbtncancel{
+                        margin: 0;
+                        background: #fff;
+                        border-color: #000;
+                        width: 70px;
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: #000;
+                        text-align: center;
+                        border-radius: 4px;
+                        cursor: pointer;
+                  }
+                  .ftbtnsave{
+                        margin: 0;
+                        background: #000;
+                        border-color: #000;
+                        width: 70px;
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: #fff !important;
+                        text-align: center;
+                        border-radius: 4px;
+                        cursor: pointer;
+                  }
+            }
+            button{
+                  cursor: pointer;
+            }
+            
+      }
+
+      .closeButton {
+            border: 1px solid #d2d3d4;
+            height: 24px;
+            width: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: #f0f1f2;
+
+            svg {
+                  width: 16px;
+                  height: 16px;
+                  cursor: pointer;
+            }
+      }
+
+      .thanksu {
+            border-radius: 12px;
+            border: 1px solid var(--iCon-iCon-Primary, #00B885);
+            background: var(--Color-Brand-Green-Green-25, #F0FAF7);
+            padding: 12px;
+            box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            text-align: center;
+            margin: 6px 16px 12px;
+
+      }
+};
+
+.reqError {
+      font-size: 13px;
+      margin-left: 18px;
+      color: red;
+}
+// .chatbodyformcsatscroll{
+    
+      
+//       .scroller.chatbotformtitle {
+            
+//             top: 15px !important;
+           
+//       }
+// }
+
+.ratinglabeltxt {
+      color: var(--Text-Sub-Title, #757676);
+
+      font-family: "interregular";
+      font-size: 12px;
+
+    }

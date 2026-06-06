@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Manrope:wght@200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+$screen-big1699: 1699px;
+$screen-big1599: 1599px;
+$screen-big1399: 1399px;
+$screen-big1199: 1199px;
+$screen-big1023: 1023px;
+$screen-big900: 900px;
+$screen-big800: 800px;
+$screen-big767: 767px;
+$screen-big700: 700px;
+$screen-big600: 600px;
+$screen-big575: 575px;
+$screen-big400: 400px;
+$screen-big640: 640px;
+
+// Big1
+@mixin big01 {
+  @media (max-width: #{$screen-big1699}) {
+    @content;
+  }
+}
+// Big1
+@mixin big1 {
+  @media (max-width: #{$screen-big1599}) {
+    @content;
+  }
+}
+// Big2
+@mixin big2 {
+  @media (max-width: #{$screen-big1399}) {
+    @content;
+  }
+}
+// Big3
+@mixin big3 {
+  @media (max-width: #{$screen-big1199}) {
+    @content;
+  }
+}
+// Big4
+@mixin big4 {
+  @media (max-width: #{$screen-big1023}) {
+    @content;
+  }
+}
+// Big5
+@mixin big5 {
+  @media (max-width: #{$screen-big900}) {
+    @content;
+  }
+}
+// Big6
+@mixin big6 {
+  @media (max-width: #{$screen-big767}) {
+    @content;
+  }
+}
+// Big7
+@mixin big7 {
+  @media (max-width: #{$screen-big575}) {
+    @content;
+  }
+}
+
+// Big1
+@mixin hbig1 {
+  @media (max-height: #{$screen-big900}) {
+    @content;
+  }
+}
+// Big1
+@mixin hbig2 {
+  @media (max-height: #{$screen-big800}) {
+    @content;
+  }
+}
+// Big2
+@mixin hbig3 {
+  @media (max-height: #{$screen-big700}) {
+    @content;
+  }
+}
+// Big3
+@mixin hbig4 {
+  @media (max-height: #{$screen-big640}) {
+    @content;
+  }
+}
+
+// Main Variables
+
+$black: #fff;
+$logogreen: #02e79e;
+$buttonGreen: #00d499;
+$buttonGreenHover: #00b885;
+$buttonTextColor: #252625;
+$buttonWhite: #fff;
+$buttonWhiteHover: #00d499;
+$buttonTextColor: #252625;
+
+:root {
+  --widgetIconpostion: flex-start;
+  --widgetBorderRadius: 25px;
+  --widgetIconShape: 24px;
+  --widgetHeaderBG: #5b55ff;
+  --widgetChatMessageColor: #e3e4e5;
+  --widgetChatCustomerMessageColor: #e2e2fa;
+  --widgetActionMessageColor: #fa6e8f;
+  --widgetPreviewFont: "interregular";
+  --widgetStatusColor: "#5B55FF";
+  --widgetStatusBorderColor: "#5B55FF";
+  --widgetagentStatusTableColor: "#575CFF";
+  --widgetdispositionLinkColor: "#575CFF";
+  --widgetDeleteDispositionStatus: "#5B55FF";
+}
+
+body {
+  font-size: 14px;
+  overflow: hidden;
+  line-height: 24px;
+
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin: 1rem 0 2rem;
+}
+h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+h5 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
