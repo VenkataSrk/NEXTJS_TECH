@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>Template</title>
+
+    <style>
+        .submitbtn {
+            min-width: 60px;
+            border-radius: 6px;
+            border: 1px solid var(--border-line, #D2D3D4);
+            background: var(--Full-White, #FFF);
+            color: black;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        .okbtn {
+            min-width: 60px;
+            border-radius: 6px;
+
+            background: black;
+            color: #fff;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        .checkboxcontainercsass {
+            display: block;
+            position: relative;
+            padding-left: 28px;
+            cursor: pointer;
+            font-size: 14px;
+            user-select: none;
+            color: #000000;
+            margin: 0;
+            font-family: sans-serif;
+            line-height: normal;
+            margin-bottom: 12px;
+
+        }
+
+        input[type="radio"] {
+            accent-color: #009d72;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .checkboxcontainercsass input {
+
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+
+        }
+
+        .checkmarkcsaas {
+            position: absolute;
+            top: -1px;
+            top: 1px;
+            left: 0;
+            height: 12px;
+            width: 12px;
+            border: 1px solid #757676;
+            border-radius: 4px;
+            margin: 0;
+        }
+
+        .checkboxcontainercsass input:checked~.checkmarkcsaas {
+            background-color: #00b885;
+        }
+
+        .checkboxcontainercsass .checkmarkcsaas:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkboxcontainercsass input:checked~.checkmarkcsaas:after {
+            display: block;
+        }
+
+        .checkboxcontainercsass .checkmarkcsaas:after {
+            left: 4px;
+            top: 0px;
+            width: 2.5px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 22px;
+            min-width: 36px;
+            margin: 0 !important;
+
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+        }
+
+        .switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.4s;
+        }
+
+        .switch input:checked+.slider {
+            background-color: #00b885;
+        }
+
+        .switch input:focus+.slider {
+            box-shadow: 0 0 1px #00b885;
+        }
+
+        .switch input:checked+.slider:before {
+            transform: translateX(14px);
+        }
+
+        .switch .slider.round {
+            border-radius: 34px;
+            margin: 0;
+        }
+
+        .switch .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+    <style>
+        .rating {
+            display: flex !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            font-family: Arial, sans-serif !important;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #ccc;
+            /* Color of the empty star */
+            display: block;
+        }
+
+        .rating input:checked~label,
+        .rating input:checked~label~label {
+            color: #f5b301;
+            /* Color of the filled stars */
+        }
+
+        .rating input:checked~label {
+            color: #f5b301;
+            /* Color of the filled stars */
+        }
+
+        .rating input:hover~label,
+        .rating label:hover,
+        .rating label:hover~label {
+            color: #f5b301;
+            /* Color when hovering over the star */
+        }
+
+        .rating-text {
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+    </style>
+    <style>
+        .rating a {
+            text-decoration: none;
+            /* Remove the blue underline */
+        }
+
+        .rating a label {
+            color: black;
+            /* Set the color for the star */
+            font-size: 26px;
+        }
+
+        .rating a:hover label {
+            color: gold;
+        }
+
+        .rating-text {
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        function selectRating(stars) {
+            alert('You selected ' + stars + ' stars');
+            document.getElementById('survey-form').style.display = 'block';
+        }
+
+        function submitSurvey() {
+            alert('Survey submitted!');
+            // Here you can add code to process and send the survey data
+        }
+    </script>
+
+
+
+
+</head>
+
+<body style="Margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif;">
+    <table width="100%" bgcolor="#f5f5f5" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td align="center" style="padding:20px 0;">
+                <!-- Container -->
+                <table width="600" cellpadding="0" cellspacing="0" border="0"
+                    style="background:#ffffff;border:1px solid #ccc;border-collapse:collapse;">
+                    <tr>
+                        <td style="padding:0;">
+                            <div style="height:6px;background:#00e2a4;"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="background:#000000;padding:12px 0;">
+                            <img src="https://hs-6702071.f.hubspotfree.net/hub/6702071/hubfs/Worktual_Logo.png?upscale=true&amp;width=360&amp;upscale=true&amp;name=Worktual_Logo.png"
+                                alt="worktual-logo">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:24px 20px 20px 20px;font-size:16px;color:#000000;line-height:1.5;">
+                            {{content}}
+                        </td>
+                    </tr>
+
+                    <!-- CSAT Block -->
+                    <tr>
+                        <td align="center" style="padding: 20px; font-size: 16px; color: #000000;">
+                            <table cellpadding="0" cellspacing="0" border="0"
+                                style="border: 1px solid #ccc; border-radius: 8px; padding: 15px; border-collapse: separate;">
+                                <tr>
+                                    <td align="center" width="20%">
+                                        
+                                    </td>
+                                    <td align="center" width="60%" style="text-align: center;">
+                                        <p style="margin: 0 0 15px;">Please rate your satisfaction with us</p>
+
+                                        <table cellpadding="0" cellspacing="0" border="0" style="margin: auto;">
+                                            <tr>
+                                                <td align="center" style="padding:5px;">
+                                                    <a href="{{csat_link}}&star=1"
+                                                        style="text-decoration:none;font-size:24px;color:#999;">★</a>
+                                                </td>
+                                                <td style="width:8px;"></td>
+                                                <td align="center" style="padding:5px;">
+                                                    <a href="{{csat_link}}&star=2"
+                                                        style="text-decoration:none;font-size:24px;color:#999;">★</a>
+                                                </td>
+                                                <td style="width:8px;"></td>
+                                                <td align="center" style="padding:5px;">
+                                                    <a href="{{csat_link}}&star=3"
+                                                        style="text-decoration:none;font-size:24px;color:#999;">★</a>
+                                                </td>
+                                                <td style="width:8px;"></td>
+                                                <td align="center" style="padding:5px;">
+                                                    <a href="{{csat_link}}&star=4"
+                                                        style="text-decoration:none;font-size:24px;color:#999;">★</a>
+                                                </td>
+                                                <td style="width:8px;"></td>
+                                                <td align="center" style="padding:5px;">
+                                                    <a href="{{csat_link}}&star=5"
+                                                        style="text-decoration:none;font-size:24px;color:#999;">★</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" style="font-size:10px;padding-top:5px;">Very Bad</td>
+                                                <td></td>
+                                                <td align="center" style="font-size:10px;padding-top:5px;">Bad</td>
+                                                <td></td>
+                                                <td align="center" style="font-size:10px;padding-top:5px;">Neutral</td>
+                                                <td></td>
+                                                <td align="center" style="font-size:10px;padding-top:5px;">Good</td>
+                                                <td></td>
+                                                <td align="center" style="font-size:10px;padding-top:5px;">Very Good
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                    <td align="center" width="20%">
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+
+                    <!-- End CSAT Block -->
+
+                </table>
+                <!-- End Container -->
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

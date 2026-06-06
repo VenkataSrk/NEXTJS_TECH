@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "unifiedring",
+  "private_key_id": "233e63ee5d2bd7f976577009eb9a10695d57a14a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCsE4VTnbDADi9g\nNFMEiaAIzWkMXeGcd/GKagwZntuztSgfTUSWO8BIuREhFKkUDzvErW5/Dkt6HV+/\nRYcOULZ7ebW958rIeOkZXTLacaVgFNTzkrvBxvxcseSm8YLoQBmXuxD2lO2NtsnD\nRz2P3+SkgIX4pc6NNxBm9vR6L+xT6TGXfsyl1ahdh801ltusWQTL8KzEU8BgmFvA\n6v+ngJaqqltDzi7Cafqxxl0jrKbAsBiK0cOg/WdgtOQ0mH3D/h4FPmbQXxGdpnUi\nnPoBLb6ivez4g+jyCdCRIR+7cos0xLBtsIlZd2o9BFcwKdvivbDnsD+rT4iB/FSY\n314fHdNxAgMBAAECggEAAScUUo4Q3Ah8SsGu+K3PU5/En1+Vnk2zYYD6WcWVpSuG\nfEcxOWxnClWrBrSzuT2s4dFjlxhKayP9OzPFBtSFlGgpTn9Z/WPJ8/CK4am3OOCK\n2KLX/SFPGXPbmz6s6M9dHIYVRAGVYciiq1szz13pkyyFOTgrHQkMZBQtaRAfHiTD\n7a3tbclBfcPK0RGUK6dlOrf0aWr3eEdAobq6kB47A5F+DJA8tLydPTM/gxYlultP\nr8VOlRiQtljg4viQRHFDAM2zKcXPjo+kWdnVO0scuPCREKXWX0P1TMIoCk29Awjy\n3djr0MvuShHDtsKlWMl2iZ/wB6sOm+NIhZVfjxzG7QKBgQDhFEQWEUAAMtNLSag1\nnphO0wO42SuUhQM5LKZ4Xi6+unp2HMA7UDaE9xrlA7x+y4UFmRrdQ/ELbXFnXNJl\nLIJ1GDJZX99RnmFin4QHx/pDTy5KyHy8LHOg9UyNgvVYxXVdzZiVSItEwrRqrHWI\n5kEXk3lu0zA5s7IyY/z0fHogkwKBgQDDtzaRbR1eGHZa7p4JDWw5HPkfb+SXmK7Y\nh8+6sT1bQ0gG8T0HSccCX/+cFaPfWpzDAXaMUwx4k0iZgTTBHeFzPRxmYoTOW9+o\nF7EZOGrfA4B4E4LKKRyP/h2U3jseKDB5O1VhR017MyMl8Irbxcg35I59Gfd+EpSJ\ngCvOPGSyawKBgEgWc5AVykfF/4J3ftZdiy6DywdjFuAkkdm4AUE/+PzBQQOfRbo5\ngJypgAWlYrPBf0NBvCbt4b/lN5MBWalpzgauz0FswVukvFAYAvNzCyaPr6Xn/HtQ\nSWBd8DzKmsXpyCNY++ukJmbJbXtU7PgBtwtUAmqKXUG92e7ls1iinYLdAoGAaK7g\noxyH7sKK28xx/0mMr2fN4IDK9kMWkn7iH2uZ8+yi5AO4ruNJbP3IDMaOZnNjEfMA\nY8IwE3ZECMdRXlILOsZfIGxluLLviEtT0LeagjqvRoq5FES1IFe9ntjXKiQ4+T9B\nRc0LpnANxsdInpDFrQ+1Hzj6ZhauGHXT+HXZLo0CgYA14cW+S11jm45Ns5E3ypdu\nScq1LHj2vCwXt4JB6LiOWIdmsrXCFJz0dBxnU3xqZ4ESsc0zvWZqk/CNMDfsLqBp\nfacW2hMBjxyjAwB+fDnma6uqiPHHyt2enb4FricRqRBmb0JPBcgjUAJir+mURyEb\nIbXIKV7Z/T1a13ggT2jobQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-admin@unifiedring.iam.gserviceaccount.com",
+  "client_id": "102561833037641789149",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-admin%40unifiedring.iam.gserviceaccount.com"
+}

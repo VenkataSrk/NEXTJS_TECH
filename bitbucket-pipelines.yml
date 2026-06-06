@@ -1,0 +1,134 @@
+pipelines:
+  custom:
+    module-name:
+      - variables:
+        - name: module_name
+      - step:
+          script:
+          - echo "No pre-requisites found"
+      - step:
+          name: Create docker image
+          trigger: manual
+          script: 
+          - image_name=$(echo $module_name | cut -f1 -d'_')
+          - echo "CD into core-service"
+          - cd $module_name
+          - |
+
+            if [ "$module_name" == "worker_service" ]; then
+
+              echo "Applying sed changes for worker_service"
+
+              sed -i 's|CMD \[ *"yarn", *"start" *\]|CMD ["yarn","dev"]|' Dockerfile
+            fi
+
+            if [ "$module_name" == "audiocc" ]; then
+              echo "Applying sed changes for audiocc"
+    
+              sed -i 's|CMD \[ *"yarn", *"start" *\]|CMD ["yarn","dev"]|' Dockerfile
+            fi
+
+            if [ "$module_name" == "presence_service" ]; then
+              echo "Applying sed changes for audiocc"
+    
+              sed -i 's|CMD \[ *"yarn", *"start" *\]|CMD ["yarn","dev"]|' Dockerfile
+            fi
+
+            if [ "$module_name" == "email_service" ]; then
+              echo "Applying sed changes for audiocc"
+    
+              sed -i 's|CMD \[ *"yarn", *"start" *\]|CMD ["yarn","dev"]|' Dockerfile
+            fi
+
+            if [ "$module_name" == "whatsapp_service" ]; then
+              echo "Applying sed changes for audiocc"
+    
+              sed -i 's|CMD \[ *"yarn", *"start" *\]|CMD ["yarn","dev"]|' Dockerfile
+            fi
+
+            if [ "$module_name" == "sms_service" ]; then
+              echo "Applying sed changes for audiocc"
+    
+              sed -i 's|CMD \[ *"yarn", *"start" *\]|CMD ["yarn","dev"]|' Dockerfile
+            fi			
+
+          #- sed -i "s/RUN yarn install = \"\"/RUN yarn install = \"${RUN yarn install --ignore-engines}\"/" Dockerfile
+          - echo "Creating docker image"
+          - docker build -t $module_name:$BITBUCKET_BUILD_NUMBER .
+          - echo "Save and Archive created docker image"
+          - docker tag $module_name:$BITBUCKET_BUILD_NUMBER registry.worktual.com/dev-team/qa-$image_name-service:$BITBUCKET_BUILD_NUMBER
+          - echo "Login to docker registry"
+          - docker login -u admin -p Harbor12345 registry.worktual.com 
+          - echo "Push to docker registry"
+          - docker push registry.worktual.com/dev-team/qa-$image_name-service:$BITBUCKET_BUILD_NUMBER
+          services:
+          - docker
+          size: 2x
+      - step:
+          name: Deploy docker image to Kubernetes Cluster 82.113.92.160
+          runs-on:
+          - linux.shell
+          - self.hosted
+          script:
+          - echo "Deploy the Docker image to 82.113.92.160"
+          - >
+            if [ $module_name == "call_service" ]; then
+               ssh -o StrictHostKeyChecking=no -p 4204  root@82.113.92.160 'bash /home/qaaiccaas/qa-call-service.sh' $BITBUCKET_BUILD_NUMBER
+               
+            elif [ $module_name == "core_service" ]; then
+               ssh -o StrictHostKeyChecking=no -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/qa-core-service.sh' $BITBUCKET_BUILD_NUMBER
+               
+            elif [ $module_name == "reports_service" ]; then
+               ssh -o StrictHostKeyChecking=no -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/qa-reports-service.sh' $BITBUCKET_BUILD_NUMBER
+               
+            elif [ $module_name == "worker_service" ]; then
+               ssh -o StrictHostKeyChecking=no -p 4204  root@82.113.92.160 'bash /home/qaaiccaas/qa-worker-service.sh' $BITBUCKET_BUILD_NUMBER
+            elif  [ $module_name == "email_service" ]; then 
+               ssh -o StrictHostKeyChecking=no -p 4204  root@82.113.92.160 'bash /home/qaaiccaas/qa-email-service.sh' $BITBUCKET_BUILD_NUMBER 
+               
+            elif  [ $module_name == "socket_service" ]; then 
+               ssh -o StrictHostKeyChecking=no -p 4204  root@82.113.92.160 'bash /home/qaaiccaas/qa-socket-service.sh' $BITBUCKET_BUILD_NUMBER
+               
+               
+            elif  [ $module_name == "presence_service" ]; then 
+               ssh -o StrictHostKeyChecking=no -p 4204  root@82.113.92.160 'bash /home/qaaiccaas/qa-presence.sh' $BITBUCKET_BUILD_NUMBER
+                              
+               
+            elif  [ $module_name == "socialmedia_service" ]; then 
+               ssh -o StrictHostKeyChecking=no -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/qasocial-service.sh' $BITBUCKET_BUILD_NUMBER
+                              
+               
+            elif  [ $module_name == "presence_service" ]; then 
+               ssh -o StrictHostKeyChecking=no -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/qa-presence.sh' $BITBUCKET_BUILD_NUMBER
+                                     
+               
+            elif [ $module_name == "auth_service" ]; then
+               ssh -o StrictHostKeyChecking=no -p 4204  root@82.113.92.160 'bash /home/qaaiccaas/qa-urauth.sh' $BITBUCKET_BUILD_NUMBER
+            elif  [ $module_name == "sms_service" ]; then 
+               ssh -o StrictHostKeyChecking=no -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/qa-sms.sh' $BITBUCKET_BUILD_NUMBER
+               
+ 
+             elif  [ $module_name == "whatsapp_service" ]; then 
+               ssh -o StrictHostKeyChecking=no -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/qa-whatsapp.sh' $BITBUCKET_BUILD_NUMBER
+               
+ 
+            elif [ $module_name == "videomeet_service" ]; then
+               ssh -o StrictHostKeyChecking=no -p 4204  root@82.113.92.160 'bash /home/qaaiccaas/videomeet_service.sh' $BITBUCKET_BUILD_NUMBER 
+               
+            elif [ $module_name == "homecare_service" ]; then
+               ssh -o StrictHostKeyChecking=no -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/homecare_service.sh' $BITBUCKET_BUILD_NUMBER 
+               
+
+            elif [ $module_name == "audiocc" ]; then
+               ssh -o StrictHostKeyChecking=no  -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/qa-audiocc.sh' $BITBUCKET_BUILD_NUMBER 
+                
+            elif [ $module_name == "notification_service" ]; then
+               ssh -o StrictHostKeyChecking=no -p 4204 root@82.113.92.160 'bash /home/qaaiccaas/ccaas-notifi.sh' $BITBUCKET_BUILD_NUMBER 
+
+
+
+            fi
+definitions:
+  services:
+    docker:
+      memory: 4096

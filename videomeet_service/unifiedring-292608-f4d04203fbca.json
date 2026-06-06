@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "unifiedring-292608",
+  "private_key_id": "f4d04203fbcae61c817f897840f219e4c9ab10a3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCJuSMrbOxi/c/h\nNoi9m8Lq7wxSOQfZ+fn6Nul/hNAf/8V8lTPHmBNrU69On7xxH7GNuFxRZEEggpIQ\nSuVF2axIkgQw5mqMTpnb4EHttSs8Ht71KlCeIaJvFR+R21wWtPemmQl7ThZzW2cL\nObUKOtu5NUXiyc+MSioYZCJMT82EA4P+r601sSO+8T+znuMVHZp6ORnV3FqjK4L3\naX8k+N6Jzh3jiO7CYDQJnMgYeqp7fEzVQuGD8dC++la+bURanH/iNDIHgSay/poY\nrnOr4bx+p1w/e6RX1UMXrgC6uJA6ey6vRcwCWcwtU1RawmqNxeBA1eZdTYcj7tO8\nv1VczVkFAgMBAAECggEAC8s9MgeQobSLFAX7xUL8uOoyM6tbGwVPbSg9LDSnLwpT\n8uSDC+VfylnfAhxnQoe8iH6gdz7e3eYYlIkZY7ctjARnE/nzZ2MGxX/JnY3dbzdU\nkAmo4DXQp3MXYkH2+6HRMGTcHUFVZlkONLWjJYZfURe5DaALJEAopTCUCFVwK80S\nHAcxkKIPYzwGL74a5st1TCgU7fTERvjXTMJVcsDecUP4KL65nWLams387lFEzcou\nBHfv1sMlPxCN0Xw3InJMj1HoWE70HHWt9bUhjoVlrTFmNWNxgiaxfCCAR/JGy+Ni\nzn08tjwSneP/Jn+nvqv06ukNfqKWK39Ur3M8OPYJQQKBgQC92JMH+BxBYVzC9jI2\nP9NqiTnhNIkWntRlZ0dw2YPTLeSR532C8ptyQweJ16JTouDkHPrXCKGeN3NI2SlX\nUobdWi3bVTE8V5nw0q+tK8X16GLqDFYq0PdgwRQJRxzI5lPyhDXCdrW4AfsSkgc7\nrY+LE70L4KSQ8qPFt9IR7BpSxQKBgQC5tuPRJBmk8Y64e5boV4OicKHAz4BA9hd+\nYA+G4lXkYv96u4RLaKiOYjz9vY6zU6z9p+V/5U+JG4htlOQbb9xMEzUexlLFIMyt\naBxYJulUFyi6dn1AzQYn0T+BfrCxdeB6YXS43bj/883NvbOLAJEIeFQCJs9PQEQf\n2mUYpRZRQQKBgQC6LnuDhT+wnttqGCiGK3IbORkaU3teQ8Xo7LCTa75sjMVskan1\nkhgAptvtwxvfCg2jqQgXes+FarwU5WQ1zymUS6xNPe9bTk4ab4T6P8OUtqLLBe47\nb1Qr/y63KpaAL+KEJETUwbbVDpw8Shnt3Pi5XFI6I8VAobUbYnsSOIpYQQKBgQCP\nQyKjJ3IQ57btYYmcWkZVfQWKs4eAlVaySnAv4VHZCPWEPDtl4KqGjAn4w83dUGNW\nmbpU2xRr9C1eO0lsUPJkTTzhLKSVJSQ/cNzMs9ey4tqsXNNqtb5V4PlYb97mRsSQ\nI7XjFkesSussF3b1d85p9kj4D/BEdpMW72aliFSbAQKBgG33j9HwzRAkniTYmTNh\nrI2wDJqoxxV8qLxXJWxK8KRzT74AFRjvetUdiYE+B4XXgSqNtXFyy9ZycI8cvepy\nIVHR3elRyGuRzGVum62F7BvnNbs6tlGBxfuiJDnErnoFw4y6PkxchYIImT3LoSum\n/6Q4jl3hT3ljKy2JR6grJUPf\n-----END PRIVATE KEY-----\n",
+  "client_email": "unifiedring@unifiedring-292608.iam.gserviceaccount.com",
+  "client_id": "100224277684731371858",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/unifiedring%40unifiedring-292608.iam.gserviceaccount.com"
+}
