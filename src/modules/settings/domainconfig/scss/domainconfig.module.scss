@@ -1,0 +1,174 @@
+@use '../../../../styles/mixin' as mx;
+
+
+.topheading {
+    @include mx.topheading;
+}
+
+.innerbody {
+    // padding: 16px 0;
+
+    .headerarea {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 32px;
+
+        .lefts {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            h5 {
+                color: #000;
+                font-family: "interregular";
+                font-size: 20px;
+
+            }
+
+            p {
+                color: #404040;
+                font-family: "interregular";
+                font-size: 14px;
+
+            }
+        }
+    }
+
+    .statuselem {
+        display: inline-flex;
+        padding: 4px 12px;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 24px;
+        font-family: 'intersemibold';
+        font-size: 12px;
+        line-height: 161%;
+         white-space: nowrap;
+
+        &.working {
+            color: #0A3405;
+            border: 1px solid #136809;
+            background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+        }
+
+        &.pending {
+            color: #2C2E80;
+            border: 1px solid #2C2E80;
+            background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+        }
+
+
+    }
+
+    .modalbtn {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: start;
+    }
+
+}
+
+.modalform {
+    max-width: 100% !important;
+
+    .row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+.cardalongwithclipboard {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #D2D3D4;
+
+    .table {
+
+        .thead,
+        .trow {
+            display: flex;
+            margin-bottom: 12px;
+            gap: 16px;
+
+            .bold {
+                color: #212121;
+                font-family: "intersemibold";
+                font-size: 14px;
+
+            }
+
+            .td {
+                width: 45%;
+                overflow: hidden;
+                max-width: 45%;
+
+                display: flex;
+                justify-content: start;
+
+                &:first-child {
+                    width: 10%;
+                }
+            }
+        }
+
+    }
+}
+
+.configcard {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #D2D3D4;
+
+    .block {
+        display: flex;
+        gap: 6px;
+        flex-direction: column;
+
+        h5 {
+            color: #212121;
+            font-family: "interregular";
+            font-size: 14px;
+
+        }
+
+        p {
+            color: #212121;
+            font-family: "interregular";
+            font-size: 13px;
+
+        }
+    }
+}
+
+.pointed {
+    color: #212121;
+    font-family: "interregular";
+    font-size: 14px;
+
+}
+
+.linkspan {
+    display: flex;
+    align-items: center;
+    border-radius: 24px;
+    background: #F7F7F7;
+    padding: 4px 10px;
+
+    svg {
+        cursor: pointer;
+    }
+
+    width: 100%;
+
+    .link {
+        width: calc(100% - 20px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 13px;
+        font-family: "interregular";
+    }
+}

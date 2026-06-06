@@ -1,0 +1,31 @@
+@use '../../../../styles/mixin' as mx;
+
+
+.topheading {
+    @include mx.topheading;
+}
+.apiconfigsec{
+    .apisectop{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        .toplefts{
+            h4{
+                display: flex;
+                max-width: 377px;
+                padding-bottom: 5px;
+                align-items: flex-start;
+                align-self: stretch;
+                font-family: 'intersemibold';
+                font-size: 21px;
+                line-height: 133%;
+            }
+            p{
+                font-family: 'interregular';
+                font-size: 13px;
+                line-height: 161%;
+            }
+        }
+    }
+}

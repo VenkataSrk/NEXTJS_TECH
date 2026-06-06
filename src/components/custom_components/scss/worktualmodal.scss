@@ -1,0 +1,77 @@
+@use '/src/styles/mixin' as mx;
+@use '/src/styles/variable' as vb;
+
+
+.modalview{
+    position: fixed;
+    background-color: vb.$modalbgcolor;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+
+    @include vb.big4{
+        padding: 0 16px;
+    }
+    .modalcontainer{
+        background-color: #fff;
+        min-height: 112px;
+        border-radius: 6px;
+        padding: 24px 0;
+        width: 100%;
+        .modalheader{
+            position: relative;
+            padding: 0 24px 24px;
+            h2{
+                font-size: 18px;
+                font-family: 'intermedium';
+                width: calc(100% - 50px);
+            }
+            .modelclose{
+                position: absolute;
+                right: 24px;
+                top: 4px;            
+                cursor: pointer;
+                opacity: 0.5;
+                transform: scale(1);
+                transition: 0.1s ease;
+                &:hover{
+                    opacity: 1;
+                    transform: scale(1.1);
+                }
+            }
+        }
+        .modalbody{
+            padding: 0 24px;
+               max-height: calc(100vh - 392px);
+            overflow: auto;
+        }
+        .modalfooter{
+            padding: 24px 24px 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}
+
+// modal sizes
+.modalsm{
+    max-width: 576px;
+}
+.modalmd{
+    max-width: 767px;
+}
+.modallg{
+    max-width: 1024px;
+}
+.modalxl{
+    max-width: 1199;
+}
+.modalxxl{
+    max-width: 80%;
+}
+.modalrow{
+    margin-bottom: 16px;
+}

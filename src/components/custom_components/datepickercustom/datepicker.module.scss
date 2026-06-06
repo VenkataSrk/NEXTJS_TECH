@@ -1,0 +1,154 @@
+@use '../../../styles/mixin' as mx;
+@use '../../../styles/variable' as vb;
+.wrapper {
+  position: relative;
+ 
+  font-family: Inter, sans-serif;
+}
+
+.inputBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.icon {
+  font-size: 16px;
+}
+
+.value {
+  flex: 1;
+  font-size: 13px;
+  color: #222;
+  font-family: 'intermedium';
+}
+
+.arrow {
+  font-size: 12px;
+}
+
+.dropdown {
+  position: absolute;
+    top: 46px;
+    left: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 14px;
+    z-index: 9999;
+    width: 100%;
+    min-width: 348px;
+    overflow: scroll;
+    scrollbar-width: thin;
+    overflow-x: hidden;
+    @include vb.hbig2{
+            max-height: 308px;
+    }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  align-items: center;
+  padding: 0px 0px 16px;
+  
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.week, .grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+      font-size: 12px;
+    place-items: center;
+}
+
+.week {
+  margin: 10px 0;
+  font-size: 12px;
+  color: #999;
+}
+
+.day {
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+
+  &:hover {
+    color: #000;
+    background: #f3f3f3;
+  }
+}
+
+.fade {
+  color: #ccc;
+}
+
+.range {
+  background: #f1f3f5;
+  border-radius: 0;
+}
+
+.start, .end {
+  background: #000;
+  color: #fff;
+  &:hover{
+      background: #000 !important;
+  color: #fff !important;
+  }
+}
+
+.inputs {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+
+  label {
+    font-size: 14px;
+    color: #666;
+  }
+
+  input {
+    width: 100%;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 12px;
+    margin: 8px 0 0;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel {
+  background: none;
+  border: none;
+  color: #666;
+}
+
+.apply {
+  cursor: pointer;
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 14px;
+}

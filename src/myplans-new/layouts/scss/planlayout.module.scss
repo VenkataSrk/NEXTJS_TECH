@@ -1,0 +1,122 @@
+.layoutmain {
+    display: flex;
+    height: 100vh;
+    background: #F7F7F7;
+
+    .layoutsidebarleft {
+        width: 230px;
+
+        .logo {
+            background-color: #000;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 16px;
+        }
+
+        .maintitle {
+            color: #000;
+            font-size: 16px;
+            font-family: "intersemibold";
+            line-height: 24px;
+            display: flex
+        ;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            margin: 24px 0 0;
+            cursor: pointer;
+        }
+
+        .layoutmenu {
+            max-height: calc(100vh - 137px);
+            overflow: auto;
+            .layoutmenutitle {
+                color: #000;
+                font-size: 16px;
+                font-family: 'intersemibold';
+                line-height: 24px;
+                padding: 10px 16px;
+                margin: 12px 0 0;
+            }
+
+            .layoutsubmenu {
+                color: #000;
+                font-size: 14px;
+                font-family: 'interregular';
+                line-height: 18px;
+                padding: 10px 24px;
+                border-left: 3px solid transparent;
+                cursor: pointer !important;
+                font-family: 'Inter';
+
+
+                &.active {
+                    border-left: 3px solid #000;
+                    background-color: #F0F1F2;
+                }
+            }
+        }
+    }
+
+    .layoutcentered {
+        width: calc(100% - 222px);
+        position: relative;
+
+        .layoutcenteredtop {
+            height: 68px;
+        }
+
+        .layoutcenteredbottom {
+            border-radius: 16px;
+            background: #FFF;
+            box-shadow: -2px 2px 4px 0 rgba(217, 217, 217, 0.12);
+            // min-height: calc(100vh - 116px);
+            overflow-y: scroll;
+            padding: 24px;
+            height: calc(100vh - 203px);
+            margin: 24px 24px 0 0;
+        }
+    }
+}
+  .searchconvo {
+            background-color: #FFF;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding-right: 28px;
+
+            .layoutbtn {
+                border: 1px solid transparent;
+                background: linear-gradient(180deg, #FFF 0%, #FAFFFE 100%) padding-box, linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335) border-box !important;
+                border-radius: 100px;
+                width: fit-content;
+                padding: 3px 20px 3px 13px;
+                height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                .icontb {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    p {
+                            margin: 0;
+                            color: #000;
+                            font-family: 'Inter';
+                            font-size: 16px;
+                            font-style: normal;
+                            font-weight: 500;
+                            line-height: 18px;
+                        }
+                    }
+            }
+        }

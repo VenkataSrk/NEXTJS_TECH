@@ -1,0 +1,51 @@
+@use '../../../../../styles/mixin' as mx;
+@use '../../../../../styles/variable' as vb;
+
+.topheading {
+    @include mx.topheading;
+}
+.header{
+      display: flex;
+            justify-content: space-between;
+            padding: 26px 0 21px 0;
+          
+            align-items: center;
+                position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 9;
+}
+.notescard{
+    border-radius: 13px;
+background: #404040;
+padding: 16px;
+margin-top: 16px;
+p{
+    color: #F2F2F2;
+font-family: "interregular";
+font-size: 16px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+
+}
+}
+.txtcont{
+    color: #404040;
+font-family: "interregular";
+font-size: 13px;
+
+}
+
+ .overallbody {
+     width: 100%;
+     height: calc(100vh - 113px);
+      padding: 0px 16px 16px 16px;
+     overflow-y: auto;
+     overflow-x: hidden;
+     margin: auto;
+     padding-bottom: 110px;
+     .maincontainer{
+        max-width: 798px;
+        margin: auto;
+     }
+ }

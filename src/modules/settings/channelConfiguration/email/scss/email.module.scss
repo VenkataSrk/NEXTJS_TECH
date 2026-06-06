@@ -1,0 +1,64 @@
+@use '../../../../../styles/mixin' as mx;
+@use '../../../../../styles/variable' as vb;
+
+.topheading{
+    @include mx.topheading;
+}
+.emailaddressmodal{
+    .row{
+            padding: 16px;
+        &:hover{
+            background: #F7F7F7;
+            cursor: pointer;
+        }
+        .block{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+         
+            .info{
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                h6{
+                    color: #000;
+font-family: "interregular";
+font-size: 14px;
+
+
+                }
+                p{
+color: #000;
+font-family: "interregular";
+font-size: 11px;
+
+                }
+            }
+        }
+    }
+}
+ .overallbody {
+     width: 100%;
+     height: calc(100vh - 113px);
+      padding: 0px 16px 16px 16px;
+     overflow-y: auto;
+     overflow-x: hidden;
+     margin: auto;
+    .emailsec{
+       width: 100%;
+       max-width: 798px;
+       margin: auto;
+    }
+ 
+ }
+ .header{
+      display: flex;
+            justify-content: space-between;
+            padding: 26px 0 21px 0;
+          
+            align-items: center;
+                position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 9;
+}

@@ -1,0 +1,127 @@
+.custom-number-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-number-input {
+  width: 100%;
+  padding: 10px 36px 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+
+  // Completely hide default arrows
+  -moz-appearance: textfield; // Firefox
+  -webkit-appearance: none;   // Chrome, Safari
+  appearance: none;
+
+  // Remove spin buttons in WebKit (Chrome/Safari)
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    display: none;
+  }
+
+  // For Firefox (still needs appearance: textfield above)
+  &:focus,
+  &:hover {
+    outline: none;
+  }
+}
+
+.customArrows {
+  position: relative;
+
+  .up {
+    position: absolute;
+    left: 74px;
+    top: -42px;
+    cursor: pointer;
+  }
+
+  .down {
+    position: absolute;
+    left: 73px;
+    top: -26px;
+    cursor: pointer;
+  }
+}
+.custom-number-input {
+  // Remove default browser styling
+  appearance: textfield;
+  -webkit-appearance: none; // Chrome/Safari
+  -moz-appearance: textfield; // Firefox
+
+  // Optional styles
+  width: 100%;
+  padding: 10px 36px 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+
+  // ✅ Remove spin buttons in all states
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    display: none !important; // <--- Ensure they are hidden
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  // Ensure no arrows appear on hover or focus
+  &:hover,
+  &:focus {
+    outline: none;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      display: none !important;
+    }
+  }
+}
+.customNumberInput {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+
+  // Other styling
+  width: 100%;
+  padding: 10px 36px 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+
+  // ✅ Hide browser arrows completely
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+    display: none !important;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  &::placeholder {
+    color: #ccc;
+  }
+
+  &:hover,
+  &:focus {
+    outline: none;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      display: none !important;
+    }
+  }
+}
+

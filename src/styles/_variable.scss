@@ -1,0 +1,61 @@
+
+
+$screenbig1440: 1440px;
+$screenbig1200: 1200px;
+$screenbig1024: 1024px;
+$screenbig768: 768px;
+$screenbig576: 576px;
+$screenbig600: 600px;
+$screenbig780: 780px;
+
+
+
+@mixin big1 {
+    @media (max-width: #{$screenbig1440}) {
+        @content;
+    }
+}
+@mixin big2 {
+    @media (max-width: #{$screenbig1200}) {
+        @content;
+    }
+}
+@mixin big3 {
+    @media (max-width: #{$screenbig1024}) {
+        @content;
+    }
+}
+@mixin big4 {
+    @media (max-width: #{$screenbig768}) {
+        @content;
+    }
+}
+@mixin big5 {
+    @media (max-width: #{$screenbig576}) {
+        @content;
+    }
+}
+@mixin hbig1 {
+    @media (max-height: #{$screenbig600}) {
+        @content;
+    }
+}
+@mixin hbig2 {
+    @media (max-height: #{$screenbig780}) {
+        @content;
+    }
+}
+$bordercolor:#D2D3D4;
+$borderradius:6px;
+$border:1px solid $bordercolor;
+$boxshadow:0 4px 8px rgba(0, 0, 0, 0.3);
+$modalbgcolor:rgb(0 0 0 / 29%);
+$primarycolor:#000;
+$red:#DE003D;
+$fontcolor:#252526;
+$focuscolor:#4F4F4F;
+$hovercolor:#f2f2f2;
+$fontcolorlight:#8D8D8D;
+$white:#ffffff;
+$black:#000000;
+$clickablecolor:#0096de;

@@ -1,0 +1,98 @@
+@use '../../../../styles/mixin' as mx;
+
+
+.topheading {
+    @include mx.topheading;
+}
+
+.innercsat {
+
+
+    .headerarea {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        h5 {
+            color: #000;
+            font-family: "interregular";
+            font-size: 20px;
+
+        }
+
+        p {
+            color: #404040;
+            font-family: "interregular";
+            font-size: 14px;
+
+        }
+    }
+
+    .activationbar {
+        padding: 20px;
+        background-color: #000;
+        margin: 16px 0;
+        border-radius: 6px;
+        display: flex;
+        justify-content: space-between;
+
+        .lefts {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            h5 {
+                color: #fff;
+
+                font-family: "interregular";
+                font-size: 16px;
+
+            }
+
+            p {
+                color: #fff;
+                font-size: 13px;
+                font-family: "interregular";
+            }
+        }
+
+        .rights {}
+    }
+
+    .ratinggreycontainer {
+        border-radius: 8px;
+        background: #F8F9F9;
+        padding: 20px 12px;
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-bottom: 12px !important;
+        }
+    }
+
+    .alongwithswitchblock {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        border: 1px solid #d2d3d4;
+        padding: 12px;
+        align-items: center;
+        border-radius: 6px;
+
+        p {
+            color: #404040;
+            font-family: "interregular";
+            font-size: 13px;
+
+        }
+    }
+    .selectcont{
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        width: 100%;
+    }
+}

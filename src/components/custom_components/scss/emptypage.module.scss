@@ -1,0 +1,48 @@
+.emptyPage {
+  text-align: center;
+
+  color: #444;
+  display: grid;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  .centered{
+   
+    height: 350px;
+    margin: auto;
+  }
+
+  .emptyImage {
+    width: 180px;
+    max-width: 90%;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-family: "intermedium";
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #777;
+    font-family: "interregular";
+  }
+
+  .ctaButton {
+    padding: 10px 20px;
+    background-color: #00B885;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #00c596;
+    }
+  }
+}

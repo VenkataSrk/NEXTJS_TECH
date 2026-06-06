@@ -1,0 +1,79 @@
+.settingssec {
+    display: flex;
+
+    .leftsettingstabsec {
+        width: 234px;
+        flex-shrink: 0;
+        background-color: #EDEFF0;
+        height: calc(100vh - 84px);
+        overflow: hidden auto;
+        position: sticky;
+        top: 0;
+    }
+
+    .rightsettingsmenu {
+        // width: calc(100% - 234px);
+        width: 100%;
+        padding-inline: 34px;
+ 
+       height: calc(100vh - 101px);
+    overflow: auto;
+       
+    }
+}
+
+.leftsettingstabsec {
+    h4 {
+        font-family: 'intersemibold';
+        font-size: 16px;
+        line-height: 125%;
+        padding-block: 12px 8px;
+        padding-inline: 21px 16px;
+    }
+
+    ul {
+        padding: 0;
+        list-style: none;
+
+        li {
+            font-family: 'interregular';
+            font-size: 13px;
+            line-height: 125%;
+            padding-block: 12px;
+            padding-inline: 26px 21px;
+            cursor: pointer;
+                white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+            &.activemenuitem {
+                background-color: #fff;
+                position: relative;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    height: 100%;
+                    width: 2px;
+                    background-color: #000;
+                    left: 0;
+                    top:0;
+                }
+            }
+        }
+    }
+}
+.createcamdiv{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding-inline: 26px 21px;
+    padding-block: 12px;
+  
+    color: #212121;
+font-family: "intermedium";
+font-size: 16px;
+
+    span{
+        display: grid;
+    }
+}

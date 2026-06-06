@@ -1,0 +1,199 @@
+.mainlayout {
+    max-width: 798px;
+    margin: auto;
+    .title {
+        color: #000;
+        font-size: 21px;
+        font-family: 'intersemibold';
+        line-height: 27px;
+    }
+
+    .desc {
+        color: #404040;
+        font-size: 13px;
+        font-family: 'interregular';
+        line-height: 21px;
+    }
+
+    .titlearea {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 16px 0;
+        position: sticky;
+        background-color: #fff;
+        top: 0;
+
+        .title {
+            color: #000;
+            font-size: 21px;
+            font-family: 'intersemibold';
+            line-height: 27px;
+        }
+
+        .desc {
+            color: #404040;
+            font-size: 13px;
+            font-family: 'interregular';
+            line-height: 21px;
+          
+
+            a {
+                color: #575CFF;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .productmain {
+        display: inline-grid;
+        gap: 24px;
+        // grid-template-columns: repeat(2, 1fr);
+        // margin: 24px 0;
+        width: 100%;
+
+        .productblock {
+            border-radius: 16px;
+            border: 1px solid var(--Colors-Black-Black-200, #E3E4E5);
+            background: var(--Colors-Black-White, #FFF);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+
+            .top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+
+                .left {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+
+                    .devicename {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+                        color: #000;
+                        font-size: 16px;
+                        font-family: 'intersemibold';
+                        line-height: 21px;
+                        .deviceproduct{
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            span {
+                                    color: #0A3405;
+                                    font-family: 'Inter';
+                                    font-size: 13px;
+                                    font-style: normal;
+                                    font-family: 'interregular';
+                                    line-height: 17px;
+                                    border-radius: 24px;
+                                    border: 0.618px solid #136809;
+                                    background: #FFF;
+                                    padding: 3px 8px;
+                             }
+                        }
+
+                        span {
+                            color: var(--Colors-Essentials-Text-Sub-Title, #757676);
+                            font-size: 12px;
+                            font-family: 'interregular';
+                            line-height: 16px;
+                        }
+                    }
+                }
+
+                .right {
+                    button {
+                            color: #000000;
+                            width: auto;
+                            border-radius: 11px;
+                            border: 0.6px solid #BFBFBF;
+                            background: var(--Colors-Black-White, #FFF);
+                            height: 44px;
+                            font-size: 16px;
+                            font-family: "interregular";
+                            font-weight: 400;
+                        
+                            
+                        }
+                }
+            }
+
+            .bottom {
+                display: grid;
+                gap: 24px;
+                grid-template-columns: repeat(3, 1fr);
+                border-top: 1px solid #BFBFBF;
+                padding-top: 26px;
+
+                .fieldareamain {
+                    display: flex;
+                    // flex-direction: column;
+                    gap: 6px;
+                    align-items: center;
+
+                    .label {
+                        color: #000000;
+                        font-size: 14px;
+                        font-family: 'intersemibold';
+                        line-height: 19px;
+                    }
+
+                    .value {
+                        color: #000;
+                        font-size: 14px;
+                        font-family: 'interregular';
+                        line-height: 21px;
+                      
+                    }
+                }
+            }
+        }
+    }
+
+}
+ .badge{
+            border-radius: 24px;
+  
+    padding: 2px 8px;
+    width: fit-content;
+    
+    font-family: "interregular";
+    font-size: 12px;
+    line-height: normal;
+    &.blue{
+color: #2C2E80;
+  border: 0.618px solid #575CFF;
+    background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+    }
+                }
+                   .deviceproduct{
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            
+                                    color: #0A3405;
+                                    font-family: 'Inter';
+                                    font-size: 13px;
+                                    font-style: normal;
+                                    font-family: 'interregular';
+                                    line-height: 17px;
+                                    border-radius: 24px;
+                                    border: 0.618px solid #136809;
+                                    background: #FFF;
+                                    padding: 3px 8px;
+                             &.blue{
+                                background: #fff;
+    border: .618px solid #575cff;
+    border-radius: 24px;
+    color: #2c2e80;
+                             }
+                        }

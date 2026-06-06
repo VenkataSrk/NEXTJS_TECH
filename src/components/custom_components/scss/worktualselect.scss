@@ -1,0 +1,127 @@
+@use '/src/styles/mixin' as mx;
+@use '/src/styles/variable' as vb;
+
+.selectsearchcontainer {
+    position: relative;
+    .selectshow {
+        display: flex;
+        align-items: center;
+        position: relative;
+        height: 40px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid vb.$bordercolor;
+        border-radius: vb.$borderradius;
+        background-color: #F9F9F9;
+
+        &:is(:focus-within,:hover){
+            border-color: vb.$primarycolor;
+        }
+
+        input[type='text'] {
+            padding: 0 36px 0 12px;
+            border: none;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .selectarrow {
+            position: absolute;
+            right: 6px;
+            top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            opacity: 0.7;
+            cursor: pointer;
+
+            &.activeselectarrow {
+                transform: rotate(180deg);
+            }
+        }
+
+        .selectprefixicon{
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+            inset: 9px auto auto 6px;
+            img{
+                width: 100%;
+            }
+        }
+
+        &:has(.selectprefixicon){
+            input[type='text']{
+                padding: 0 36px 0 30px;
+            }
+        }
+
+    }
+
+}
+
+.optioncontainer {
+    position: absolute;
+    padding: 4px 0;
+    width: 100%;
+    // max-width: 232px;
+    border: 1px solid #E3E8EF;
+    border-radius: vb.$borderradius;
+    background-color: #fff;
+    overflow: hidden;
+    z-index: 999;
+    top: 44px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        max-height: 192px;
+        overflow: hidden;
+        overflow-y: auto;
+
+        li {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'intermedium';
+            background-color: transparent;
+            text-align: left;
+            font-size: 14px;
+
+            &.hightlightopt,
+            &:hover {
+                background-color: vb.$hovercolor;
+            }
+
+            &.nooptionsinselect {
+                text-align: center;
+                color: vb.$fontcolorlight;
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}
+
+.select-container-open{
+    animation: select-container-open 150ms ease-in-out forwards;
+    transform-origin: top center;
+    // animation: name duration timing-function delay iteration-count direction fill-mode;
+}
+
+@keyframes select-container-open{
+    from{
+        transform: scaleY(0);
+    }
+    to{
+        transform: scaleY(1);
+    }
+}

@@ -1,0 +1,60 @@
+@use '../../../../styles/mixin' as mx;
+@use '../../../../styles/variable' as vb;
+
+.drawer-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0, 0, 0, 0.4);
+display: flex;
+justify-content: flex-end;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s ease;
+z-index: 9999;
+}
+
+
+.drawer-overlay.open {
+opacity: 1;
+pointer-events: auto;
+}
+
+
+.drawer {
+background: #fff;
+width: 377px;
+height: 100%;
+transform: translateX(100%);
+transition: transform 0.4s ease;
+    border-radius: 12px 0 0 12px;
+@include vb.big5{
+    width: 100%;
+    border-radius: 0px;
+}
+}
+
+
+.drawer-overlay.open .drawer {
+transform: translateX(0);
+}
+
+
+.drawer-close {
+background: none;
+border: none;
+font-size: 1.5rem;
+cursor: pointer;
+position: absolute;
+top: 1rem;
+right: 1rem;
+}
+
+
+.drawer-body {
+padding: 0 ;
+.formsec{
+       padding: 0 16px;
+    overflow: auto;
+    height: calc(100vh - 123px);
+}
+}

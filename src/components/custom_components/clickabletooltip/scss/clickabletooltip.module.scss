@@ -1,0 +1,42 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+    position: absolute;
+    top: 1px;
+}
+ 
+.trigger {
+  cursor: pointer;
+}
+ 
+.tooltip {
+  position: absolute;
+  bottom: 35px; 
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  background: #333;
+  color: #fff !important;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 10;
+p{
+    color: #fff !important;
+}
+ 
+  .arrow {
+    position: absolute;
+    top: 100%; // arrow points down
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #333;
+  }
+}
+ 

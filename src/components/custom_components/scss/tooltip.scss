@@ -1,0 +1,60 @@
+@use '/src/styles/mixin' as mx;
+@use '/src/styles/variable' as vb;
+
+.tooltipcontainer{
+    position: relative;
+    display: inline-block;
+    .tooltipbox{
+        position: absolute;
+        color: vb.$fontcolor;
+        border-radius: vb.$borderradius;
+        z-index: 999;
+        background-color: #ffffff;
+        padding: 8px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        font-size: 14px;
+        font-family: 'interregular';
+        &.top{
+            bottom: 100%;
+            left: 1/2;
+            transform: translateX(1/2);
+            margin-bottom: 6px;
+        }
+        &.bottom{
+            top: 100%;
+            left: 1/2;
+            transform: translateX(1/2);
+            margin-bottom: 6px;
+        }
+        &.left{
+            right: 120%;
+            top: 50%;
+            transform: translateY(-50%);
+            &::before{
+                content: "";
+                position: absolute;
+                top:50%;
+                transform: translateY(-50%);
+                left: -10px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent #fff transparent transparent;
+            }
+        }
+        &.right{
+            top: 50%;
+            transform: translateY(-50%);
+            left: 120%;
+            &::before{
+                content: "";
+                position: absolute;
+                top:50%;
+                transform: translateY(-50%);
+                left: -10px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent #fff transparent transparent;
+            }
+        }
+    }
+}

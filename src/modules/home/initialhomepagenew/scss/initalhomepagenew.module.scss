@@ -1,0 +1,545 @@
+@use '../../../../styles/mixin' as mx;
+@use '../../../../styles/variable' as vb;
+
+
+.capsulestabwrapper {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 12px 6px;
+    margin: 20px 0;
+    justify-content: center;
+        margin-top: 0;
+
+    .capsulestab {
+        color: #252526;
+        font-family: "interregular";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 115%;
+        cursor: pointer;
+        /* 13.8px */
+        text-transform: uppercase;
+        border-radius: 64px;
+        background: #F2F2F2;
+        display: flex;
+        padding: 8px 20px ;
+        justify-content: center;
+        align-items: center;
+        min-width: 200px;
+        max-width: 232px;
+        width: auto;
+        gap: 4px;
+    }
+}
+
+.basiccard {
+    border-radius: 22px;
+    border: 1px solid rgba(37, 99, 235, 0.20);
+    background: #EFF6FF;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+
+    &.recomendationcard {
+        background: #fff !important;
+        padding: 13px !important;
+        margin-bottom: 0px !important;
+
+        h4 {
+            color: #2563EB !important;
+            font-family: "interregular" !important;
+            font-size: 16px !important;
+
+        }
+    }
+
+    &.topperformingcampaign {
+        margin-bottom: 16px !important;
+        padding: 20px !important;
+        .title{
+           .withbadge{
+            display: flex;
+            gap: 8px;
+            flex-direction: column;
+            span{
+                color: #9810FA;
+font-family: "intermedium";
+font-size: 12px;
+
+text-transform: uppercase;
+            }
+           }
+        }
+        h4 {
+            color: #000 !important;
+            font-family: "interregular" !important;
+            font-size: 18px !important;
+
+        }
+    }
+
+    &.yellowcard {
+        border: 1px solid #FFE3B3;
+        background: #FFF7E6;
+    }
+
+    &.bluecard {
+
+        border: 1px solid #B3DAFF;
+        background: #E6F3FF;
+    }
+
+    &.greycard {
+        
+        border: 1px solid #E4E7EC;
+
+        .title{
+                display: flex;
+    gap: 8px;
+    align-items: self-start;
+    flex-direction: column;
+    .badge{
+        color: #2563EB;
+font-family: "interregular";
+font-size: 13px;
+
+    }
+    h4{
+   
+font-size: 18px;
+font-family: "interregular";
+
+    }
+        }
+        .subheading{
+            color: #000;
+font-family:"interregular";
+font-size: 16px;
+margin-bottom: 6px;
+
+        }
+    }
+
+    .title {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+
+        span {
+            display: grid;
+        }
+
+        h4 {
+            color: #000;
+            font-family: "interregular";
+            font-size: 18px;
+        }
+
+    }
+
+    .content {
+        .subheading {
+            color: #000;
+            font-family: "interregular";
+            font-size: 16px;
+            font-weight: 500;
+            line-height: normal;
+
+        }
+
+        ul {
+            padding: 0 0 0 20px;
+        }
+
+        p,
+        li {
+            font-family: "interregular";
+            font-size: 13px;
+            line-height: 24px;
+        }
+    }
+
+    .stscardwrapper {
+    display: grid;
+gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(217px, 1fr));
+
+        .stscard {
+            border-radius: 14px;
+            border: 1px solid #E2E8F0;
+            background: #FFF;
+            padding: 13px;
+            display: flex;
+            gap: 8px;
+
+            h4 {
+                color: #000;
+                font-family: 'interregular';
+                font-size: 16px;
+                font-weight: 500;
+
+            }
+
+            p {
+                font-size: 14px;
+                font-family: "interregular";
+            }
+
+            .rights {
+                display: flex;
+                gap: 8px;
+                flex-direction: column;
+            }
+        }
+    }
+}
+
+.navdiv {
+    color: #2563EB;
+    font-family: "interregular";
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    line-height: 25px;
+
+    span {
+        display: grid;
+    }
+
+}
+
+.halfcardcontainer {
+    display: flex;
+    gap: 12px;
+
+}
+
+.innercard {
+    border-radius: 6px;
+
+    display: flex;
+    padding: 8px 13px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    font-family: "interregular";
+    font-size: 13px;
+
+    &.blue {
+
+        border: 0.4px solid #BBDFFF;
+        background: #E0EEFC;
+        p{
+            line-height: 20px;
+    font-size: 13px;
+    font-family: 'interregular';
+        }
+    }
+
+    &.yellow {
+
+        border: 0.4px solid #FFD28C;
+        background: #FFF1D6;
+          p{
+            line-height: 20px;
+    font-size: 13px;
+    font-family: 'interregular';
+        }
+    }
+}
+
+.greycard {
+    
+    .innercard {
+        flex-direction: column;
+        align-items: start;
+        .title{
+            flex-direction: row !important;
+            align-items: center !important;
+            h4{
+                    color: #2563EB !important;
+                font-family: "interregular" !important;
+               font-size: 16px !important;
+            }
+        }
+    }
+}
+
+.diwalistscardwrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 12px;
+
+    .stscard {
+        padding:8px 13px;
+        border-radius: 10px;
+        border: 1px solid #DBEAFE;
+        background: #EFF6FF;
+
+        &.lightgreen {
+
+            border: 1px solid #DCFCE7;
+            background: #F0FDF4;
+        }
+
+        &.greengray {
+
+            border: 1px solid #CBFBF1;
+            background: #F0FDFA;
+        }
+
+    }
+}
+
+.performanceanalysis {
+    flex-direction: column;
+    align-items: start;
+    border-radius: 12px !important;
+    border: 1px solid #E5E7EB !important;
+    background: linear-gradient(90deg, #F8FAFC 0%, #F9FAFB 100%) !important;
+     .title{
+           .withbadge{
+            display: flex;
+            gap: 8px;
+            flex-direction: column;
+            span{
+                color: #9810FA;
+font-family: "intermedium";
+font-size: 12px;
+
+text-transform: uppercase;
+            }
+           }
+        }
+
+    .smallinnerwhitecardwrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        gap: 12px 8px;
+            padding-top: 12px;
+
+        .whitecard {
+            border-radius: 8px;
+            border: 1px solid #F3F4F6;
+            background: #FFF;
+
+            padding: 13px;
+
+            p {
+                color: #000;
+                font-family: "interregular";
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 400;
+
+            }
+        }
+    }
+
+    .longcard {
+        border-radius: 8px;
+        border: 1px solid #F3E8FF;
+        background: #FAF5FF;
+        width: 100%;
+        padding: 8px;
+
+        p {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+    }
+}
+.searchblockouter {
+    background: #fff;
+    position: sticky;
+    bottom: 0px;
+    padding: 20px 0;
+
+    @include vb.big2 {
+        padding: 20px;
+    }
+}
+
+.searchblock {
+    max-width: 650px;
+    margin: auto;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    position: sticky;
+    bottom: 0px;
+
+    border-radius: 24px !important;
+
+    border-radius: 0px;
+
+
+    .searchmessage {
+        border-radius: 24px;
+        border: 1px solid #bebebe;
+        background: #fff;
+        width: 100%;
+
+        // display: flex;
+        gap: 16px;
+        align-items: center;
+        padding: 8px 16px;
+        overflow: hidden;
+        min-height: 54px;
+
+        .previewimages {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding-inline: 12px;
+            gap: 8px;
+
+            .previmgblock {
+                position: relative;
+                // width: 40px;
+                height: 40px;
+
+                .previmg {
+                    width: 100%;
+                    height: 100%;
+                    border: 1px solid gray;
+                    border-radius: 4px;
+                }
+
+                .removeicon {
+                    position: absolute;
+                    top: -4px;
+                    right: -4px;
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 10px;
+                    border: 1px solid gray;
+                    padding: 1px;
+                    background-color: #fff;
+                }
+            }
+        }
+
+        .searchmessageText {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        &:focus-within {
+            border: 1px solid #64ed80;
+        }
+
+        textarea {
+            width: 100%;
+            resize: none;
+            appearance: none;
+            overflow: hidden;
+            font-weight: 500;
+            border: none !important;
+            font-size: 14px;
+            font-family: "interregular";
+            overflow: auto;
+            // height: 46px;
+
+            &:focus {
+                outline: 0;
+            }
+        }
+
+        svg {
+            cursor: pointer;
+        }
+
+        img {
+            width: 34px;
+            cursor: pointer;
+        }
+    }
+
+    svg {
+        cursor: pointer;
+    }
+}
+
+.newinput {
+    .searchmessageText {
+        flex-direction: column;
+
+
+        gap: 20px;
+
+    }
+
+    .inputcontainer {
+        width: 100%;
+
+        textarea {
+            padding-left: 0px;
+            padding-right: 0px;
+            padding-bottom: 12px;
+        }
+
+    }
+
+    .actionbottom {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+
+        &.actionbottomtop {
+
+            justify-content: space-between;
+            flex-direction: row-reverse;
+            align-items: center;
+        }
+    }
+}
+
+.searchmessage {
+    border: 1.7px solid transparent !important;
+    /* needed for gradient border */
+    border-radius: 24px !important;
+
+    /* dual background: first is inner fill, second is border gradient */
+    background:
+        linear-gradient(180deg, #FFF 0%, #FFF 0%) padding-box,
+        linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335) border-box !important;
+
+    /* shadow if needed */
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+
+    .actionbottom {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        &.actionbottomtop{
+          
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+        }
+    }
+    .maincontainer{
+        max-width: 798px;
+        margin: auto;
+            padding-bottom: 2px;
+        @include vb.big2{
+            padding: 0 16px;
+        }
+    }

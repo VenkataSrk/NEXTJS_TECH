@@ -1,0 +1,166 @@
+@use '../../../../styles/mixin' as mx;
+@use '../../../../styles/variable' as vb;
+
+.topheading {
+    @include mx.topheading;
+}
+
+.createtempsec {
+    display: flex;
+    gap: 30px;
+
+    .cttlefts {
+        .radiowithlabel {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-right: 13px;
+
+            label {
+                font-family: 'interregular';
+                font-size: 14px;
+            }
+        }
+    }
+
+    .cttrights {
+        min-width: 480px;
+        max-width: 480px;
+        padding: 24px 16px;
+        height: calc(100vh - 265px);
+        overflow: hidden auto;
+        top: 72px;
+        position: sticky;
+
+        .previewshowsec {
+            width: 100%;
+            height: 100%;
+        }
+
+        .mobilelayoutviewsec {
+            background: url('../../../../styles/assets/mobile_images/mobilelayoutimg.svg') no-repeat center;
+            background-size: 100%;
+            height: 620px;
+            width: 300px;
+            margin: 0 auto;
+            position: relative;
+            padding: 14px 11px 14px 11px;
+
+            .bodywrapper {
+                width: 100%;
+                height: 100%;
+                background-color: #fff;
+                border-radius: 46px;
+                overflow: hidden;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+
+                .mobileheader {
+                    position: relative;
+                    height: 38px;
+                    overflow: hidden;
+
+                    .topbarimg {
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    .camerafront {
+                        position: absolute;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        top: 4px;
+                    }
+                }
+
+                .mobilemainsec {
+                    flex: 1;
+                    background-color: #d2d3d4;
+                    position: relative;
+                    padding-top: 32px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    overflow: hidden auto;
+
+                }
+
+                .mobilefooter {
+                    height: 60px;
+                    display: flex;
+                    flex-direction: column;
+
+                    img {
+                        width: 100%;
+                    }
+
+                    .optionsbtm {
+                        flex: 1;
+                        background-color: #F5F5F5;
+                        display: grid;
+                        place-content: center;
+
+                        .optionsopen {
+                            height: 4px;
+                            display: inline-block;
+                            width: 100px;
+                            background: #000;
+                            border-radius: 56px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.userinfotop {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding-inline: 4px;
+    background-color: #fff;
+
+    .phnnumcont {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+
+        P {
+            font-size: 13px;
+            font-family: 'intersemibold';
+        }
+    }
+}
+
+.contentsection {
+    width: 86%;
+    background-color: #fff;
+    padding: 6px;
+    border-radius: 6px;
+    margin: 6px;
+
+    p {
+        font-family: "Interregular";
+        font-size: 13px;
+    }
+
+    .lighttxt {
+        color: vb.$fontcolorlight;
+    }
+
+    ul {
+        padding-left: 28px;
+        padding-block: 13px;
+
+        li {
+            font-family: "Interregular";
+            font-size: 13px;
+        }
+    }
+}

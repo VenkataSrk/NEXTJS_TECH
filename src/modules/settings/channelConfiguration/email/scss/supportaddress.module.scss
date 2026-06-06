@@ -1,0 +1,69 @@
+@use '../../../../../styles/mixin' as mx;
+@use '../../../../../styles/variable' as vb;
+
+.topheading {
+    @include mx.topheading;
+}
+
+.subtopheading {
+   @include mx.topsubheading;
+}
+
+.sablock {
+    max-width: 610px;
+    margin-bottom: 21px;
+
+    .sainstructions {
+        padding: 21px 13px;
+        border-radius: 21px;
+        border: vb.$border;
+        background: linear-gradient(180deg, #FFF 50%, #F2F2F2 100%);
+
+        h4 {
+            font-family: 'intersemibold';
+            font-size: 16px;
+            line-height: 133%;
+            padding-bottom: 8px;
+        }
+
+        ol {
+            padding: 0;
+
+            li {
+                font-family: 'interregular';
+                font-size: 13px;
+                line-height: 161%;
+                list-style-position: inside;
+            }
+        }
+    }
+
+    .verifybtn {
+        @include mx.btn;
+        color: #00B885;
+        border: 1px solid #00B885;
+        background: #FFF;
+        margin-top: 13px;
+    }
+
+    .sastatus {
+        padding: 7px 8px;
+        border-radius: 100px;
+        border: 1px solid #00E2A4;
+        background: #FFF;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        font-family: 'intermedium';
+        font-size: 13px;
+        line-height: 161%;
+    }
+}
+
+.bottombtns {
+    margin-top: 34px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}

@@ -1,0 +1,52 @@
+.innerbody{
+    padding: 16px 0;
+    .headerarea {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 32px;
+
+        h5 {
+            color: #000;
+            font-family: "interregular";
+            font-size: 20px;
+
+        }
+
+        p {
+            color: #404040;
+            font-family: "interregular";
+            font-size: 14px;
+
+        }
+    }
+}
+.radiorowinp{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    label{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 14px;
+        font-family: "interregular";
+        cursor: pointer;
+    }
+}
+.alongwithswitchblock {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        border: 1px solid #d2d3d4;
+        padding: 12px;
+        align-items: center;
+        border-radius: 6px;
+
+        p {
+            color: #404040;
+            font-family: "interregular";
+            font-size: 13px;
+
+        }
+    }

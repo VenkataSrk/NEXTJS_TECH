@@ -1,0 +1,23 @@
+@use '../../../../../styles/mixin' as mx;
+@use '../../../../../styles/variable' as vb;
+
+.topheading{
+    @include mx.topheading;
+    padding-top: 13px;
+}
+
+ .botassist{
+        display: flex;
+        width: 100%;
+        padding: 16px 13px;
+        align-items: flex-start;
+        gap: 21px;
+        border: vb.$border;
+        border-radius: 13px;
+        .bttxt{
+            flex: 1;
+            font-family: 'interregular';
+            font-size: 13px;
+            line-height: 161%; 
+        }
+    }

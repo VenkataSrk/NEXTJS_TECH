@@ -1,0 +1,31 @@
+@use '/src/styles/mixin' as mx;
+@use '/src/styles/variable' as vb;
+
+.rightnavsec{
+    width: 100%;
+    height: 100%;
+    .rgtnlistssec{
+        width: 100%;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+        list-style: none;
+        .rgtnlist{
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            display: grid;
+            place-content: center;
+            border-radius: 50%;
+            margin-bottom: 8px;
+            &:hover{
+                background-color: #dcfcee;
+            }
+            img{
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}

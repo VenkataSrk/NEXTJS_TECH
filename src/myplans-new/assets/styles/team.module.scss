@@ -1,0 +1,169 @@
+.createmaincontainer {
+    max-width: 798px;
+    margin: auto;
+
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        p {
+            color: #212121;
+            font-size: 14px;
+            line-height: 22px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h3 {
+            color: #212121;
+            font-size: 14px;
+            line-height: 22px;
+            font-family: 'intermedium';
+        }
+    }
+
+    .headerole {
+        padding: 16px 0;
+        position: sticky;
+    top: 0;
+    background: #fff;
+    padding: 12px 0;
+
+        h3 {
+            color: #000000;
+            font-size: 20px;
+            line-height: 28px;
+             font-family: "interregular";
+        }
+
+        p {
+            color: #404040;
+            font-size: 12px;
+             font-family: "interregular";
+            line-height: 22px;
+        }
+    }
+
+    .createroleblock {
+
+        .rolename {
+            width: 100%;
+            padding: 0 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #BFBFBF;
+            padding-top: 24px;
+            padding-bottom: 16px;
+
+            .administratormodule {
+                width: 100%;
+            }
+
+            span {
+                color: #404040;
+                text-align: right;
+                font-family: Inter;
+                font-size: 13px;
+                font-style: normal;
+                font-family: 'intermedium';
+                line-height: 21px;
+            }
+
+            p {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                color: #404040;
+                font-family: 'Inter';
+                font-size: 13px;
+                font-style: normal;
+                font-family: 'intermedium';
+                line-height: 21px;
+            }
+
+            label {
+                color: #000;
+                font-size: 14px;
+                line-height: 32px;
+                font-family: 'intermedium';
+                color: #000;
+                font-family: 'Inter';
+                font-size: 18px;
+                font-style: normal;
+                font-family: 'intersemibold';
+                line-height: 23px;
+
+                span {
+                    color: #F22E57;
+                }
+
+                p {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    color: #404040;
+                    font-family: 'Inter';
+                    font-size: 13px;
+                    font-style: normal;
+                    font-family: 'intermedium';
+                    line-height: 21px;
+                }
+            }
+
+            input {
+                font-family: 'inter';
+            }
+
+            textarea {
+                border-radius: 6px;
+                border: 1px solid #BFBFBF;
+                background: #FFF;
+                max-height: 144px;
+                font-family: 'inter';
+                padding: 12px;
+            }
+        }
+
+        .btnblock {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 34px 0 0;
+
+            button {
+                height: 38px;
+                border-radius: 14px;
+                font-family: 'intermedium';
+                width: fit-content;
+                font-family: 'inter';
+
+                &:nth-child(1) {
+                    color: #212121;
+                    border-radius: 13px;
+                    border: 1px solid #BFBFBF;
+                    background: #FFF;
+                    font-size: 14px;
+                    padding: 8px 16px;
+
+                    &:hover {
+                        background-color: #d5d5d5b7 !important;
+                    }
+                }
+
+                &:nth-last-child(1) {
+                    background-color: #00E2A4;
+                    border: 1px solid #00E2A4;
+                    min-width: 89px;
+                    padding: 8px 16px;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

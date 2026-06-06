@@ -1,0 +1,238 @@
+@use './variable' as vb;
+
+@mixin clickabletxt {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    font-size: 14px;
+    font-family: 'interregular';
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+}
+
+@mixin btn {
+    min-width: 90px;
+    display: flex;
+    height: 38px;
+    padding: 8px 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 13px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'intermedium';
+}
+
+@mixin labeltxt {
+    font-size: 14px;
+    font-family: 'intermedium';
+    display: inline-block;
+}
+
+@mixin clickabletxt{
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 14px;
+    font-family: 'intermedium';
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: capitalize;
+    &:hover{
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+}
+
+@mixin topheading{
+    padding: 34px 0 26px;
+    display: flex;
+    gap: 34px;
+    .tophdlefts{
+        flex: 1;
+    }
+    .tophdrights{
+        display: inline-flex;
+        justify-content: flex-end;
+    }
+    h2 {
+        font-family: 'intersemibold';
+        font-size: 21px;
+        line-height: 133%;
+    }
+    .headerdesctxt {
+        font-family: 'interregular';
+        font-size: 13px;
+        line-height: 161%;
+    }
+
+}
+
+@mixin topsubheading{
+     h4 {
+        font-family: 'intersemibold';
+        font-size: 16px;
+        line-height: 133%;
+        padding-bottom: 8px;
+    }
+
+    .subtopdesctxt {
+        font-family: 'interregular';
+        font-size: 13px;
+        line-height: 161%;
+        padding-bottom: 13px;
+    }
+}
+
+@mixin formsectionsplit {
+    width: 100%;
+    max-width: 750px;
+    position: relative;
+
+    .part {
+        margin-bottom: 38px;
+        .heading {
+            margin-bottom: 16px;
+            h6 {
+                margin: 0;
+                color: #252526;
+                font-family: "intermedium";
+                font-size: 16px;
+
+            }
+        }
+    }
+
+    .formrow {
+        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+          gap: 12px 16px;
+          .radiolabel{
+      display: flex
+;
+    align-items: center;
+    gap: 6px;
+          }
+        
+
+        &.dtlsrow {
+            .rowrightfull {
+                p {
+                    margin: 0;
+                    color: #757676;
+                    font-family: "interregular";
+                    font-size: 14px;
+
+                }
+            }
+            &.dtlswithedit{
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                width: 100%;
+                flex-wrap: nowrap !important;
+                .lefts{
+                    width: calc(100% - 40px);
+                }
+            }
+        }
+
+        // @include vb.big4 {
+        //     flex-direction: column;
+        // }
+
+        label {
+            margin: 0 0 8px;
+            color: #000;
+font-family: "intermedium";
+font-size: 16px;
+
+
+            span {
+                color: red;
+            }
+        }
+
+        input {
+            width: 100%;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        .rowleft {
+            min-width: 196px;
+        }
+
+        .rowright {
+            width: calc(100% - 212px);
+
+            @include vb.big4 {
+                width: 100%;
+            }
+        }
+
+        .rowrightfull {
+            width: 100%;
+        }
+
+        .errormsg {
+            color: red;
+            font-size: 12px;
+            padding: 6px 0 0;
+        }
+    }
+
+    // checkbox combine
+    .checkboxgroup {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        label {
+            margin: 0
+        }
+    }
+
+    .formbtnsec {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        justify-content: flex-end;
+        padding: 16px 0;
+        position: sticky;
+            bottom: -18px;
+        background-color: #ffffff;
+        flex-wrap: wrap;
+        &.formbtnwithcancel{
+            justify-content: space-between;
+            flex-direction: row-reverse;
+            .rights{
+               display: flex;
+               gap: 16px;
+               align-items: center;
+            } 
+            .lefts{
+
+            }
+        }
+
+    }
+
+    .formheader {
+        font-size: 16px;
+        font-family: 'intermedium';
+        padding: 0 0 24px;
+    }
+}

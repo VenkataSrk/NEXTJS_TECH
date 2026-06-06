@@ -1,0 +1,1520 @@
+
+@use '../../../src//styles/mixin' as mx;
+@use '../../../src//styles/variable' as vb;
+
+.mainloginscreen {
+    height: auto;
+    background: #ffffff;
+
+    @include vb.big5 {
+        background: #fff;
+        height: auto;
+        padding: 16px 12px;
+    }
+
+    .innersections {
+        width: 440px;
+        margin: 40px auto;
+        transition: opacity 250ms ease-in-out;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px rgba(255, 255, 255, 0.03) solid;
+        border-radius: 6px;
+        padding: 45px 35px;
+        position: relative;
+
+        h4 {
+            font-size: 24px;
+            font-family: "interbold";
+            color: #fff;
+            margin: 2rem 0 1rem;
+            text-align: center;
+        }
+
+        label {
+            width: 100%;
+            color: #bababa;
+            font-family: "intermedium";
+            line-height: normal;
+        }
+
+        input {
+            width: 100%;
+            border-radius: 6px;
+            border: 0;
+            margin: 0 0 1.5rem;
+            background: transparent;
+            border: 1px rgba(255, 255, 255, 0.2) solid;
+            background: rgba(255, 255, 255, 0.04);
+            line-height: 20px;
+            padding: 13px 15px;
+            color: #fff;
+
+            &:focus {
+                outline: 0;
+            }
+        }
+
+        img {
+            display: flex;
+            margin: 0 auto;
+            width: 260px;
+        }
+
+        .keepme {
+            display: flex;
+            align-items: center;
+            margin: 0 0 30px;
+
+            input {
+                padding: 0;
+                width: auto;
+                float: left;
+                margin: 0;
+            }
+
+            label {
+                float: left;
+                width: auto;
+                line-height: 13px;
+                font-size: 13px;
+                padding: 0 0 0 6px;
+            }
+
+            .forgot {
+                text-align: right;
+
+                a {
+                    color: #bababa;
+                    font-size: 13px;
+                    cursor: pointer;
+                }
+
+            }
+
+            div {
+                padding: 0;
+            }
+        }
+
+        .btnSignin {
+            width: 100%;
+            font-size: 20px;
+            padding: 12px;
+            margin: 1rem 0 1rem;
+        }
+
+        .showClear {
+            position: absolute;
+            font-size: 20px;
+            margin: 0.85rem 0rem 0 -2rem;
+            color: #bababa;
+        }
+
+        .loginpass {
+            position: absolute;
+            font-size: 20px;
+            margin: 0.85rem 0rem 0 -2rem;
+            color: #bababa;
+            cursor: pointer;
+        }
+    }
+}
+
+.errorText {
+    color: red !important;
+    font-family: "interregular" !important;
+    font-size: 12px;
+    margin-top: 4px;
+    position: relative;
+    top: -9px;
+
+    &.valer {
+        top: 0;
+        margin: 0 0 12px;
+    }
+}
+
+.forgotContent {
+    font-size: 15px;
+    text-align: center;
+    color: #bababa;
+    margin: 1.5rem 0 2rem;
+}
+
+.resetpasswordexpires {
+    height: 100vh;
+    align-items: center;
+    text-align: center;
+
+    img {
+        width: 320px;
+        margin: 0 0 3rem;
+    }
+
+    h1 {
+        color: #939393;
+        margin: 1rem 0 3rem;
+    }
+
+    a {
+        font-size: 18px;
+        font-family: "intermedium";
+    }
+}
+
+.resetSection {
+    margin: 0px auto;
+    text-align: center;
+
+    .loadingSec {
+        height: calc(550px - 100px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @include vb.big5 {
+            height: auto !important;
+        }
+    }
+
+    .logoIcon {
+        text-align: center;
+        margin-top: 27px;
+        margin-bottom: 26px;
+        // width: 116px;
+        // height: 27px;
+    }
+
+    .loginText {
+        text-align: center;
+        color: #1f2937;
+        font-size: 16px;
+        font-family: "intersemibold";
+        margin-bottom: 17px;
+        line-height: 18px;
+    }
+
+    .resetpassLink {
+        // width: 318px;
+        margin: 0px auto;
+
+        img {
+            margin-bottom: 24px;
+        }
+
+        .resetLinkText {
+            color: #4a5361;
+            font-size: 30px;
+            font-family: "interextrabold";
+            margin-bottom: 16px;
+            line-height: 38px;
+        }
+
+        .resetLinkDesc {
+            color: #4a5361;
+            font-family: "interregular";
+            font-size: 16px;
+            margin-bottom: 42px;
+        }
+
+        .linksTag {
+            display: flex;
+            flex-direction: column;
+            margin: 4rem 0 0;
+
+            .backLink {
+                font-family: "intermedium";
+                color: black;
+                cursor: pointer;
+                text-decoration: none;
+
+                &:hover {
+                    color: #2e84d8;
+
+                    .backText {
+                        text-decoration: underline;
+                    }
+                }
+
+                span {
+                    &:nth-child(1) {
+                        top: 3px;
+                        font-size: 15px;
+                        position: relative;
+                        right: 3px;
+                    }
+                }
+            }
+
+            .resendLink {
+                background: #000;
+                border: none;
+                color: #000000;
+                border-radius: 6px;
+                text-align: center;
+                font-family: "interbold";
+                cursor: pointer;
+                font-size: 20px;
+                padding: 12px;
+                margin: 0rem auto 0;
+                width: 259px;
+
+                &:hover {
+                    background: #f4f6fa;
+                    box-shadow: 0px 1px 2px black;
+                    border: 1px solid #e8ebf2;
+                }
+
+                &.disabled {
+                    background: #ffffff;
+                    box-shadow: 0px 1px 2px black;
+                    border: 1px solid #e8ebf2;
+                    color: #4a5361;
+                    opacity: 0.54;
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+}
+
+.resetlink {
+    height: calc(100vh - 116px);
+    align-items: center;
+    text-align: center;
+
+    h1 {
+        margin: 0 0 10px;
+        font-size: 38px;
+        color: #c7c7c7;
+    }
+
+    .logoIcon {
+        width: 320px;
+        margin: 0 0 3rem;
+    }
+}
+
+.bottomlink {
+    text-align: center;
+    padding: 12px 0 0;
+
+    a {
+        color: #000000;
+        text-decoration: none;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+    }
+}
+
+.keepmecursor {
+    label {
+        cursor: pointer;
+    }
+}
+
+
+.loginheader {
+    border-bottom: 1px solid #e2e2e2;
+    // padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    height: 62px;
+    background-color: #000;
+    // @include vb.big6 {
+    //     padding: 12px;
+    // }
+
+    .contactsign {
+        background-color: #000 !important;
+        border: 1.7px solid #fff !important;
+        padding: 9px 18px;
+        border-radius: 13px;
+
+        a {
+            color: #fff !important;
+            font-family: 'intermedium';
+                text-decoration: none;
+        }
+    }
+
+    .headerview {
+        .logotext {
+            font-size: 12px;
+            color: #828385;
+            margin-left: 2.5rem;
+            padding-top: -5px;
+        }
+    }
+}
+
+.logincenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: calc(100vh - 100px);
+
+    @include vb.big5 {
+        height: auto !important;
+    }
+
+    @include vb.big3 {
+        // max-width: 900px;
+    }
+
+    .logincenternew {
+        @include vb.big4 {
+            display: none;
+        }
+    }
+
+    img {
+        width: 100%;
+    }
+
+    .loginright {
+        width: 448px;
+        margin: 0;
+        transition: opacity 250ms ease-in-out;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px rgba(255, 255, 255, 0.03) solid;
+        border-radius: 6px;
+        padding: 0;
+        position: relative;
+
+        @include vb.big5 {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        h4 {
+            color: #252526;
+            margin: 0 0 16px;
+            font-size: 24px;
+        }
+
+        p {
+            text-align: center;
+            color: #757576;
+            line-height: normal;
+            font-size: 13px;
+            margin: 24px 0 0;
+        }
+
+        input {
+            background-color: #EDEFF0;
+            box-shadow: none;
+            color: #000000;
+            height: 44px;
+            margin: 0;
+
+            &.active {
+                border-color: #000000;
+            }
+
+            &:focus {
+                border-color: #000;
+            }
+
+            &::placeholder {
+                color: #828385;
+            }
+        }
+
+        label {
+            color: #161717;
+            font-size: 14px;
+        }
+
+        .loginpass {
+            color: #808080;
+        }
+
+        .showClear {
+            color: #808080;
+        }
+
+        .keepme {
+            margin: 0 0 8px;
+            justify-content: space-between;
+            line-height: normal;
+        }
+
+        .keepmecursor {
+            label {
+                color: #828385;
+                margin: 0;
+            }
+
+            .inputcheck {
+                height: auto;
+            }
+        }
+
+        .btnSignin {
+            background-color: #000;
+            color: #252526;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: 'intersemibold';
+            max-width: 384px;
+
+            @include vb.big5 {
+                max-width: 100%;
+            }
+
+            span {
+                font-size: 17px;
+            }
+
+            &.btnforgot {
+                margin-top: 12px;
+            }
+
+            &:hover {
+                background: #000;
+            }
+        }
+
+        .forgot {
+            a {
+                color: #575CFF !important;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .errorText {
+            margin: 12px 0;
+            text-align: left;
+            color: rgba(255, 0, 0, 0.7215686275);
+            position: unset;
+            font-size: 14px;
+            display: block;
+
+            &.invaliderrorText {
+                top: -27px;
+            }
+        }
+    }
+
+    .resetSucess {
+        margin: 0 auto !important;
+    }
+
+    .loginborder {
+        padding: 42px 32px 8px;
+        border: 0.5px solid #E3E4E5;
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.04);
+        border-radius: 14px;
+
+        @include vb.big3 {
+            max-width: 380px;
+        }
+
+        @include vb.big5 {
+            max-width: 100%;
+        }
+
+        // @include vb.big6 {
+        //     max-width: 100%;
+        //     padding: 0 !important;
+        //     box-shadow: none;
+        //     border: 0;
+        // }
+
+        &.loginborderforgot {
+            padding: 32px 32px 8px;
+            margin: 24px 0 0;
+        }
+    }
+
+    &.logincenterreset {
+        text-align: center;
+
+        img {
+            width: auto;
+            margin-bottom: 30px;
+        }
+
+        h5 {
+            margin-bottom: 6px;
+            font-size: 30px;
+            font-family: 'interbold';
+        }
+
+        h6 {
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-family: "interregular";
+            color: #828385;
+        }
+
+        .backLink {
+            color: #000000 !important;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            font-size: 12px;
+            gap: 12px;
+
+            span {
+                &:nth-child(1) {
+                    top: 3px;
+                    font-size: 15px;
+                    position: relative;
+                    right: 3px;
+                }
+            }
+        }
+
+        .recoverybtn {
+            padding: 8px 16px;
+            color: #000000;
+            font-size: 14px;
+            border: 1px solid #000;
+            background-color: #ffffff;
+            margin-top: 40px;
+            font-family: 'intermedium';
+
+            &:hover {
+                color: #ffffff;
+                background-color: #000;
+            }
+        }
+    }
+}
+
+.loginmain {
+    margin: 0 0 24px;
+
+    .newworktual {
+        margin: 0 !important;
+        cursor: pointer;
+    }
+}
+
+.logincenternewright {
+    @include vb.big5 {
+        width: 100%;
+        padding: 0;
+    }
+}
+
+//
+.body {
+        display: grid;
+    justify-content: center;
+   height: calc(100dvh - 62px);
+    margin: 0px auto 0;
+    padding: 80px 0;
+    scrollbar-width: thin;
+    overflow: auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+    // background-image: url('../../../../../public/updatedImages/purchaseflownew/CCASS.webp');
+    // padding: 24px;
+
+    @include vb.big5 {
+        background-image: unset;
+    }
+
+    // @include vb.big6 {
+    //     padding: 16px 0;
+    // }
+}
+
+
+.centeredcontent {
+
+    background-color: #fff;
+    // height: 688px;
+    width: 480px;
+    padding: 30px 60px;
+  
+    border-radius: 12px;
+    // display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @include vb.big5 {
+        margin: 0 auto;
+    }
+
+    // @include vb.big6 {
+    //     max-width: 360px;
+    //     width: 100%;
+    //     height: 100%;
+    //     padding: 16px;
+    //     justify-content: flex-start;
+    // }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    height: 62px;
+    border-bottom: 1px solid #E4E4E4;
+
+    // @include vb.big6 {
+    //     padding: 16px;
+    // }
+
+    .contactupdatebtn {
+        display: none;
+
+        // @include vb.big6 {
+        //     display: flex;
+        //     gap: 12px;
+        // }
+
+        .loginbtun {
+            // @include vb.big6 {
+            //     color: #fff;
+            //     border: 1px solid #000;
+            //     background-color: #000;
+            //     width: 74px;
+            // }
+        }
+
+        button {
+            color: #fff;
+            width: 74px;
+            height: 38px;
+            border: 1px solid #000;
+            background-color: #000;
+            font-weight: 600;
+            border-radius: 6px;
+            font-family: 'interregular';
+            font-size: 14px;
+            // display: none;
+            // @include vb.big6{
+            //     display: block;
+            // }
+        }
+
+    }
+
+    .contactsale {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+
+        // @include vb.big6 {
+        //     gap: 8px;
+    }
+
+    .mobileview {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+
+        // @include vb.big6 {
+        //     display: none;
+        // }
+
+        .loginbutn {
+            color: #fff;
+            border: 1px solid #000;
+            background-color: #000;
+
+            &:hover {
+                border: 1px solid #000;
+                background-color: #000;
+            }
+        }
+    }
+
+    button {
+        background-color: #fff;
+        width: 132px;
+        height: 38px;
+        color: #000;
+        font-size: 14px;
+        border: 1px solid #D2D3D4;
+        font-weight: 600;
+        border-radius: 6px;
+        font-family: 'interregular';
+
+        &:hover {
+            border: 1px solid #000;
+        }
+
+    }
+
+    .contactupdate {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        span {
+            color: #757676;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: 'interregular';
+        }
+    }
+}
+
+.lucasmain {
+
+    //  width: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    // margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+
+    // @include vb.big6 {
+    //     max-width: 100% !important;
+    // }
+
+    .worktualmain {
+        margin: 0 0 24px;
+    }
+
+    .validationtestcreate {
+        width: 100%;
+        position: relative;
+
+        .symbolstest {
+            background-color: #fff;
+            border: 1px solid #E4E4E4;
+            padding: 12px;
+            display: grid;
+            justify-items: start;
+            gap: 8px;
+            border-radius: 6px;
+            position: absolute;
+            right: -300px;
+            bottom: 13px;
+
+            &.symbolstestmatch {
+                border: none;
+                position: unset;
+                height: 42px;
+                padding: 0 12px;
+
+
+                @include vb.big4 {
+                    height: auto;
+                }
+            }
+
+            @include vb.big4 {
+                position: unset;
+                margin: 12px 0 0;
+            }
+
+            // @include vb.big6 {
+            //     border: none;
+            // }
+
+            .ermsg {
+                color: #FF4444;
+            }
+
+            .activefolder {
+                color: #00C851;
+            }
+
+            p {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+        }
+    }
+
+    h2 {
+        color: #252526;
+        font-size: 24px;
+        line-height: 140%;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 14px;
+    }
+
+    .inputopmanerprimary {
+        width: 100%;
+        display: grid;
+        gap: 12px;
+        margin: 0 0 24px;
+
+        max-width: 360px;
+
+        img {
+            width: 34px;
+            float: left;
+        }
+
+        button {
+            color: #fff;
+            width: 100%;
+            display: unset !important;
+            align-items: center;
+            gap: 24px;
+            padding: 0 24px;
+            height: 42px;
+            font-family: 'interregular';
+            font-size: 14px;
+            border-radius: 6px;
+            font-weight: 400;
+            line-height: 32px;
+            text-align: center;
+        }
+
+        .google {
+            gap: 46px;
+            padding: 0 5px;
+            background-color: #4285F4;
+
+            &:hover {
+                background-color: #2C6DD8;
+            }
+        }
+
+        .appleicon {
+            gap: 46px;
+            padding: 0 5px;
+            background-color: #2F2F2F;
+
+            &:hover {
+                background-color: #4D4D4D;
+            }
+        }
+
+        .microsofticon {
+            gap: 46px;
+            padding: 0 5px;
+            background-color: #201515;
+
+            &:hover {
+                background-color: #4D4D4D;
+            }
+        }
+    }
+
+    p {
+        color: #252526;
+        font-size: 14px;
+        font-family: 'interregular';
+        text-align: center;
+        margin: 0;
+    }
+
+    .inputopmaner {
+        margin-bottom: 24px;
+    }
+
+    .inputopmanerh {
+        margin: 0;
+    }
+
+    input {
+        color: #000;
+        font-weight: 400;
+        border-radius: 6px;
+        border: 1px solid #E4E4E4;
+        background: #FFF;
+        width: 100%;
+        box-shadow: none;
+        font-family: 'interregular';
+        box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+        font-size: 14px;
+
+        &:hover {
+            border-color: #A6A6A6;
+        }
+
+        &:active {
+            box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+            border: 1px solid #000 !important;
+            
+        }
+
+        &:focus {
+            box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+            border: 1px solid #000 !important;
+            
+        }
+
+        // box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+        // border: 1.5px solid  #000;
+
+
+        &::placeholder {
+            font-family: 'interregular';
+            color: #828385;
+        }
+
+        &:focus-within {
+            border: 1px solid transparent !important;
+            // outline: none !important;
+        }
+
+        // &:hover{
+        //     border: 1px solid #000 !important;
+        // }
+        &:focus-visible {
+            border: 1px solid #000 !important;
+            // outline: none !important;
+        }
+
+        &:focus {
+            border: 1px solid #000 !important;
+            // outline: none !important;
+        }
+
+        // @include vb.big6 {
+        //     width: 100% !important;
+        // }
+
+        height: 42px;
+        padding: 12px 12px 12px 16px;
+        font-size: 14px;
+    }
+
+    button {
+        color: #163300;
+        border-radius: 44px;
+        border: 1px solid rgba(22, 51, 0, 0.04);
+        background: #000;
+        // width: 352px;
+        outline: none;
+
+        // @include vb.big6 {
+        //     width: 100%;
+        // }
+
+        height: 52px;
+
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .loginid {
+        width: 100%;
+        margin: 0 0 24px;
+        position: relative;
+        text-align: center;
+
+        &::before {
+            border-top: 1px solid #dbdbdb;
+            content: "";
+            left: 0;
+            position: absolute;
+            top: 13px;
+            width: 100%;
+        }
+
+        p {
+            background: #fff;
+            display: inline;
+            color: #757676;
+            font-size: 16px;
+            margin: 0;
+            padding: 6px;
+            position: relative;
+            z-index: 99;
+        }
+    }
+
+    .lucasmaininput {
+        width: 100%;
+        display: grid;
+        // gap: 12px;
+        margin: 0 0 24px;
+        margin-bottom: 0;
+        margin-top: 20px;
+        p {
+            span {
+                color: #0084FF;
+
+                &:hover {
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .lucaslogin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 8px 0 0;
+
+            input {
+                box-shadow: none;
+
+                &:focus {
+                    box-shadow: none;
+                    outline: 0 !important;
+                }
+            }
+
+            label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                white-space: nowrap;
+                margin: 0;
+            }
+        }
+
+        &.lucasmaininputbutton {
+            button {
+                margin: 0 0 16px !important;
+            }
+        }
+
+        &.lucasmaininputcreate {
+            margin: 0;
+        }
+
+        &.lucasmaininputsteper {
+            margin: 0;
+        }
+
+        &.lucasmaininputverify {
+            margin: 24px 0 24px;
+
+            // @include vb.big6 {
+            //     max-width: 360px;
+            // }
+
+            button {
+                margin: 0 !important;
+
+                &:nth-last-child(1) {
+                    color: #757676;
+                    background-color: #fff;
+                    border: 1px solid #E4E4E4;
+                    gap: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+
+            .confirmemailstep {
+                color: #fff !important;
+                background-color: #000 !important;
+                border: 1px solid #000 !important;
+
+                &:hover {
+                    border: 1px solid #09A578 !important;
+                    background-color: #09A578 !important;
+                }
+            }
+        }
+
+        input {
+            &:focus-within {
+                border: 1px solid transparent !important;
+                box-shadow: none !important;
+            }
+        }
+
+        button {
+            background-color: #000;
+            height: 38px;
+            color: #FFFFFF;
+            font-family: 'intermedium';
+            font-size: 14px;
+            border-radius: 6px;
+            margin: 0px 0 16px !important;
+            font-weight: 400;
+
+            &:focus-visible {
+                outline: 1.5px solid #000;
+            }
+
+            &:hover {
+                cursor: pointer;
+                
+                background-color:  #383838;
+            }
+        }
+
+        .enablebutton {
+            
+            background-color:  #383838;
+            font-family: 'intermedium';
+
+            &:hover {
+               
+                background-color: #383838;
+                cursor: not-allowed;
+            }
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            padding-left: 0px;
+            text-align: center;
+            font-family: 'intermedium';
+            font-family: 'interregular';
+
+            .conditions {
+                color: #0084FF;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .adicons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .emailuser {
+        color: #878787;
+        font-size: 14px;
+        text-align: center;
+
+        span {
+            color: #000;
+        }
+
+        &.emailuserforgetpas {
+            margin: 0 0 12px;
+        }
+    }
+
+    .inputboxcontainer {
+        width: 100%;
+        margin: 24px 0 0;
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        align-items: center;
+
+        input {
+            background-color: #F6F7F9;
+            width: 50px;
+            height: 48px;
+            border-radius: 13px;
+            border: 1px solid #E3E8EF;
+            box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+            padding: 0;
+
+            &:hover {
+                border-color: #A6A6A6;
+            }
+
+            &:active {
+                box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+                border: 1px solid #000 !important;
+                outline: 4px solid #F7F0FF !important;
+            }
+
+            &:focus {
+                box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+                border: 1px solid #000 !important;
+                outline: 4px solid #F7F0FF !important;
+            }
+        }
+    }
+
+    .resendemail {
+        font-size: 14px;
+
+        &.resendemailmargin {
+            margin: 0 0 12px;
+        }
+
+        &.resendlogin {
+            span {
+                color: #000000;
+                font-weight: 600;
+            }
+        }
+
+        &.resendemailattempt {
+            span {
+                color: #000000;
+                font-family: 'intersemibold';
+            }
+        }
+
+        span {
+            color: #0084FF;
+            font-size: 14px;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .passwordcreate {
+        width: 100%;
+        position: relative;
+
+        .eyeicon {
+            position: absolute;
+            top: 32px;
+            right: 20px;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &.eyeiconlock {
+                top: 32px;
+            }
+
+            &.eyeiconpassword {
+                bottom: 14px;
+                top: unset;
+                // @include vb.big4{
+                //     bottom: 70px;
+                // }
+            }
+        }
+    }
+
+    .selectforlogin {
+        input {
+            opacity: 1 !important;
+        }
+
+        svg {
+            display: none;
+        }
+    }
+
+    .errorfield {
+        display: flex;
+        gap: 4px;
+        // align-items: center;
+        margin: 8px 0 0;
+
+        span {
+            color: #FF6163;
+            font-size: 12px;
+        }
+
+        &.errorfieldcondition {
+            width: 100%;
+            float: left;
+            padding: 0 0 0;
+        }
+    }
+
+    .inputblock {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+
+        div {
+            width: 100%;
+            font-family: 'interregular';
+            font-size: 14px;
+        }
+
+        .firstnameinput {
+            input {
+                padding: 12px 12px 12px 16px;
+            }
+        }
+    }
+}
+
+.stepercount {
+    p {
+        color: #A7A7A7;
+        margin-top: 30px;
+        text-align: center;
+        font-size: 12px;
+        font-family: 'interregular';
+    }
+}
+
+.inputdiv {
+    width: 100% !important;
+
+
+    span {
+        position: relative;
+
+        svg {
+            position: absolute;
+            top: 4px;
+            right: 14px;
+        }
+    }
+
+    // @include vb.big6 {
+    //     // display: flex;
+    //     justify-content: center;
+    //     width: 100% !important;
+    //     min-width: 100% !important;
+    //     flex-direction: column;
+    //     align-items: flex-start;
+    // }
+
+    input {
+        margin: 0 0 12px;
+    }
+
+    .showClear {
+        position: relative;
+
+        &::before {
+            position: absolute;
+            top: 1px;
+            right: 12px;
+        }
+    }
+
+    .emailaddress {
+        // background: url('/src/assets/others/emailin.svg');
+        background-repeat: no-repeat;
+        background-position: 12px;
+    }
+
+    .emailaddresslock {
+        // background: url('/src/assets/others/lock.svg');
+        background-repeat: no-repeat;
+        background-position: 12px;
+        // margin: 16px;
+    }
+
+    &.inputdivalertset {
+        position: relative;
+
+        span {
+            position: absolute;
+            top: 26px;
+            right: 12px;
+            font-family: 'interregular';
+            font-size: 14px;
+            font-weight: 600;
+
+            &.alertweak {
+                color: #FF4444;
+            }
+
+            &.alertweakfair {
+                color: #FFBB33;
+            }
+
+            &.alertweakmoder {
+                color: #33B5E5;
+            }
+
+            &.alertweakstrong {
+                color: #00C851;
+            }
+        }
+    }
+}
+.keeplog{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding: 0 9px;
+    .chkboxspan{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    
+    }
+}
+.dontaccnt{
+    display: flex;
+    gap: 4px;
+    text-align: center;
+}
+.errtxt{
+    color: red;
+    position: relative;
+    top:-8px;
+    font-size: 13px;
+    font-family: "interregular" !important;
+}
+
+.buttonLoader{
+    // width: 60px;
+    // height: 60px;
+    // margin: 0 auto;
+}
+
+
+          .dontaccnt {
+            background-color: #fff;
+            
+            border-radius: 6px;
+            border: 1px solid #E4E4E4;
+            background: var(--Full-White, #FFF);
+            box-shadow: 0px 2px 3px 0px rgba(12, 21, 35, 0.04);
+            padding: 12px;
+            right: -294.5px;
+            bottom: 145px;
+            z-index: 99;
+            position: absolute;
+    flex-direction: column;
+    
+
+            // @include big4 {
+            //   position: unset;
+            //   margin: 12px 0 0;
+            //   box-shadow: none;
+            // }
+
+            p {
+              color: #000;
+              text-align: left;
+              margin: 4px 0;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            }
+
+            .wrong {
+              color: #FF4444;
+            }
+          }
+.inputdivalertset{
+    span{
+    font-family: "interregular";
+    font-size: 14px;
+    font-weight: 500;
+    position: absolute;
+    top: 62px;
+    right: 12px;
+
+}
+}

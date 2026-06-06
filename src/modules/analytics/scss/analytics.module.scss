@@ -1,0 +1,518 @@
+@use '../../../../src/styles/mixin' as mx;
+@use '../../../../src/styles/variable' as vb;
+
+.center {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 32px;
+
+    h5 {
+        font-size: 16px;
+        font-family: "intermedium";
+    }
+}
+
+.maincontainer {
+    max-width: 610px;
+    margin: auto;
+    padding: 30px 0 20px 0;
+}
+
+.bigmaincontainer {
+    max-width: 1200px;
+    margin: auto;
+
+}
+
+.dashboard {
+    padding: 2rem;
+    font-family: "interregular";
+    color: #333;
+
+        margin: 0 0 16px !important;
+        font-size: 14px;
+        font-family: "interregular";
+        line-height: 21px;
+
+    li {
+        margin: 0.4rem 0;
+        font-size: 14px;
+        font-family: "interregular";
+        line-height: 21px;
+    }
+
+    p {
+        color: #555;
+        margin: 0 0 16px !important;
+        font-size: 14px;
+        font-family: "interregular";
+        line-height: 21px;
+    }
+
+    .header {
+        margin-bottom: 32px;
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #555;
+            margin: 0 0 16px;
+        }
+
+        .stats {
+            list-style: none;
+            padding: 0;
+
+
+        }
+    }
+
+    .content {
+        display: grid;
+  grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+
+        @media screen and (min-width: 1400px) {
+
+            grid-template-columns: repeat(2, 1fr);
+
+        }
+         @media screen and (max-width: 1100px) {
+
+            grid-template-columns: repeat(1, 1fr);
+
+        }
+     
+    }
+}
+
+
+.card {
+    border-radius: 21px;
+    border: 0.6px solid #BFBFBF;
+    background: #F8F8F8;
+    padding: 18px;
+
+    min-width: 50%;
+
+    &.narrative {
+        .rankingGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+
+            .score {
+                border-radius: 21px;
+                border: 0.6px solid #BFBFBF;
+                background: #FFF;
+                text-align: center;
+                padding: 24px 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                strong {
+                    font-size: 14px;
+                }
+
+                .scoretxt {
+                    color: #252526;
+                    font-family: "interregular";
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    margin: 0;
+                }
+
+
+                span {
+                    font-weight: 700;
+                    display: block;
+                    font-size: 20px;
+                    margin-top: 8px;
+                    color: rgba(87, 92, 255, 1);
+                }
+            }
+        }
+    }
+
+    h3 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .tag {
+        display: inline-block;
+        font-size: 12px;
+        border-radius: 30px;
+        background: #f2f2f2;
+        padding: 6px 12px;
+        color: #000;
+        margin-bottom: 16px;
+        font-style: italic;
+
+    }
+}
+
+
+
+.ranking {
+    .rankingGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin: 16px 0;
+    }
+
+    .score {
+        border-radius: 21px;
+        border: 0.6px solid #BFBFBF;
+        background: #FFF;
+        text-align: center;
+        padding: 24px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        strong {
+            font-size: 14px;
+        }
+
+        .scoretxt {
+            color: #252526;
+            font-family: "interregular";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin: 0;
+        }
+
+
+        span {
+            font-weight: 700;
+            display: block;
+            font-size: 20px;
+            margin-top: 8px;
+            color: rgba(87, 92, 255, 1);
+        }
+    }
+
+
+}
+
+
+.actions {
+    .actionsList {
+        list-style: none;
+        padding: 0;
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            border-radius: 21px;
+            border: 0.6px solid #BFBFBF;
+            background: #FFF;
+            gap: 20px;
+            padding: 24px 20px;
+
+
+
+
+            p {
+                margin: 0;
+                flex: 1;
+
+            }
+        }
+    }
+}
+
+
+.preview {
+    .block {
+        display: flex;
+        justify-content: space-between;
+
+        flex-direction: column;
+        margin: 8px 0;
+        border-radius: 21px;
+
+        background: #FFF;
+        gap: 12px;
+        padding: 24px 20px;
+
+        strong {
+            font-size: 14px;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        &.blockaction {
+            flex-direction: column;
+            align-items: self-start;
+
+            p {
+                border-radius: 13px;
+                border: 0.6px solid #BFBFBF;
+                background: #F8F8F8;
+                padding: 12px;
+            }
+
+        }
+    }
+
+}
+
+.bottomInput {
+    position: absolute; // sticks to screen
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff; // adjust to your theme
+    padding: 12px 20px;
+
+    z-index: 1000;
+
+    .analytics-input {
+        width: 100%;
+    }
+}
+
+.aftertyping {
+    position: relative;
+    height: 100%;
+}
+
+.hiddenclass {
+    display: none;
+}
+
+.overallchat {
+    height: 100%;
+    max-width: 610px;
+    margin: auto;
+}
+
+.responsescroller {
+    height: calc(100dvh - 359px) !important;
+    overflow-y: auto;
+}
+
+.backnav {
+    display: flex;
+    align-items: center;
+
+}
+
+.chartcontainer {
+    margin: 24px 0;
+}
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .row {
+        span {
+            font-size: 14px;
+        }
+
+        span:first-child {
+            font-weight: 600;
+        }
+    }
+}
+
+.msgbody {
+    background-color: #fff;
+    height: 100%;
+    height: calc(100dvh - 325px);
+    overflow: auto;
+
+    .maincontainer {
+        max-width: 610px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .thoughtprocessspan {
+        color: #404040;
+        font-family: "interregular";
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        line-height: 1.2em;
+
+
+
+        span {
+            display: grid;
+            cursor: pointer;
+        }
+    }
+
+    .msgbubble {
+        display: inline-block;
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 16px;
+        line-height: 1.4;
+        word-wrap: break-word;
+        font-family: "interregular";
+
+        p {
+            margin: 0;
+            color: #000;
+            word-break: break-word;
+            line-height: 1.5em;
+            margin-bottom: 12px;
+        }
+
+        &.left {
+            align-self: flex-start;
+            max-width: 100%;
+            padding: 0;
+
+
+        }
+
+        &.containprogress {
+            width: 100%;
+            border-radius: 16px;
+            background: #F7F7F7;
+            max-width: 400px;
+            padding: 30px 17px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            p {
+                margin-bottom: 0px !important;
+            }
+        }
+
+        &.cardsresponse {
+            .cardscontainerscroller {
+                overflow-x: auto;
+                scrollbar-width: thin;
+                width: 100%;
+                display: flex;
+                gap: 12px;
+                padding: 12px 0;
+
+                .card {
+                    padding: 21px 12px;
+                    height: 148px;
+                    width: 267px;
+                    min-width: 267px;
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: column;
+                    border-radius: 16px;
+                    border: 0.6px solid #D2D3D4;
+
+                    /* shadow-sm */
+                    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+                    button {
+                        border-radius: 13px;
+                        border: 1px solid #BFBFBF;
+                        background: #FFF;
+                        padding: 8px;
+                        min-width: 80px;
+                        cursor: pointer;
+                    }
+
+                    .top {
+                        display: flex;
+                        gap: 8px;
+
+                        &.bottom {
+                            justify-content: space-between !important;
+                            align-items: center;
+                        }
+
+                        .rights {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 4px;
+
+                            p {
+                                color: #404040;
+                                font-family: "interregular";
+                                font-size: 13px;
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.right {
+            align-self: flex-end;
+            background: #f1f1f1;
+            max-width: 70%;
+
+            &.fileupload {
+                display: flex;
+                gap: 9px;
+                align-items: center;
+                border-radius: 12px;
+                border: 1px solid rgba(74, 83, 97, 0.24);
+                background: #F7F7F7;
+                max-width: 233px;
+                min-width: 233px;
+                padding: 12px;
+                text-decoration: none;
+
+
+                h5 {
+                    color: #212A38;
+                    font-family: "intermedium";
+                    font-size: 14px;
+
+
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 100%;
+                    display: block;
+                }
+
+                p {
+                    font-size: 12px;
+                    font-family: "interregular";
+                    color: #A8AEBB;
+                }
+
+                .rights {
+                    width: calc(100% - 33px);
+
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                }
+            }
+
+        }
+    }
+}
+.analtcsmaincontainer{
+    gap: 32px !important;
+}

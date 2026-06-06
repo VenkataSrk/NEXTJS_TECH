@@ -1,0 +1,22 @@
+@use '/src/styles/mixin' as mx;
+@use '/src/styles/variable' as vb;
+
+.contentlayout {
+    height: 100%;
+    padding: 34px;
+    // overflow: auto;
+    overflow-x: hidden;
+    &.nopaddingblock{
+        padding-block: 0;
+    }
+    &.nopadding{
+        padding: 0;
+    }
+
+
+    .contentmain {
+        height: 100%;
+        // max-width: 1220px;
+        // margin: 0 auto;
+    }
+}

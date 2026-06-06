@@ -1,0 +1,147 @@
+@use '../../../../styles/mixin' as mx;
+@use "../../../../styles//variable" as vb;
+
+
+ .ticketright {
+     width: 100%;
+     height: calc(100vh - 113px);
+
+     overflow-y: auto;
+     overflow-x: hidden;
+     .maincontainer{
+  margin: auto;
+     max-width: 798px;
+     height: 100%;
+     }
+   
+         padding: 0 0 100px !important;
+ }
+.connectorssec {
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+    padding: 0 16px;
+    
+      
+
+    .headersec {
+        font-family: 'intersemibold';
+        font-size: 21px;
+
+        h4 {
+            font-family: 'intersemibold';
+            font-size: 21px;
+            line-height: 133%;
+        }
+
+        p {
+            font-family: 'interregular';
+            font-size: 13px;
+            line-height: 161%;
+        }
+    }
+
+    .menusec {
+        .headersec {
+            h4{
+                font-size: 16px;
+                padding-bottom: 4px;
+            }
+            padding-bottom: 13px;
+        }
+
+        .boxgroups {
+            display: flex;
+            gap: 13px;
+            flex-wrap: wrap;
+
+            
+            .boxes {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 360px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: box-shadow 0.2s ease;
+  cursor: pointer;
+  @include vb.big4{
+    max-width: 100%;
+    background-color: red;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+
+    .status {
+      font-size: 12px;
+      font-family: "interregular";
+      color: #6b7280;
+      background: #f3f4f6;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+  }
+
+  .body {
+    h4 {
+      font-size: 16px;
+      font-family: "intermedium";
+      color: #111827;
+      margin: 0;
+    }
+
+    p {
+      font-size: 14px;
+      color: #4b5563;
+      margin: 9px 0 0 0;
+      line-height: 1.4;
+      font-family: "interregular";
+    }
+  }
+}
+
+        }
+    }
+}
+.statuselem {
+  display: inline-flex;
+  padding: 4px 12px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 24px;
+  font-family: 'intersemibold';
+  font-size: 12px;
+  line-height: 161%;
+   white-space: nowrap;
+
+
+  &.connected {
+    color: #0A3405;
+    border: 1px solid #136809;
+    background: linear-gradient(180deg, #FFF 25%, #F2F2F2 100%);
+  }
+
+  &.notconnected {
+    border: 1px solid #d2d3d4;
+    background: #d2d3d438;
+  }
+}
+.topheading{
+    @include mx.topheading;
+}

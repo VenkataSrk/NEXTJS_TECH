@@ -1,0 +1,48 @@
+@use '/src/styles/mixin' as mx;
+@use '/src/styles/variable' as vb;
+
+// $tabheaderheight:40px;
+$tabheaderdowngap:16px;
+
+.wttabview{
+    // height: 100%;
+    .wttabheaderouter{
+        // height: $tabheaderheight;
+        margin-bottom: $tabheaderdowngap;
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 99;
+        padding-block: 12px 20px;
+        &.wttabheaderouternospace{
+            margin-bottom: 0;
+        }
+        .wttabheader{
+            display: flex;
+            gap: 8px;
+            // border-bottom: 1px solid vb.$bordercolor;
+            .wttab{
+                padding: 8px 10px;
+                cursor: pointer;
+                font-size: 14px;
+                border-radius: 8px;
+                border: 1px solid transparent;
+                background-color: #F0F1F2;
+                color: #000;
+                font-family:'intermedium';
+                &.wtactivetab{
+                      border-color: #000;
+    /* color: #00B885; */
+    background-color: #fff;
+                    background-color: #fff;
+                }
+                // &:first-child{
+                //     margin-left: 16px;
+                // }
+            }
+        }
+    }
+    .wttabcontent{
+        padding: 0;
+    }
+}

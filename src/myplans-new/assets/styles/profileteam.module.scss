@@ -1,0 +1,87 @@
+.createmaincontainer {
+    max-width: 798px;
+    margin: auto;
+
+    .useract {
+        .useracttitle {
+            color: #000;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 133%;
+            /* 23.94px */
+        }
+
+        .useractmain {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 12px 0;
+
+            .useractmaininner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .useractmainleft {
+                    color: #000;
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 133%;
+                    width: 100px;
+                }
+
+                .useractmaincenter {
+                    width: calc(100% - 200px);
+                    padding: 0 6px;
+
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+
+                    .img {
+                        width: 22px;
+                        height: 22px;
+                        min-width: 22px;
+                        min-height: 22px;
+                        border-radius: 40px;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+
+                    .title {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+
+                        .name {
+                            color: #000;
+                            font-size: 16px;
+                            font-style: normal;
+                            font-weight: 500;
+                            line-height: 135%;
+                        }
+
+                        .para {
+                            color: #000;
+                            font-size: 13px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 133%;
+                        }
+                    }
+                }
+
+                .useractmainright {
+                    width: 100px;
+                }
+            }
+        }
+
+    }
+}

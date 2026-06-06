@@ -1,0 +1,24 @@
+@use '/src/styles/mixin' as mx;
+@use '/src/styles/variable' as vb;
+
+
+.searchinp {
+    position: relative;
+    width: 100%;
+
+    input {
+        padding: 0 28px !important;
+        background: url('../../../styles/assets/images/search_icon.svg') no-repeat left;
+        background-size: 22px;
+        background-position: 4px 8px;
+        background-color: vb.$white;
+
+    }
+
+    .clear {
+        position: absolute;
+        right: 6px;
+        top: 12px;
+        cursor: pointer;
+    }
+}

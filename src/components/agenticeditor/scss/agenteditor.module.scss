@@ -1,0 +1,334 @@
+@import "../../../../src/styles/variable";
+
+
+.overalleditor {
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+ 
+
+  .editorblock {
+    width: 100%;
+    border: 0.6px solid transparent;
+    background: linear-gradient(180deg, #FFF 0%, #FAFFFE 100%) padding-box, linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335) border-box !important;
+    background: #fff;
+    align-items: flex-end;
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+
+    .placeholder {
+      color: #828385;
+      font-size: 16px;
+      font-family: 'interregular';
+    }
+
+    .fileformaterblock {
+      width: 100%;
+      min-width: 80%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+      .fileaddicon{
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .editorblockleft {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .editorblockcenter {
+      width: 100%;
+      font-size: 16px;
+      line-height: 24px;
+      font-family: 'interregular';
+      max-height: 172px;
+      overflow-y: auto;
+ 
+
+      &:focus-visible {
+        outline: 0;
+      }
+    }
+
+    .editorblockright {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+}
+
+.suggestion {
+//   color: var(--true-black-500, #757676);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 21px;
+}
+
+.editbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  cursor: pointer;
+
+  p {
+    color: #000;
+    font-family: "intermedium";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height:18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0.6px solid transparent;
+    background: linear-gradient(180deg, #FFF 0%, #FAFFFE 100%) padding-box, linear-gradient(90deg, #575CFF, #F22E57, #00E2A4, #FF793D, #00B885) border-box !important;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 8px 16px;
+    width: fit-content;
+    border-radius: 24px;
+    margin: 0;
+  }
+}
+
+.miconhandle {
+  width: 280px;
+  position: absolute;
+  z-index: 99;
+  background-color: #fff;
+  padding: 8px;
+  border: 1px solid #D2D3D4;
+  border-radius: 12px;
+  bottom: 50px;
+  box-shadow: 3px 2px 7px 0px #d2d3d4;
+  max-height: 250px;
+  overflow-y: auto !important;
+  overflow: hidden;
+  bottom: 100px;
+
+  .micdrop {
+    .groumicdrop {
+      h3 {
+        color: #AAABAD !important;
+        font-size: 14px;
+        padding: 8px 0;
+      }
+
+      ul {
+        padding: 0;
+        display: block !important;
+
+        li {
+          color: #3E3F40 !important;
+          list-style: none;
+          line-height: 28px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+.editorblockcenter:empty:before {
+  content: attr(data-placeholder);
+  color: #999;
+  pointer-events: none;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #000000;
+  border-radius: 50%;
+
+  &.ready {
+    background-color: #00b885;
+  }
+
+  &.notready {
+    background-color: #d62f49;
+  }
+
+  &.offline {
+    background-color: #667799;
+  }
+
+  &.busy {
+    background-color: #964b00;
+  }
+
+  &.away {
+    background-color: #f7ae4c;
+  }
+
+  &.transferonly {
+    background-color: #800080;
+  }
+
+  &.vacation {
+    background-color: #4cb0f7;
+  }
+}
+
+
+
+
+.assignees {
+  // max-height: 200px;
+  // overflow-y: scroll;
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #000000;
+    border-radius: 50%;
+    position: relative;
+    top: 3px;
+
+    &.ready {
+      background-color: #00b885;
+    }
+
+    &.notready {
+      background-color: #d62f49;
+    }
+
+    &.offline {
+      background-color: #667799;
+    }
+
+    &.busy {
+      background-color: #964b00;
+    }
+
+    &.away {
+      background-color: #f7ae4c;
+    }
+
+    &.transferonly {
+      background-color: #800080;
+    }
+
+    &.vacation {
+      background-color: #4cb0f7;
+    }
+  }
+
+  .userDt {
+    max-height: 300px;
+    overflow: hidden;
+    overflow-y: auto;
+
+    // @include big6 {
+    //   max-height: 176px;
+    // }
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 12px;
+      cursor: pointer;
+    }
+  }
+}
+
+.assigneesrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+
+  &.disable {
+    cursor: not-allowed;
+  }
+
+  .tranfernamelists {
+    color: var(--Text-Title, #252526);
+    font-family: "intersemibold";
+    font-size: 14px;
+    line-height: normal;
+    text-transform: capitalize;
+    display: inline-grid;
+    gap: 4px;
+
+    span {
+      font-size: 12px;
+      font-family: "interlight";
+      color: #757676;
+      padding: 0;
+    }
+  }
+}
+
+.sentimenttop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 0 0 12px;
+
+}
+
+.sentimentdes {
+  font-size: 16px;
+  color: #000;
+}
+.mainblocktrans{
+     border: 0.6px solid transparent;
+                background: linear-gradient(180deg, #FFF 0%, #FAFFFE 100%) padding-box, linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335) border-box !important;
+                background: #fff;
+               
+                overflow-y:hidden;
+                overflow-x: hidden;
+                display: flex;
+                gap: 8px;
+                .sentimentdes{
+                  display: inline-flex;
+                  align-items: flex-start;
+                  gap: 8px;
+                  padding-top: 4px;
+                  p{
+                    margin: 0;
+                    word-wrap: break-word;
+                    word-break: break-all;
+                    font-size: 16px;
+                  }
+                }
+                .inner{
+              max-height: 230px;
+    display: flex;
+    gap: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 44px;
+                  
+                }
+}
+.rightcornercontainer{
+  display: flex;
+  align-items: center;
+}
+.sndicon{
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+}

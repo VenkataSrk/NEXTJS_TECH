@@ -1,0 +1,80 @@
+@use '../../../styles/variable' as vb;
+@use '../../../styles/mixin' as mx;
+
+.pannelinner {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    display: flex
+;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    .innertxtbox {
+        display: grid;
+        place-items: center;
+        text-align: center;
+        gap: 12px;
+
+        button {
+            margin-top: 12px;
+        }
+    }
+}
+
+.stsbar {
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 14px;
+    text-align: center;
+    line-height: normal;
+    width: fit-content;
+
+    &.green {
+        border: 1px solid #00b88599;
+        background: #dff5edb3;
+        color: #008560;
+    }
+
+    &.yellow {
+        border: 1px solid #EBC252;
+        background: #FCF5E1;
+        color: #EBC252;
+    }
+
+    &.red {
+        border: 1px solid #EB4069DB;
+        background: #fce1e8b3;
+        color: #EB4069DB;
+    }
+
+    &.grey {
+        border: 1px solid #BDBEBF;
+        background: #F0F1F2;
+        color: #BDBEBF;
+    }
+}
+
+.radiorow {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+}
+.whatsappmain{
+    height: 100%;
+}
+.integrationMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 24px;
+    min-height: 240px;
+    height: 100%;
+    h1{
+        font-size: 26px;
+        font-family: 'intermedium';
+    }
+}

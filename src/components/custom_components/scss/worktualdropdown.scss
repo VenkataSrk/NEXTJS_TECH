@@ -1,0 +1,96 @@
+@use '/src/styles/mixin' as mx;
+@use '/src/styles/variable' as vb;
+
+.dropdowncontainer {
+    position: relative;
+    width: 100%;
+
+    .dropshow {
+        min-width: 32px;
+        padding: 0;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+        align-items: center;
+        cursor: pointer;
+    }
+}
+
+.dropoptcontainer {
+    position: absolute;
+    padding: 4px 0;
+    border: 1px solid vb.$bordercolor;
+    border-radius: vb.$borderradius;
+    background-color: #ffffff;
+    overflow: hidden;
+    z-index: 999;
+    top: 44px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    min-width: 90px;
+    width: max-content;
+    max-width: 232px;
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        max-height: 192px;
+        overflow: hidden;
+        overflow-y: auto;
+
+        li {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-family: 'intermedium';
+            background-color: transparent;
+            font-size: 14px;
+
+            &.drophightlightopt,
+            &:hover {
+                background-color: #f2f2f2;
+            }
+
+            &.dropnooptionsinselect {
+                text-align: center;
+                color: vb.$fontcolorlight;
+
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}
+.dropoptcontainer {
+  position: absolute;
+  z-index: 9999;
+  min-width: 160px;
+
+  &.dropopt-bottom {
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+  }
+
+  &.dropopt-top {
+ 
+
+    margin-bottom: 4px;
+        left: 0;
+    margin-bottom: 4px;
+    top: -50px;
+  }
+
+  &.dropopt-right {
+    top: 0;
+    left: 100%;
+    margin-left: 4px;
+  }
+
+  &.dropopt-left {
+    top: 0;
+    right: 100%;
+    margin-right: 4px;
+  }
+}
