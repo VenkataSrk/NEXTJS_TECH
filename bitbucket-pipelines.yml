@@ -1,0 +1,44 @@
+pipelines:
+  branches:
+    Development:
+      - step:
+          name: Pre-requisite step
+          script:
+          - echo "No pre-requisites found"
+      - step:
+          name: Yarn install, Yarn build and Dockerisation of build
+          script:
+          #- echo "Installing yarn modules"
+          #- yarn install
+          #- echo "Creating build"
+          #- CI=false yarn build
+          
+          - echo "Creating docker image"
+          - docker build -t ccaas_front:$BITBUCKET_BUILD_NUMBER .
+          - echo "Save and Archive created docker image"
+          - docker tag ccaas_front:$BITBUCKET_BUILD_NUMBER registry-pub.vectone.com/ccaas_front:$BITBUCKET_BUILD_NUMBER
+          - echo "Login to docker registry"
+          - docker login -u vectone -p Vectone@123 registry-pub.vectone.com 
+          - echo "Push to docker registry"
+          - docker push registry-pub.vectone.com/ccaas_front:$BITBUCKET_BUILD_NUMBER
+          services:
+          - docker
+          caches:
+          - docker
+          #- ccaas-node-modules
+          size: 2x
+      - step:
+          name: Deploy docker image to Kubernetes Cluster 10.150.0.246
+          trigger: manual
+          runs-on:
+          - linux.shell
+          - self.hosted
+          script:
+          - echo "Deploy the Docker image to 10.150.0.246"
+          - ssh root@10.150.0.246 'bash /home/ccaas-front.sh' $BITBUCKET_BUILD_NUMBER
+definitions:
+  services:
+    docker:
+      memory: 2048
+  caches:
+     ccaas-node-modules:  node_modules

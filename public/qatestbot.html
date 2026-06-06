@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="$black" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <title>Chat Bot</title>
+
+  <script>
+    window.addEventListener('message', function (event) {if (JSON.parse(event.data).type === 'metatag') (new Function(JSON.parse(event.data).style))();document.getElementById('chatbot_id').style = JSON.parse(event.data).style;}); 
+
+   window.addEventListener('DOMContentLoaded', function () {
+      // Retrieve query parameter value for 'webchatid'
+      const searchParams = new URLSearchParams(window.location.search);
+      const ids = searchParams.get('webchatid');
+      console.log("Query parameter value for 'webchatid':", ids);
+      
+      // Set the src attribute of the iframe with the retrieved webchatid
+      const iframe = document.getElementById('wortual_chatbot');
+      if (iframe) {
+        console.log("Existing src attribute value:", iframe.src);
+        iframe.src = "https://qachatbot.worktual.co.uk/chatbot?webchatid=" + ids;
+        console.log("Updated src attribute value:", iframe.src);
+      } else {
+        console.error("Could not find iframe element with id 'wortual_chatbot'.");
+      }
+    });
+  
+  </script>
+
+  <style>
+    body{
+        height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: url(https://ccaas-storage.worktual.co.uk/chat/7182/testbot11.svg) no-repeat;
+    background-size: cover;
+    background-position: top center;
+    margin: 0;
+    }
+  </style>
+
+</head>
+<body>
+
+
+    <div id="chatbot_id" style="border-style: none; bottom: 20px; right: 30px; position: fixed; z-index: 999999;">
+    <iframe id="wortual_chatbot"  src="" title='null' scrolling="no" allowtransparency="true" style="border-style: none;  width: 100%; height: 100%;"></iframe>
+   </div>
+</body>
+</html>

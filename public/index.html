@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="$black" />
+  <meta name="description" content="Secure login to Worktual's AI-powered CCaaS platform. Access intelligent chatbots and communication tools designed to enhance customer experience." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:locale" content="en_GB" />
+  <meta property="og:site_name" content="Worktual" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Worktual CCaaS Login – AI Communication Platform" />
+  <meta property="og:description" content="Secure login to Worktual's AI-powered CCaaS platform. Access intelligent chatbots and communication tools designed to enhance customer experience." />
+  <meta property="og:url" content="https://ccaas.worktual.co.uk/" />
+  <meta property="article:modified_time" content="2025-04-10T04:43:13+00:00" />
+  <meta property="og:image" content="https://ccaas.worktual.co.uk/static/media/logo.c95ef0b00ab7a0fd98effc787d3162a6.svg" />
+  <meta property="og:image:secure_url" content="https://ccaas.worktual.co.uk/static/media/logo.c95ef0b00ab7a0fd98effc787d3162a6.svg" />
+  <meta property="og:image:width" content="876" />
+  <meta property="og:image:height" content="690" />
+  <meta property="og:image:alt" content="Worktual CCaaS Login" />
+
+
+  <title>Worktual</title>
+  <!-- <script src="%PUBLIC_URL%/tflite/tflite.js"></script>
+  <script src="%PUBLIC_URL%/tflite/tflite-simd.js"></script> -->
+  <style>
+    /* Loader styling */
+    #contact_center_mainloader {
+      z-index: 9999;
+      position: fixed;
+      left: 0;
+      top: 0;
+      margin: 0;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 12px;
+      color: #757576;
+      width: 100%;
+      height: 100vh;
+      justify-content: center;
+    }
+
+    #contact_center_loader {
+      border: 5px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 5px solid #3498db;
+      animation: spin 1s linear infinite;
+    }
+
+    .loadder {
+      /* width: 80px; */
+      /* min-width: 80px; */
+      min-height: 80px;
+      height: 80px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+
+  <div style="display: none">
+    <canvas id='canvas123' style="display: none;"></canvas>
+    <div className="video">
+      <video id="remoteVideo" width="100%" src="" autoPlay="{true}" preload="none"></video>
+      <!-- <div className="video-local">
+          <audio id="localVideo" width="100%" autoPlay={true} src="" muted></audio>
+        </div> -->
+    </div>
+    <audio id="ringer" loop crossorigin="anonymous" controls>
+      <!-- <source src="%PUBLIC_URL%/ringtone/ringback.wav" /> -->
+      <!-- Your browser does not support the audio element. -->
+    </audio>
+    <!-- <audio id="calling" loop crossorigin="anonymous">
+      <source src="%PUBLIC_URL%/ringtone/calling.wav" />
+    </audio>
+    <audio id="hangup" loop crossorigin="anonymous">
+      <source src="%PUBLIC_URL%/ringtone/hangup.wav" />
+    </audio> -->
+    <!-- <audio id="ringer" loop  crossOrigin="anonymous">
+        <source src="%PUBLIC_URL%/ringtone/ringback.wav">
+      </audio> -->
+  </div>
+  </div>
+  <div style="display:none;">
+    <video id="audioMixer" width="100%" src="" autoPlay={true} preload="none"></video>
+  </div>
+  <div id="contact_center_mainloader">
+    <!-- <div id="contact_center_loader"></div> -->
+    <img src="/loader.gif" class="loadder" />
+    <!-- <p>Please wait while loading...</p> -->
+  </div>
+</body>
+
+</html>

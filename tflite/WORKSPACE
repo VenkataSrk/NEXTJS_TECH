@@ -1,0 +1,55 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# Needed by TensorFlow
+http_archive(
+  name = "io_bazel_rules_closure",
+  sha256 = "7d206c2383811f378a5ef03f4aacbcf5f47fd8650f6abbc3fa89f3a27dd8b176",
+  strip_prefix = "rules_closure-0.10.0",
+  urls = [
+    "https://mirror.bazel.build/github.com/bazelbuild/rules_closure/archive/0.10.0.tar.gz",
+    "https://github.com/bazelbuild/rules_closure/archive/0.10.0.tar.gz",
+  ],
+)
+
+# TensorFlow
+local_repository(
+  name = "org_tensorflow",
+  path = "/tensorflow_src",
+)
+
+
+load("@org_tensorflow//tensorflow:workspace3.bzl", "tf_workspace3")
+
+tf_workspace3()
+
+load("@org_tensorflow//tensorflow:workspace2.bzl", "tf_workspace2")
+
+tf_workspace2()
+
+load("@org_tensorflow//tensorflow:workspace1.bzl", "tf_workspace1")
+
+tf_workspace1()
+
+load("@org_tensorflow//tensorflow:workspace0.bzl", "tf_workspace0")
+
+tf_workspace0()
+
+# MediaPipe
+local_repository(
+  name="org_mediapipe",
+  path = "/mediapipe_src",
+)
+
+# Emscripten
+http_archive(
+  name = "emsdk",
+  strip_prefix = "emsdk-2.0.27/bazel",
+  url = "https://github.com/emscripten-core/emsdk/archive/2.0.27.tar.gz",
+  sha256 = "8439411fe684a3f59d387b84fc1699c494405d3b5001c48b19ad681fe441bcce",
+)
+
+load("@emsdk//:deps.bzl", emsdk_deps = "deps")
+emsdk_deps()
+
+load("@emsdk//:emscripten_deps.bzl", emsdk_emscripten_deps = "emscripten_deps")
+emsdk_emscripten_deps()
